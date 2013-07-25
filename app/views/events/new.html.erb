@@ -1,0 +1,61 @@
+<%#= javascript_include_tag "add_event_map" %>
+<h2>Add Location of New Event</h2>
+
+<form id="geocoding_form"> <!-- async request to google maps -->
+	<p><label>Address</label><br \>
+	<input type=textfield id="address"></input><input type="submit"></p>
+</form>
+<script>
+$(document).ready(function(){ 
+	$('#geocoding_form').submit(function(e){
+		e.preventDefault();
+		GMaps.geocode({
+			address: $('#address').val().trim(),
+			callback: function(results,status) {
+				if(status=='OK') {
+					var latlng = results[0].geometry.location;
+					map.setCenter(latlng.lat(),latlng.lng());
+					map.removeMarkers();
+					map.addMarker({lat: latlng.lat(),lng: latlng.lng()});
+					$('#event_meeting_point').val(latlng.lat() + "," + latlng.lng());
+				}
+			}
+		});
+	});
+});
+</script>
+
+<%#div id="map"></div%>
+<a name="form"></a>
+<!-- backend request to our db -->
+<%= form_for @event, url: {action: "create"}, html: {class: "new_event_form"} do |event| %>
+	<p><%= event.label :title %><br />
+	<%= event.text_field :title, :placeholder => "SF=>Marin, Headlands Loop" %></p>
+
+	<p><%= event.label :meeting_point %><br />
+	<%= event.text_field :meeting_point, :value => '37.68439769612516,-122.48966217041016' %></p>
+
+	<p><%= event.label :description %><br />
+	<%= event.text_area :description, :placeholder => 'World-class scenic ride across the San Francisco Bay. It doesn\'t get better than this' %></p>
+	<%= event.hidden_field :activity, :value =>1 %>
+
+	  <%= fields_for :bicycle_ride do |bicycle_ride_form| %>
+		
+		<p><%= bicycle_ride_form.label :distance %><br />
+		<%= bicycle_ride_form.text_field :distance, :placeholder => 'Miles'%></p>
+
+		<p><%= bicycle_ride_form.label :pace %><br />
+		<%= select_tag(:pace, options_for_select(BicycleRide::PACE)) %></p>
+		
+		<p><%= bicycle_ride_form.label :terrain %><br />
+		<%= select_tag(:terrain, options_for_select(BicycleRide::TERRAIN)) %></p>
+		
+		<p><%= bicycle_ride_form.label :road_type %><br />
+		<%= select_tag(:road_type, options_for_select(BicycleRide::ROAD_TYPE)) %></p>
+		
+	  <% end %>
+
+	<div><%= event.submit "Add Event" %></div>
+<% end %>
+
+

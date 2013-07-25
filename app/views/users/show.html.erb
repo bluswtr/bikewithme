@@ -1,0 +1,7 @@
+<h3>User</h3>
+<%= image_tag(@user.image, size: "50x50", alt: @user.name) %>
+<p>User: <%= @user.name %></p>
+<p>Email: <%= @user.email if @user.email %></p>
+<p>Bio: <%= @user.bio if @user.bio %></p>
+
+<!--show friend list here hello-->
