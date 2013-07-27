@@ -2,10 +2,12 @@ Rails3MongoidDevise::Application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   authenticated :user do
-    root :to => 'home#index'
+    root :to => 'events#show'
   end
-  root :to => "home#index"
+  root :to => "events#show"
   devise_for :users
   resources :users
   resources :events
+
+  #new_event_path :events/new
 end

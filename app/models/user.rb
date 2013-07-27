@@ -45,6 +45,8 @@ class User
 
   # mimic has_many where array of keys is in parent
   has_and_belongs_to_many :events, inverse_of: nil # past and future
+  #has_and_belongs_to_many :events
+
 
   ## Confirmable
   # field :confirmation_token,   :type => String
@@ -63,7 +65,7 @@ class User
   index({ email: 1 }, { unique: true, background: true })
   field :name, :type => String
   validates_presence_of :name
-  accepts_nested_attributes_for :events, :contacts
+  accepts_nested_attributes_for :contacts
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at, :bio, :provider, :uid, :image, :contacts, :events
 
   ## Omniauth-Facebook Helpers

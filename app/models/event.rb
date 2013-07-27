@@ -19,12 +19,14 @@ class Event
   # activity in a switch statement  
   # for each create, read, update, delete
   #
+
   field :description
   field :activity, :type => Integer
   embeds_one :bicycle_ride
 
-  belongs_to :user #event organizer
-  has_many :contacts #followers
+  #belongs_to :user #event organizer
+  #has_and_belongs_to_many :users
+  #has_many :contacts #followers
   attr_accessible :title, :date, :bicycle_ride, :activity, :description, :meeting_point
 
   index({ meeting_point: 1 }, { unique: true, background: true })
