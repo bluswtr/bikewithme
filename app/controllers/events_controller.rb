@@ -5,8 +5,13 @@ class EventsController < ApplicationController
 		@event.meeting_point = Point.new(0,0)
 	end
 
+	def index
+		# request geolocation, ?
+		#@events = Event.geonear({meeting_point})
+		# pass in meeting points in erb page
+	end
+
 	def show
-		#@event = Event.geonear({meeting_point})
 	end
 
 	def create
@@ -20,6 +25,10 @@ class EventsController < ApplicationController
 								  				distance:params["bicycle_ride"]["distance"],
 								  				road_type:params["bicycle_ride"]["road_type"]}
 								)
+
+	end
+
+	def get_nearest
 
 	end
 

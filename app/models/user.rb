@@ -45,7 +45,6 @@ class User
 
   # mimic has_many where array of keys is in parent
   has_and_belongs_to_many :events, inverse_of: nil # past and future
-  #has_and_belongs_to_many :events
 
 
   ## Confirmable

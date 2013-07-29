@@ -1,11 +1,14 @@
 class Event
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  
   ##
   # An event is defined by any activity at a 
   # certain location and time. Time is a differentiator.
   # Currently, we are focusing on deploying with cyclists as our
   # clientbase, so the default activity is bicycle_ride
   #
-  include Mongoid::Document
+
   field :title
   field :date, :type => Time
   field :meeting_point, :type => Point #longitude, latitude (an index)
