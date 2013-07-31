@@ -7,7 +7,16 @@ Rails3MongoidDevise::Application.routes.draw do
   root :to => "events#show"
   devise_for :users
   resources :users
-  resources :events
+  # resources :events, :id => /.*/ do
+  # 	member do
+  # 		post 'nearest'
+  # 	end
+  # end
+  resources :events do
+    collection do 
+      get 'nearest'
+    end
+  end
 
   #new_event_path :events/new
 end

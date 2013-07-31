@@ -1,7 +1,6 @@
 <script>
 	$(document).ready(function(){ 
-		geolocate(init_map);
-		put_address_flow();
+		geolocate();
 	});
 </script>
 
@@ -15,7 +14,7 @@
 	<%= event.text_field :title, :placeholder => "SF=>Marin, Headlands Loop" %></p>
 
 	<p><%= event.label :meeting_point %><br />
-	<%= event.text_field :meeting_point, :value => '37.68439769612516,-122.48966217041016' %></p>
+	<%= event.text_field :meeting_point%></p>
 
 	<p><%= event.label :description %><br />
 	<%= event.text_area :description, :placeholder => 'World-class scenic ride across the San Francisco Bay. It doesn\'t get better than this' %></p>
@@ -27,13 +26,13 @@
 		<%= bicycle_ride_form.text_field :distance, :placeholder => 'Miles'%></p>
 
 		<p><%= bicycle_ride_form.label :pace %><br />
-		<%= select_tag(:pace, options_for_select(BicycleRide::PACE)) %></p>
+		<%= bicycle_ride_form.select(:pace, BicycleRide::PACE) %></p>
 		
 		<p><%= bicycle_ride_form.label :terrain %><br />
-		<%= select_tag(:terrain, options_for_select(BicycleRide::TERRAIN)) %></p>
+		<%= bicycle_ride_form.select(:terrain, BicycleRide::TERRAIN) %></p>
 		
 		<p><%= bicycle_ride_form.label :road_type %><br />
-		<%= select_tag(:road_type, options_for_select(BicycleRide::ROAD_TYPE)) %></p>
+		<%= bicycle_ride_form.select(:road_type, BicycleRide::ROAD_TYPE) %></p>
 		
 	  <% end %>
 

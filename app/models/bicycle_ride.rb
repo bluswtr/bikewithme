@@ -19,7 +19,7 @@ class BicycleRide
   # Also, it's probably not a good idea to continue using this method
   # of storage for these values if you mean to change the values frequently.
   PACE = [['Mellow',1],['Brisk',2],['Fast',3],['Hammerfest',4]]
-  TERRAIN = [['Flat',1],['Rollers',2],['Hilly',3],['Throwdown',4]]
+  TERRAIN = [['Flat',1],['Rollers',2],['Hilly',3],['Steep',4]]
   ROAD_TYPE = [['Pavement',1],['Dirt Trail',2]]
 
 end

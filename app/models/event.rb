@@ -11,7 +11,8 @@ class Event
 
   field :title
   field :date, :type => Time
-  field :meeting_point, :type => Point #longitude, latitude (an index)
+  #field :meeting_point, :type => Point #longitude, latitude (an index)
+  field :meeting_point, :type => Array 
   # field: address # a feature for later
   ##
   # To embed other types of activities add:
@@ -32,8 +33,8 @@ class Event
   #has_many :contacts #followers
   attr_accessible :title, :date, :bicycle_ride, :activity, :description, :meeting_point
 
-  index({ meeting_point: 1 }, { unique: true, background: true })
-
+  # example: index({ loc: "2d" }, { min: -200, max: 200 }).
+  index({ meeting_point: '2d' }, { background: true })
   # Other Fields to Consider
   # has_many :tags #commute, training, fun, recovering
   # has_many :activities #eat, bike, swim #has pointer to activity-related details
