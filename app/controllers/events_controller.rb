@@ -15,9 +15,16 @@ class EventsController < ApplicationController
 	end
 
 	def create
-		# create if doesn't exist
+		##
+		# About mongodb geospatial insertions: mongodb will take an array with two 
+		# values, convert the first into longitude and the next into latitude.
+
+		##
+		# Create if doesn't exist
+		longitude = params["longitude"].to_f
+		latitude = params["latitude"].to_f
 		current_user.events << Event.create( title:params["event"]["title"],
-								  meeting_point:params["event"]["meeting_point"],
+								  meeting_point:[longitude,latitude],
 								  description:params["event"]["description"],
 								  activity:params["event"]["activity"],
 								  bicycle_ride:{pace:params["bicycle_ride"]["pace"],
@@ -39,7 +46,7 @@ class EventsController < ApplicationController
 
 		nearest_events = Array.new
 		puts "begin"
-		Event.geo_near([params["lat"].to_f,params["lng"].to_f]).each do |event|
+		Event.geo_near([params["lng"].to_f,params["lat"].to_f]).each do |event|
 			p event.meeting_point
 			nearest_events.push(event)
 		end

@@ -1,5 +1,4 @@
 
-
 function geolocate() {
 
 	if (navigator.geolocation) {
@@ -26,7 +25,6 @@ function geolocate_nearest(callback_initmap) {
 		    	function(data) {
 					console.log(data);
 					//map.removeMarkers();
-
           			//map.addMarker({lat:e.latLng.jb,lng:e.latLng.kb});
 		    	}
 			);
@@ -38,6 +36,14 @@ function geolocate_nearest(callback_initmap) {
 	    //provide links to Firefox 3.5
 	    alert("your browser doesn't support geolocation");
 	}
+
+}
+
+function update_coords_in_form(longitude,latitude) {
+
+	$('#event_meeting_point').val(longitude + "," + latitude);
+	$('#longitude').val(longitude);
+	$('#latitude').val(latitude);
 
 }
 
@@ -56,8 +62,9 @@ function init_map(curr_lat,curr_lng,click_callback){
 	click : function(e){
           //console.log(e);
           map.removeMarkers();
+          // jb = latitude, kb = longitude
           map.addMarker({lat:e.latLng.jb,lng:e.latLng.kb});
-          $('#event_meeting_point').val(e.latLng.jb + "," + e.latLng.kb);
+          update_coords_in_form(e.latLng.kb,e.latLng.jb)
           console.log(map);
     },
 
@@ -76,7 +83,7 @@ function init_map(curr_lat,curr_lng,click_callback){
 		}
 	});
 
-	$('#event_meeting_point').val(curr_lat + "," + curr_lng);
+	update_coords_in_form(curr_lng,curr_lat);
 	return map;
 }
 
@@ -106,7 +113,8 @@ function put_address_flow(map) {
 					map.setCenter(latlng.lat(),latlng.lng());
 					map.removeMarkers();
 					map.addMarker({lat: latlng.lat(),lng: latlng.lng()});
-					$('#event_meeting_point').val(latlng.lat() + "," + latlng.lng());
+					//$('#event_meeting_point').val(latlng.lng() + "," + latlng.lat());
+					update_coords_in_form(latlng.lng(),latlng.lat())
 				}
 			}
 		});

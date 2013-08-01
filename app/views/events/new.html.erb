@@ -19,7 +19,8 @@
 	<p><%= event.label :description %><br />
 	<%= event.text_area :description, :placeholder => 'World-class scenic ride across the San Francisco Bay. It doesn\'t get better than this' %></p>
 	<%= event.hidden_field :activity, :value =>1 %>
-
+	<input type=hidden name=longitude id=longitude>
+	<input type=hidden name=latitude id=latitude>
 	  <%= fields_for :bicycle_ride do |bicycle_ride_form| %>
 		
 		<p><%= bicycle_ride_form.label :distance %><br />
