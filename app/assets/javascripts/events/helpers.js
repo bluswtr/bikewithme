@@ -1,4 +1,7 @@
 
+// var ride_descriptors = new Object();
+// get_ride_descriptors();
+
 function geolocate() {
 
 	if (navigator.geolocation) {
@@ -23,9 +26,7 @@ function geolocate_nearest(callback_initmap) {
 		    $.get("/events/nearest",
 		    	{lat:position.coords.latitude,lng:position.coords.longitude},
 		    	function(data) {
-					console.log(data);
-					//map.removeMarkers();
-          			//map.addMarker({lat:e.latLng.jb,lng:e.latLng.kb});
+					init_populated_map(data,position.coords.latitude,position.coords.longitude);
 		    	}
 			);
 		},function(error){
@@ -85,6 +86,57 @@ function init_map(curr_lat,curr_lng,click_callback){
 
 	update_coords_in_form(curr_lng,curr_lat);
 	return map;
+}
+
+function init_populated_map(data,lat,lng) {
+	var map = new GMaps({
+    el: '#map',
+    lat: lat,
+    lng: lng,
+    zoomControl : true,
+    zoomControlOpt: {
+        style : 'SMALL',
+        position: 'TOP_LEFT'
+    },
+
+    panControl : false,
+    streetViewControl : false,
+    mapTypeControl: false,
+    overviewMapControl: false
+	});
+
+	data.forEach(function(event){
+	console.log(event);
+	var event_details = content_helper(event);
+		map.addMarker({
+	        lat: event["meeting_point"][1],
+	        lng: event["meeting_point"][0],
+	        title: event["title"],
+	        infoWindow: {
+			  content: event_details
+			}
+		});
+
+	});
+
+
+	return map;
+}
+
+// function get_ride_descriptors() {
+//     $.get("/events/bike_descriptors",
+
+// 	);
+// }
+
+function content_helper(event_content) {
+	var content = "<h3>"+event_content["title"]+"</h3>";
+	content+="<b>Description: </b>" + event_content["description"] + "<br><br>";
+	content+="<b>Distance: </b>" + event_content["bicycle_ride"]["distance"] + " miles<br>";
+	content+="<b>Pace: </b>" + event_content["bicycle_ride"]["pace"] + "<br>";
+	content+="<b>Road Type: </b>" + event_content["bicycle_ride"]["road_type"] + "<br>";
+	content+="<b>Terrain: </b>" + event_content["bicycle_ride"]["terrain"] + "<br>";
+	return(content);
 }
 
 function put_address_flow(map) {

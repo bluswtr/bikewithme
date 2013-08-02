@@ -2,7 +2,6 @@ class EventsController < ApplicationController
 	before_filter :authenticate_user!, :only => [:new,:create]
 	def new
 		@event = Event.new
-		#@event.meeting_point = Point.new(0,0)
 	end
 
 	def index
@@ -43,7 +42,6 @@ class EventsController < ApplicationController
 	end
 
 	def nearest
-
 		nearest_events = Array.new
 		puts "begin"
 		Event.geo_near([params["lng"].to_f,params["lat"].to_f]).each do |event|
@@ -54,4 +52,7 @@ class EventsController < ApplicationController
 		render :json => nearest_events.to_json
 	end
 
+	# def bike_descriptors
+ #    	render json: => [Bicycle_Ride::PACE,Bicycle_Ride::TERRAIN,Bicycle_Ride::ROAD_TYPE].to_json
+	# end
 end
