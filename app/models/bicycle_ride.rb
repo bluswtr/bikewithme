@@ -14,7 +14,7 @@ class BicycleRide
   attr_accessible :road_type, :pace, :terrain, :distance, 
 
   ##
-  # Hashes
+  # Arrays
   # If changing the meaning of the words below, keep in mind
   # that the value (not the name) has been stored in the database.
   # Also, it's probably not a good idea to continue using this method

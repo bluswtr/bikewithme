@@ -1,6 +1,4 @@
 
-// var ride_descriptors = new Object();
-// get_ride_descriptors();
 
 function geolocate() {
 
@@ -26,6 +24,7 @@ function geolocate_nearest(callback_initmap) {
 		    $.get("/events/nearest",
 		    	{lat:position.coords.latitude,lng:position.coords.longitude},
 		    	function(data) {
+		    		console.log(data);
 					init_populated_map(data,position.coords.latitude,position.coords.longitude);
 		    	}
 			);
@@ -41,11 +40,9 @@ function geolocate_nearest(callback_initmap) {
 }
 
 function update_coords_in_form(longitude,latitude) {
-
 	$('#event_meeting_point').val(longitude + "," + latitude);
 	$('#longitude').val(longitude);
 	$('#latitude').val(latitude);
-
 }
 
 function init_map(curr_lat,curr_lng,click_callback){
@@ -123,12 +120,6 @@ function init_populated_map(data,lat,lng) {
 	return map;
 }
 
-// function get_ride_descriptors() {
-//     $.get("/events/bike_descriptors",
-
-// 	);
-// }
-
 function content_helper(event_content) {
 	var content = "<h3>"+event_content["title"]+"</h3>";
 	content+="<b>Description: </b>" + event_content["description"] + "<br><br>";
@@ -165,8 +156,7 @@ function put_address_flow(map) {
 					map.setCenter(latlng.lat(),latlng.lng());
 					map.removeMarkers();
 					map.addMarker({lat: latlng.lat(),lng: latlng.lng()});
-					//$('#event_meeting_point').val(latlng.lng() + "," + latlng.lat());
-					update_coords_in_form(latlng.lng(),latlng.lat())
+					update_coords_in_form(latlng.lng(),latlng.lat());
 				}
 			}
 		});

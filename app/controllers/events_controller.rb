@@ -43,12 +43,19 @@ class EventsController < ApplicationController
 
 	def nearest
 		nearest_events = Array.new
-		puts "begin"
 		Event.geo_near([params["lng"].to_f,params["lat"].to_f]).each do |event|
 			p event.meeting_point
 			nearest_events.push(event)
 		end
-		puts "end"
+		# nearest_events = Hash.new(0);
+		# $i=0
+		# Event.geo_near([params["lng"].to_f,params["lat"].to_f]).each do |event|
+		# 	nearest_events[['events',$i]] = event
+		# 	$i+=1
+		# end
+		# nearest_events[['bike_descriptors','pace']] = BicycleRide::PACE
+		#p nearest_events.to_json
+		#render nothing: true
 		render :json => nearest_events.to_json
 	end
 
