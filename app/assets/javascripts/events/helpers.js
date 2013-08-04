@@ -1,5 +1,4 @@
 
-
 function geolocate() {
 
 	if (navigator.geolocation) {
@@ -102,9 +101,8 @@ function init_populated_map(data,lat,lng) {
     overviewMapControl: false
 	});
 
-	data.forEach(function(event){
-	console.log(event);
-	var event_details = content_helper(event);
+	data["nearest_events"].forEach(function(event){
+	var event_details = content_helper(event,data["options"]);
 		map.addMarker({
 	        lat: event["meeting_point"][1],
 	        lng: event["meeting_point"][0],
@@ -120,13 +118,17 @@ function init_populated_map(data,lat,lng) {
 	return map;
 }
 
-function content_helper(event_content) {
+function content_helper(event_content,options) {
 	var content = "<h3>"+event_content["title"]+"</h3>";
+	var pace = event_content["bicycle_ride"]["pace"];
+	var road_type = event_content["bicycle_ride"]["road_type"];
+	var terrain = event_content["bicycle_ride"]["terrain"];
+
 	content+="<b>Description: </b>" + event_content["description"] + "<br><br>";
 	content+="<b>Distance: </b>" + event_content["bicycle_ride"]["distance"] + " miles<br>";
-	content+="<b>Pace: </b>" + event_content["bicycle_ride"]["pace"] + "<br>";
-	content+="<b>Road Type: </b>" + event_content["bicycle_ride"]["road_type"] + "<br>";
-	content+="<b>Terrain: </b>" + event_content["bicycle_ride"]["terrain"] + "<br>";
+	content+="<b>Pace: </b>" + options["pace"][pace] + "<br>";
+	content+="<b>Road Type: </b>" + options["terrain"][terrain] + "<br>";
+	content+="<b>Terrain: </b>" + options["road_type"][road_type].replace(/'/g,"") + "<br>";
 	return(content);
 }
 

@@ -18,25 +18,21 @@
 
 	<p><%= event.label :description %><br />
 	<%= event.text_area :description, :placeholder => 'World-class scenic ride across the San Francisco Bay. It doesn\'t get better than this' %></p>
-	<%= event.hidden_field :activity, :value =>1 %>
+	<%= event.hidden_field :activity_id, :value =>1 %>
 	<input type=hidden name=longitude id=longitude>
 	<input type=hidden name=latitude id=latitude>
-	  <%= fields_for :bicycle_ride do |bicycle_ride_form| %>
-		
-		<p><%= bicycle_ride_form.label :distance %><br />
-		<%= bicycle_ride_form.text_field :distance, :placeholder => 'Miles'%></p>
+		<%= fields_for :bicycle_ride do |bicycle_ride_form| %>		
+			<p><%= bicycle_ride_form.label :distance %><br />
+			<%= bicycle_ride_form.text_field :distance, :placeholder => 'Miles'%></p>
+			<p><%= bicycle_ride_form.label :pace %><br />
+			<%= bicycle_ride_form.select(:pace, @descriptors["pace"]) %></p>
 
-		<p><%= bicycle_ride_form.label :pace %><br />
-		<%= bicycle_ride_form.select(:pace, BicycleRide::PACE) %></p>
-		
-		<p><%= bicycle_ride_form.label :terrain %><br />
-		<%= bicycle_ride_form.select(:terrain, BicycleRide::TERRAIN) %></p>
-		
-		<p><%= bicycle_ride_form.label :road_type %><br />
-		<%= bicycle_ride_form.select(:road_type, BicycleRide::ROAD_TYPE) %></p>
-		
-	  <% end %>
-
+			<p><%= bicycle_ride_form.label :terrain %><br />
+			<%= bicycle_ride_form.select(:terrain, @descriptors["terrain"]) %></p>
+			
+			<p><%= bicycle_ride_form.label :road_type %><br />
+			<%= bicycle_ride_form.select(:road_type, @descriptors["road_type"]) %></p>
+		<% end%>
 	<div><%= event.submit "Add Event" %></div>
 <% end %>
 

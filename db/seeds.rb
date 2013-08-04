@@ -24,10 +24,10 @@ puts 'user: ' << user.name
 Event.delete_all
 open("/Users/bluswtr/Documents/01_Programming/Apps/bikewithme/db/events.txt") do |some_events|
 	some_events.read.each_line() do |an_event|
-		title,latitude,longitude,description,activity,pace,terrain,distance,road_type = an_event.chomp.split("@")
+		title,latitude,longitude,description,activity_id,pace,terrain,distance,road_type = an_event.chomp.split("@")
 		user.events << Event.create(  title:title,
 									  description:description,
-									  activity:activity,
+									  activity_id:activity_id,
 									  meeting_point:[longitude.to_f,latitude.to_f],
 									  bicycle_ride:{pace:pace,
 									  				terrain:terrain,
@@ -37,3 +37,24 @@ open("/Users/bluswtr/Documents/01_Programming/Apps/bikewithme/db/events.txt") do
 
 	end
 end
+
+Descriptor.delete_all
+open("/Users/bluswtr/Documents/01_Programming/Apps/bikewithme/db/descriptors.txt") do |some_descriptors|
+	some_descriptors.read.each_line() do |a_descriptor|
+		descriptr or_arr = Array.new
+		descriptor_ar= a_descriptor.chomp.split(",")
+		p descriptor_arr
+		options = Array.new
+		for i in 2..descriptor_arr.length-1
+			options << descriptor_arr[i]
+		end
+		p options
+
+		Descriptor.create(activity_id:descriptor_arr[0].to_i,
+									  descriptor:descriptor_arr[1],
+									  options:options
+								)
+
+	end
+end
+

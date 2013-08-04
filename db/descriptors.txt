@@ -1,0 +1,3 @@
+1,pace,Mellow,Brisk,Fast,Hammerfest
+1,terrain,Flat,Rollers,Hilly,Steep
+1,road_type,Pavement,'Dirt Trail'

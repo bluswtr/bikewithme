@@ -32,7 +32,7 @@ class Event
   #
 
   field :description
-  field :activity, :type => Integer
+  field :activity_id, :type => Integer
   embeds_one :bicycle_ride
 
   #has_many :contacts #followers

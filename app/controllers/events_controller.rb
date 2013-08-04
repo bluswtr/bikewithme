@@ -2,6 +2,7 @@ class EventsController < ApplicationController
 	before_filter :authenticate_user!, :only => [:new,:create]
 	def new
 		@event = Event.new
+		@descriptors = Descriptor.format_for_option_tag(1)
 	end
 
 	def index
@@ -25,7 +26,7 @@ class EventsController < ApplicationController
 		current_user.events << Event.create( title:params["event"]["title"],
 								  meeting_point:[longitude,latitude],
 								  description:params["event"]["description"],
-								  activity:params["event"]["activity"],
+								  activity_id:params["event"]["activity_id"],
 								  bicycle_ride:{pace:params["bicycle_ride"]["pace"],
 								  				terrain:params["bicycle_ride"]["terrain"],
 								  				distance:params["bicycle_ride"]["distance"],
@@ -42,11 +43,17 @@ class EventsController < ApplicationController
 	end
 
 	def nearest
+		event_data = Hash.new
+		options = Array.new
 		nearest_events = Array.new
 		Event.geo_near([params["lng"].to_f,params["lat"].to_f]).each do |event|
 			p event.meeting_point
 			nearest_events.push(event)
 		end
+		options = Descriptor.get_options
+		event_data["nearest_events"] = nearest_events
+		event_data["options"] = options
+
 		# nearest_events = Hash.new(0);
 		# $i=0
 		# Event.geo_near([params["lng"].to_f,params["lat"].to_f]).each do |event|
@@ -56,10 +63,8 @@ class EventsController < ApplicationController
 		# nearest_events[['bike_descriptors','pace']] = BicycleRide::PACE
 		#p nearest_events.to_json
 		#render nothing: true
-		render :json => nearest_events.to_json
+		render :json => event_data.to_json
+		#render :json => nearest_events.to_json
 	end
 
-	# def bike_descriptors
- #    	render json: => [Bicycle_Ride::PACE,Bicycle_Ride::TERRAIN,Bicycle_Ride::ROAD_TYPE].to_json
-	# end
 end
