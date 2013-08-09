@@ -1,5 +1,7 @@
 <h3>User</h3>
-<%= image_tag(@user.image, size: "50x50", alt: @user.name) %>
+<%= image_tag(@user.image, size: "50x50", alt: @user.name) %><br>
+<%= link_to "Followers", followers_users_path %>
+<%= link_to "Following", following_users_path %>
 <p>User: <%= @user.name %></p>
 <p>Email: <%= @user.email if @user.email %></p>
 <p>Bio: <%= @user.bio if @user.bio %></p>

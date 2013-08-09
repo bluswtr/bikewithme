@@ -14,6 +14,10 @@ class EventsController < ApplicationController
 	def show
 	end
 
+	def test
+		render nothing: true
+	end
+
 	def create
 		##
 		# About mongodb geospatial insertions: mongodb will take an array with two 
@@ -23,8 +27,12 @@ class EventsController < ApplicationController
 		# Create if doesn't exist
 		longitude = params["longitude"].to_f
 		latitude = params["latitude"].to_f
+		date = Time.utc(params["event_date"]["year"],params["event_date"]["month"],params["event_date"]["day"],
+						params["event_date"]["hour"],params["event_date"]["minute"])
+		date.iso8601(3)
 		current_user.events << Event.create( title:params["event"]["title"],
 								  meeting_point:[longitude,latitude],
+								  event_date:date,
 								  description:params["event"]["description"],
 								  activity_id:params["event"]["activity_id"],
 								  bicycle_ride:{pace:params["bicycle_ride"]["pace"],
@@ -43,10 +51,11 @@ class EventsController < ApplicationController
 	end
 
 	def nearest
+		#where(:event_date.gt => Time.parse(Date.today))
 		event_data = Hash.new
 		options = Array.new
 		nearest_events = Array.new
-		Event.geo_near([params["lng"].to_f,params["lat"].to_f]).each do |event|
+		Event.desc.limit(10).geo_near([params["lng"].to_f,params["lat"].to_f]).max_distance(50).each do |event|
 			p event.meeting_point
 			nearest_events.push(event)
 		end
@@ -54,7 +63,7 @@ class EventsController < ApplicationController
 		event_data["nearest_events"] = nearest_events
 		event_data["options"] = options
 
-		# nearest_events = Hash.new(0);
+		# nearest_events = Hash.new(0)
 		# $i=0
 		# Event.geo_near([params["lng"].to_f,params["lat"].to_f]).each do |event|
 		# 	nearest_events[['events',$i]] = event

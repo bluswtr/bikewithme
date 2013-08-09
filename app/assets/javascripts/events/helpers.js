@@ -101,8 +101,11 @@ function init_populated_map(data,lat,lng) {
     overviewMapControl: false
 	});
 
+	var coords = new Array();
 	data["nearest_events"].forEach(function(event){
-	var event_details = content_helper(event,data["options"]);
+		var temp = new google.maps.LatLng(event["meeting_point"][1],event["meeting_point"][0]);
+		coords.push(temp);
+		var event_details = content_helper(event,data["options"]);
 		map.addMarker({
 	        lat: event["meeting_point"][1],
 	        lng: event["meeting_point"][0],
@@ -111,9 +114,9 @@ function init_populated_map(data,lat,lng) {
 			  content: event_details
 			}
 		});
-
 	});
-
+	//console.log(coords);
+	map.fitLatLngBounds(coords);
 
 	return map;
 }

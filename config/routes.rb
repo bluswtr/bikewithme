@@ -6,7 +6,13 @@ Rails3MongoidDevise::Application.routes.draw do
   end
   root :to => "events#show"
   devise_for :users
-  resources :users
+  resources :users do
+    collection do
+      get 'followers'
+      get 'following'
+      get 'follow'
+    end
+  end
   # resources :events, :id => /.*/ do
   # 	member do
   # 		post 'nearest'
@@ -15,6 +21,7 @@ Rails3MongoidDevise::Application.routes.draw do
   resources :events do
     collection do 
       get 'nearest'
+      get 'test'
     end
   end
 
