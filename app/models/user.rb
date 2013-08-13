@@ -1,6 +1,8 @@
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongo::Followable::Followed
+  include Mongo::Followable::Follower
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -107,7 +109,7 @@ class User
       response = HTTParty.get("https://graph.facebook.com/" + contact["id"] + "/picture?redirect=false&access_token=" + auth.credentials.token)
       image_hash = JSON.parse response.body
       user.contacts.create(name: contact["name"], 
-                           uid: contact["id"], 
+                           _id: contact["id"], 
                            image: image_hash["data"]["url"])
       puts "contact " + contact["name"] + "\n"
     end

@@ -18,8 +18,7 @@ class UsersController < ApplicationController
 	end
 
 	def follow
-		# check if id exists yet
-		#current_user.following << Contact.create(params[:id])
 		render nothing: true
 	end
+
 end

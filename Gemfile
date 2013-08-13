@@ -1,3 +1,4 @@
+# Gemfile compiled by devise contributors
 source 'https://rubygems.org'
 
 ruby '2.0.0'
@@ -16,7 +17,7 @@ gem 'jquery-rails'
 gem "mongoid", ">= 3.1.2"
 gem "bson_ext"
 gem "rspec-rails", ">= 2.12.2", :group => [:development, :test]
-gem "database_cleaner", ">= 1.0.0.RC1", :group => :test
+gem "database_cleaner", ">= 1.0.0.RC1", :group => [:development, :test]
 gem "mongoid-rspec", ">= 1.7.0", :group => :test
 gem "email_spec", ">= 1.4.0", :group => :test
 gem "cucumber-rails", ">= 1.3.1", :group => :test, :require => false
@@ -29,6 +30,8 @@ gem "figaro", ">= 0.6.3"
 gem "better_errors", ">= 0.7.2", :group => :development
 gem "binding_of_caller", ">= 0.7.1", :group => :development, :platforms => [:mri_19, :rbx]
 
+# omniauth, facebook, httparty and mongo follow model
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'httparty'
+gem 'mongo_followable', '~>0.3.2'

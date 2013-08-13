@@ -1,11 +1,13 @@
 class Contact
   include Mongoid::Document
+  include Mongo::Followable::Followed
 
   has_and_belongs_to_many :users
   field :name
   field :image
-  field :uid
-  attr_accessible :name, :uid, :image
+  field :_id
+  # field :uid
+  attr_accessible :name, :_id, :image
   # run 'rake db:mongoid:create_indexes' to create indexes
-  index({ uid: 1 }, { unique: true, background: true })
+  index({ _id: 1 }, { unique: true, background: true })
 end
