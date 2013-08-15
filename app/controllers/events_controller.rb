@@ -51,6 +51,7 @@ class EventsController < ApplicationController
 	end
 
 	def nearest
+
 		#where(:event_date.gt => Time.parse(Date.today))
 		event_data = Hash.new
 		options = Array.new

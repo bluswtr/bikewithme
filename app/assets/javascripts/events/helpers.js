@@ -44,7 +44,7 @@ function update_coords_in_form(longitude,latitude) {
 	$('#latitude').val(latitude);
 }
 
-function init_map(curr_lat,curr_lng,click_callback){
+function init_map(curr_lat,curr_lng){
 
 	var map = new GMaps({
     el: '#map',
@@ -57,12 +57,12 @@ function init_map(curr_lat,curr_lng,click_callback){
     },
 
 	click : function(e){
-          //console.log(e);
-          map.removeMarkers();
-          // jb = latitude, kb = longitude
-          map.addMarker({lat:e.latLng.jb,lng:e.latLng.kb});
-          update_coords_in_form(e.latLng.kb,e.latLng.jb)
-          console.log(map);
+		//console.log(e);
+		map.removeMarkers();
+		// mb = latitude, nb = longitude
+		map.addMarker({lat:e.latLng.mb,lng:e.latLng.nb});
+		update_coords_in_form(e.latLng.nb,e.latLng.mb)
+		//console.log(map);
     },
 
     panControl : false,

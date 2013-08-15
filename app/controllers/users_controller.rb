@@ -10,6 +10,18 @@ class UsersController < ApplicationController
 	end
 
 	def followers
+		@user = User.find(params[:user_id])
+		p @user.all_followees #user's follow list
+		p @user.all_followers
+		# User.followers_of(@contact).each do |follower| 
+		# 	puts "hello"
+		# 	p follower
+		# end
+
+
+
+		puts "hi"
+
 		render nothing: true
 	end
 

@@ -10,6 +10,7 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'followers'
       get 'following'
       resources :follow, only: :update
+      resources :unfollow, only: :update
   end
   # resources :events, :id => /.*/ do
   # 	member do

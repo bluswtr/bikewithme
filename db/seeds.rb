@@ -12,18 +12,23 @@ User.delete_all
 Contact.delete_all
 user = User.create! :name => ENV['ADMIN_NAME'].dup, :email => ENV['ADMIN_EMAIL'].dup, :password => ENV['ADMIN_PASSWORD'].dup, :password_confirmation => ENV['ADMIN_PASSWORD'].dup
 puts 'user: ' << user.name
-
+		Contact.create(name: user.name, _id: user.id, email:user.email)
 open("/Users/bluswtr/Documents/01_Programming/Apps/bikewithme/db/users.txt") do |some_users|
 	some_users.read.each_line() do |a_user|
 		name,email,password,password_confirmation = a_user.chomp.split(",")
-		user = User.create(  name:name,
-					  email:email,
-					  password:password,
-					  password_confirmation:password_confirmation,
-					)
-		Contact.create(name: name, 
-                       _id:user.id)
+		user = User.create(name:name,
+							  email:email,
+							  password:password,
+							  password_confirmation:password_confirmation,
+							)
+		#p user
+		puts ""
+		contact = Contact.create(name: name, _id: user.id, email:email)
+		#p contact
+	# 	contact = Contact.find(contact._id)
+	# p contact
 	end
+
 end
 # BicycleRideDescriptor.delete_all
 # open("/Users/bluswtr/Documents/01_Programming/Apps/rails3-mongoid-devise/db/bicycle_ride_descriptors.txt") do |descriptors|

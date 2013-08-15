@@ -1,9 +1,39 @@
+<script>
+$(document).ready(function(){
+	// problem: this needs to occur strictly after the ajax call but
+	// it seems to be doing this right before...
+	$('.follow_button').click(function(){
+
+		// save url for ajax request
+		var temp = this.getAttribute("data-url");
+
+		// toggle between follow and unfollow
+		if(this.innerHTML === "Follow") {
+			this.innerHTML = "Following";
+			this.setAttribute("data-url",temp.replace(/follow/g,"unfollow"));
+		} else {
+			this.innerHTML = "Follow";
+			this.setAttribute("data-url",temp.replace(/unfollow/g,"follow"));
+		}
+
+		// tell server to follow/unfollow this user
+		$.ajax({
+			url:temp,
+			type:'PUT',
+		  	success: function(){
+		  		alert("success");
+			}
+		});
+
+	});
+});
+</script>
+
 <h3>Users</h3>
 <ul class="users">
   <% @users.each do |user| %>
-    <li>
-      <%= link_to user.name, user %> signed up <%= user.created_at.to_date %> 
-      <%= link_to "Follow",'/users/' + current_user.id + '/follow/' + user.id, :method=>'put'%>
-    </li>
+  	<div><%= link_to user.name, user %> signed up <%= user.created_at.to_date %>
+         <%= link_to "Follow",'#', rel: false, data: {url:'/users/' + current_user.id + '/follow/' + user.id, id: user.id},id: "follow_button_" + user.id, class: "follow_button" %>
+    </div>
   <% end %>
 </ul>
