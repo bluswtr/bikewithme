@@ -7,8 +7,8 @@ Rails3MongoidDevise::Application.routes.draw do
   root :to => "events#show"
   devise_for :users
   resources :users do
-      get 'followers'
-      get 'following'
+      get 'followers'#, to: 'users#show'
+      get 'following'#, to: 'users#show'
       resources :follow, only: :update
       resources :unfollow, only: :update
   end

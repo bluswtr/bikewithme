@@ -1,27 +1,26 @@
 <script>
 $(document).ready(function(){
-	// problem: this needs to occur strictly after the ajax call but
-	// it seems to be doing this right before...
+
 	$('.follow_button').click(function(){
 
 		// save url for ajax request
-		var temp = this.getAttribute("data-url");
+		var follow_unfollow = this.getAttribute("data-url");
 
 		// toggle between follow and unfollow
 		if(this.innerHTML === "Follow") {
 			this.innerHTML = "Following";
-			this.setAttribute("data-url",temp.replace(/follow/g,"unfollow"));
+			this.setAttribute("data-url",follow_unfollow.replace(/follow/g,"unfollow"));
 		} else {
 			this.innerHTML = "Follow";
-			this.setAttribute("data-url",temp.replace(/unfollow/g,"follow"));
+			this.setAttribute("data-url",follow_unfollow.replace(/unfollow/g,"follow"));
 		}
 
 		// tell server to follow/unfollow this user
 		$.ajax({
-			url:temp,
+			url:follow_unfollow,
 			type:'PUT',
 		  	success: function(){
-		  		alert("success");
+		  		//alert("success");
 			}
 		});
 
@@ -33,7 +32,7 @@ $(document).ready(function(){
 <ul class="users">
   <% @users.each do |user| %>
   	<div><%= link_to user.name, user %> signed up <%= user.created_at.to_date %>
-         <%= link_to "Follow",'#', rel: false, data: {url:'/users/' + current_user.id + '/follow/' + user.id, id: user.id},id: "follow_button_" + user.id, class: "follow_button" %>
+         <%= link_to "Follow",'#', rel: false, data: {url:user_follow_path(current_user,user), id: user.id},id: "follow_button_" + user.id, class: "follow_button" %>
     </div>
   <% end %>
 </ul>
