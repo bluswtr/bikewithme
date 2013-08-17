@@ -2,31 +2,38 @@
 $(document).ready(function(){
 
 	// tell server to follow/unfollow this user
-	$('.follow').click(function(){
-		$.ajax({
-			url:this.getAttribute("data-url"),
-			type:'GET',
-		  	success: function(data){
-		  		console.log(data);
-		  		// var i,j = 0;
-		  		// var content = "";
-		  		// jQuery.each(data,function(i,j) {
-		  		// 	content += data[i]["name"];
-		  		// 	content += "<br><br>";
-			  	// });
-		  		// $('#content').html(content);
-			}
-		});		
-	});
+// 	$('.follow').click(function(){
+// 		$.ajax({
+// 			url:this.getAttribute("data-url"),
+// 			type:'GET',
+// 		  	success: function(data){
+// 		  		console.log(data);
+// 		  		// var i,j = 0;
+// 		  		// var content = "";
+// 		  		// jQuery.each(data,function(i,j) {
+// 		  		// 	content += data[i]["name"];
+// 		  		// 	content += "<br><br>";
+// 			  	// });
+// 		  		// $('#content').html(content);
+// 			}
+// 		});		
+// 	});
 
-});
+// });
+
+	// $('.follow').bind("ajax:success", function(data, data2){
+	// 	console.log(data);
+	// 	console.log(data2);
+	// });
+
+}); // end of document.ready
 </script>
 
 <h3>User</h3>
 <%= image_tag(@user.image, size: "50x50", alt: @user.name) %><br>
 <p>User: <%= @user.name %></p>
-<p><%= link_to "Followers", '#', data:{url:user_followers_path(@user.id)}, class: "follow", id: @user.id %> <%= link_to "Following", '#', data:{url:user_following_path(@user.id)}, class: "follow", id: @user.id %></p>
+<p><%= link_to "Followers", user_followers_path(@user.id), :remote => true %> <%= @user.followers.count%>  <%= link_to "Following", user_following_path(@user.id), :remote => true %> <%= @user.followees.count%></p>
 <p>Email: <%= @user.email if @user.email %></p>
 <p>Bio: <%= @user.bio if @user.bio %></p>
 
-<div id="content"></div>
+<div id="content"><%#= render 'follow' %></div>

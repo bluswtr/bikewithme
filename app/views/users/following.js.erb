@@ -1,0 +1,7 @@
+var div_id = $('#content');
+var content = "";
+<% @user.all_followees.each do |follow| %>
+	content += "<%=follow.name%>" + "<br>";
+<% end%>
+
+div_id.html(content);
