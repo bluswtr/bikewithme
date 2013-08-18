@@ -1,3 +1,4 @@
+var el = '#map';
 
 function geolocate() {
 
@@ -47,7 +48,7 @@ function update_coords_in_form(longitude,latitude) {
 function init_map(curr_lat,curr_lng){
 
 	var map = new GMaps({
-    el: '#map',
+    el: el,
     lat: curr_lat,
     lng: curr_lng,
     zoomControl : true,
@@ -61,7 +62,7 @@ function init_map(curr_lat,curr_lng){
 		map.removeMarkers();
 		// mb = latitude, nb = longitude
 		map.addMarker({lat:e.latLng.mb,lng:e.latLng.nb});
-		update_coords_in_form(e.latLng.nb,e.latLng.mb)
+		update_coords_in_form(e.latLng.nb,e.latLng.mb);
 		//console.log(map);
     },
 
@@ -86,7 +87,7 @@ function init_map(curr_lat,curr_lng){
 
 function init_populated_map(data,lat,lng) {
 	var map = new GMaps({
-    el: '#map',
+    el: el,
     lat: lat,
     lng: lng,
     zoomControl : true,
@@ -132,6 +133,7 @@ function content_helper(event_content,options) {
 	content+="<b>Pace: </b>" + options["pace"][pace] + "<br>";
 	content+="<b>Road Type: </b>" + options["terrain"][terrain] + "<br>";
 	content+="<b>Terrain: </b>" + options["road_type"][road_type].replace(/'/g,"") + "<br>";
+	content+="<br><a href=#>More +</a>";
 	return(content);
 }
 

@@ -1,3 +1,6 @@
+##
+# Temporary storage for contacts downloaded from third party apps such as Facebook
+
 class Contact
   include Mongoid::Document
   include Mongo::Followable::Followed
