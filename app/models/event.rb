@@ -34,6 +34,7 @@ class Event
   field :description
   field :activity_id, :type => Integer
   embeds_one :bicycle_ride
+  belongs_to :user
 
   attr_accessible :title, :date, :bicycle_ride, :activity, :description, :meeting_point
 

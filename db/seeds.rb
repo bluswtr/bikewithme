@@ -43,7 +43,7 @@ Event.delete_all
 open("/Users/bluswtr/Documents/01_Programming/Apps/bikewithme/db/events.txt") do |some_events|
 	some_events.read.each_line() do |an_event|
 		title,latitude,longitude,description,activity_id,pace,terrain,distance,road_type = an_event.chomp.split("@")
-		user.events << Event.create(  title:title,
+		user.events.create(  title:title,
 									  description:description,
 									  activity_id:activity_id,
 									  meeting_point:[longitude.to_f,latitude.to_f],

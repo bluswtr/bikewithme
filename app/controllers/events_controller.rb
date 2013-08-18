@@ -30,7 +30,7 @@ class EventsController < ApplicationController
 		date = Time.utc(params["event_date"]["year"],params["event_date"]["month"],params["event_date"]["day"],
 						params["event_date"]["hour"],params["event_date"]["minute"])
 		date.iso8601(3)
-		current_user.events << Event.create( title:params["event"]["title"],
+		current_user.events.create( title:params["event"]["title"],
 								  meeting_point:[longitude,latitude],
 								  event_date:date,
 								  description:params["event"]["description"],
