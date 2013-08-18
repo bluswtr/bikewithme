@@ -35,12 +35,12 @@ class Event
   field :activity_id, :type => Integer
   embeds_one :bicycle_ride
 
-  #has_many :contacts #followers
   attr_accessible :title, :date, :bicycle_ride, :activity, :description, :meeting_point
 
   # example: index({ loc: "2d" }, { min: -200, max: 200 }).
   # chose 2dsphere over 2d because it has more features and 2d is largely a legacy index
   index({ meeting_point: '2dsphere' }, { unique: true, background: true })
+
   # Other Fields to Consider
   # has_many :tags #commute, training, fun, recovering
   # has_many :activities #eat, bike, swim #has pointer to activity-related details

@@ -23,7 +23,6 @@ open("/Users/bluswtr/Documents/01_Programming/Apps/bikewithme/db/users.txt") do 
 							  password_confirmation:password_confirmation,
 							)
 		#p user
-		puts ""
 		contact = Contact.create(name: name, _id: user.id, email:email)
 		#p contact
 	# 	contact = Contact.find(contact._id)
