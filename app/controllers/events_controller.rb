@@ -12,6 +12,8 @@ class EventsController < ApplicationController
 	end
 
 	def show
+		# if params:id exists show event/:id 
+		# otherwise show nearest
 	end
 
 	def test
@@ -53,28 +55,25 @@ class EventsController < ApplicationController
 	def nearest
 
 		#where(:event_date.gt => Time.parse(Date.today))
+		# query for the user and add to the hash somehow....
 		event_data = Hash.new
 		options = Array.new
-		nearest_events = Array.new
+		nearest_events = Hash.new
+		$i = 0
 		Event.desc.limit(10).geo_near([params["lng"].to_f,params["lat"].to_f]).max_distance(50).each do |event|
 			p event.meeting_point
-			nearest_events.push(event)
+			#nearest_events.push(event)
+			temp = Array.new
+			temp = User.find(event.user_id)
+			nearest_events[$i] = {user:temp, event: event}
+			$i+=1
 		end
 		options = Descriptor.get_options
 		event_data["nearest_events"] = nearest_events
 		event_data["options"] = options
 
-		# nearest_events = Hash.new(0)
-		# $i=0
-		# Event.geo_near([params["lng"].to_f,params["lat"].to_f]).each do |event|
-		# 	nearest_events[['events',$i]] = event
-		# 	$i+=1
-		# end
-		# nearest_events[['bike_descriptors','pace']] = BicycleRide::PACE
 		#p nearest_events.to_json
-		#render nothing: true
 		render :json => event_data.to_json
-		#render :json => nearest_events.to_json
 	end
 
 end

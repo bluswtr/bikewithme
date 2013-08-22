@@ -103,16 +103,21 @@ function init_populated_map(data,lat,lng) {
 	});
 
 	var coords = new Array();
-	data["nearest_events"].forEach(function(event){
+	$.each(data["nearest_events"],function(index,value){
+		var event = data["nearest_events"][index]["event"];
 		var temp = new google.maps.LatLng(event["meeting_point"][1],event["meeting_point"][0]);
 		coords.push(temp);
-		var event_details = content_helper(event,data["options"]);
+		var event_details = event_content_helper(event,data["options"]);
+
 		map.addMarker({
 	        lat: event["meeting_point"][1],
 	        lng: event["meeting_point"][0],
 	        title: event["title"],
 	        infoWindow: {
-			  content: event_details
+				content: event_details
+			},
+			click: function(e){
+				$('#content')[0].innerHTML = 'clicked';
 			}
 		});
 	});
@@ -122,7 +127,16 @@ function init_populated_map(data,lat,lng) {
 	return map;
 }
 
-function content_helper(event_content,options) {
+function user_content_helper(user_content) {
+	var content="<div id=rsvp_window>";
+	content+="<p>Organizer:" + user_content["name"] +"</p>";
+	content+="<a href=#>Join Ride</a>";
+	content+="</div>";
+
+	return(content);
+}
+
+function event_content_helper(event_content,options) {
 	var content = "<h3>"+event_content["title"]+"</h3>";
 	var pace = event_content["bicycle_ride"]["pace"];
 	var road_type = event_content["bicycle_ride"]["road_type"];
@@ -133,7 +147,7 @@ function content_helper(event_content,options) {
 	content+="<b>Pace: </b>" + options["pace"][pace] + "<br>";
 	content+="<b>Road Type: </b>" + options["terrain"][terrain] + "<br>";
 	content+="<b>Terrain: </b>" + options["road_type"][road_type].replace(/'/g,"") + "<br>";
-	content+="<br><a href=#>More +</a>";
+	//content+="<br><a href=#>More +</a>";
 	return(content);
 }
 

@@ -17,7 +17,6 @@ Rails3MongoidDevise::Application.routes.draw do
   resources :events do
     collection do 
       get 'nearest'
-      get 'test'
     end
   end
 
