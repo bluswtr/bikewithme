@@ -2,10 +2,10 @@ Rails3MongoidDevise::Application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   authenticated :user do
-    root :to => 'events#show'
+    root :to => 'events#index'
   end
   
-  root :to => "events#show"
+  root :to => "events#index"
   devise_for :users
   resources :users do
       get 'followers'
@@ -18,6 +18,7 @@ Rails3MongoidDevise::Application.routes.draw do
     collection do 
       get 'nearest'
     end
+    get 'join'
   end
 
   #new_event_path :events/new

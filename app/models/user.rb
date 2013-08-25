@@ -4,6 +4,9 @@ class User
   include Mongo::Followable::Followed
   include Mongo::Followable::Follower
 
+  ##
+  # A user can follow another user or an event
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -45,8 +48,10 @@ class User
   #           "find friend/followers" feature
   has_and_belongs_to_many :contacts 
 
-  # mimic has_many where array of keys is in parent
-  has_many :events#, inverse_of: nil # past and future
+  ##
+  # Can create many events and thusly serves as the document owner
+  # by default and app shows up as the organizer
+  has_many :events
 
 
   ## Confirmable

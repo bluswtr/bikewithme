@@ -1,9 +1,11 @@
 
 
 class FollowController < ApplicationController	
-
 	def update
-		# in template check if already following 
+		##
+		# The follower gem will not create
+		# a new follow relationship if it already exists
+		#
 		# create a button that corresponds to that state
 		@user = User.find(params[:id])
 		current_user.follow(@user)

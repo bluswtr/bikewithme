@@ -16,7 +16,7 @@
 
 	<p><%= select_datetime Time.now, prefix: :event_date, ampm: true, start_year: Time.now.year, end_year: Time.now.year + 1, order: [:day, :month, :year]%></p>
 	<p><%= event.label :description %><br />
-	<%= event.text_area :description, :placeholder => 'World-class scenic ride across the San Francisco Bay. It doesn\'t get better than this' %></p>
+	<%= event.text_area :description, :placeholder => 'A fun ride. Come one, come all.' %></p>
 	<%= event.hidden_field :activity_id, :value =>1 %>
 	<input type=hidden name=longitude id=longitude>
 	<input type=hidden name=latitude id=latitude>

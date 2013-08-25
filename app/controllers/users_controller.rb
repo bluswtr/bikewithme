@@ -28,8 +28,4 @@ class UsersController < ApplicationController
 		end
 	end
 
-	def follow
-		render nothing: true
-	end
-
 end

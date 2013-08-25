@@ -6,18 +6,27 @@ class EventsController < ApplicationController
 	end
 
 	def index
-		# request geolocation, ?
-		#@events = Event.geonear({meeting_point})
-		# pass in meeting points in erb page
+		# javascript in frontend takes over
+		if params[:event_id]
+			@event = Event.find(params[:event_id])
+			p @event
+		end
 	end
 
 	def show
-		# if params:id exists show event/:id 
-		# otherwise show nearest
+		# show event/:id
 	end
 
-	def test
-		render nothing: true
+	##
+	# Join a Ride a.k.a
+	# current_user follows event_id
+	def join
+		@event = Event.find(params[:event_id])
+		current_user.follow(@event)
+		respond_to do |format|
+			format.html
+			format.js
+		end
 	end
 
 	def create

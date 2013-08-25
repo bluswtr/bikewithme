@@ -1,7 +1,7 @@
 class Event
   include Mongoid::Document
   include Mongoid::Timestamps
-  
+  include Mongo::Followable::Followed
   ##
   # BikeWithMe's definition of an Event:
   # An event is defined by any activity at a 
@@ -9,6 +9,10 @@ class Event
   # Currently, we are focusing on deploying with cyclists as our
   # clientbase, so the default activity is bicycle_ride
   #
+
+  ##
+  # Is followed by users but
+  # Events don't follow anything
 
   field :title
   field :date, :type => Time
