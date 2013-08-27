@@ -21,11 +21,10 @@ class EventsController < ApplicationController
 	# Join a Ride a.k.a
 	# current_user follows event_id
 	def join
-		@event = Event.find(params[:event_id])
-		current_user.follow(@event)
+		@event_joined = Event.find(params[:event_id])
+		current_user.follow(@event_joined)
 		respond_to do |format|
-			format.html
-			format.js
+			format.js { render :partial => "event_joined" }
 		end
 	end
 

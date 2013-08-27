@@ -18,7 +18,7 @@ Rails3MongoidDevise::Application.routes.draw do
     collection do 
       get 'nearest'
     end
-    get 'join'
+    put 'join'
   end
 
   #new_event_path :events/new

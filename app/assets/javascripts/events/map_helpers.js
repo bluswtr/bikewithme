@@ -132,7 +132,7 @@ function init_populated_map(data,lat,lng) {
 				$('#join_event').click(function(){
 					$.ajax({
 							url: $('#join_event').attr("data-url"),
-							type: 'GET'
+							type: 'PUT'
 					});
 				});
 			}
@@ -149,7 +149,7 @@ function user_content_helper(user,event_id) {
 	content+="<p>Organizer: " + user["name"] + "</p>";
 	if(!isEmpty(user["bio"]))
 		content+="<p>Bio: " + user["bio"] + "</p>";
-	content+="<a href=# id=join_event data-remote=true data-id=" + event_id + " data-type=text/javascript data-url=events/" + event_id + "/join rel=false>Join Ride</a>";
+	content+="<a href=# id=join_event data-remote=true data-id=" + event_id + " data-type=text/javascript data-url=events/" + event_id + "/join>Join Ride</a>";
 	return(content);
 }
 
