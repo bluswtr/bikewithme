@@ -20,9 +20,13 @@ end
 ##
 # How the gem 'mongo_followable' works:
 # f_id and followable_id each represent the actual User _id in the User model
-# followable_id follows f_id
-# f_id is being followed by followable_id
 #
+# f_id: This is the index and represents the _id of the user
+# if followable_id is in the document, then f_id follows user represented as followable_id
+# if following_id is in the documents, then then the user represented as following_id is following the f_id
+#
+# f_id follows followable_id
+# f_id is following following_id
 
 ##
 # Example of what the follow document in mongodb looks like when

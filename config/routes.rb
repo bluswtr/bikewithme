@@ -12,6 +12,7 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'following'
       resources :follow, only: :update
       resources :unfollow, only: :update
+#      resources :join, only: :update, :destroy
   end
 
   resources :events do
@@ -21,5 +22,4 @@ Rails3MongoidDevise::Application.routes.draw do
     put 'watch'
   end
 
-  #new_event_path :events/new
 end
