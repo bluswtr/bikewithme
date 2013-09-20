@@ -1,3 +1,8 @@
+PATH
+  remote: vendor/plugins/mongo_joinable
+  specs:
+    mongo_joinable (0.3.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -254,6 +259,7 @@ DEPENDENCIES
   launchy (>= 2.2.0)
   less-rails
   mongo_followable (~> 0.3.2)
+  mongo_joinable!
   mongoid (>= 3.1.2)
   mongoid-rspec (>= 1.7.0)
   omniauth
