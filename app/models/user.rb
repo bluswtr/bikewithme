@@ -1,8 +1,12 @@
+require 'mongo_joinable'
+
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongo::Followable::Followed
   include Mongo::Followable::Follower
+  include Mongo::Joinable::Joined
+  include Mongo::Joinable::Joiner
 
   ##
   # A user can follow another user or an event

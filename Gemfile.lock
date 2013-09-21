@@ -1,5 +1,5 @@
 PATH
-  remote: vendor/plugins/mongo_joinable
+  remote: lib/mongo_joinable
   specs:
     mongo_joinable (0.3.2)
 

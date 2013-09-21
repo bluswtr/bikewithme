@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-	before_filter :authenticate_user!, :only => [:new,:create]
+	before_filter :authenticate_user!, :only => [:new,:create,:watch]
 	def new
 		@event = Event.new
 		@descriptors = Descriptor.format_for_option_tag(1)
@@ -25,6 +25,14 @@ class EventsController < ApplicationController
 		current_user.follow(@event_watched)
 		respond_to do |format|
 			format.js { render :partial => "event_watched" }
+		end
+	end
+
+	def join
+		@event_joined = Event.find(params[:event_id])
+		current_user.join(@event_joined)
+		respond_to do |format|
+			format.js { render :partial => "event_joined" }
 		end
 	end
 

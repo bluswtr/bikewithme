@@ -20,6 +20,7 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'nearest'
     end
     put 'watch'
+    put 'join'
   end
 
 end

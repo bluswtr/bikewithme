@@ -78,5 +78,7 @@ pickle-email-*.html
 README.textile
 /public/assets/application*
 /public/assets/jquery*
+
+# personal notes
 implementation_notes.txt
 

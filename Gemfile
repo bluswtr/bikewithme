@@ -39,4 +39,4 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'httparty'
 gem 'mongo_followable', '~>0.3.2'
-gem 'mongo_joinable', :path => "vendor/plugins/mongo_joinable"
+gem 'mongo_joinable', :path => "lib/mongo_joinable"

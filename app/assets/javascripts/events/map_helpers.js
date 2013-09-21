@@ -135,6 +135,12 @@ function init_populated_map(data,lat,lng) {
 							type: 'PUT'
 					});
 				});
+				$('#join_event').click(function(){
+					$.ajax({
+							url: $('#join_event').attr("data-url"),
+							type: 'PUT'
+					});
+				});
 			}
 		});
 	});
@@ -150,6 +156,8 @@ function user_content_helper(user,event_id) {
 	if(!isEmpty(user["bio"]))
 		content+="<p>Bio: " + user["bio"] + "</p>";
 	content+="<a href=# id=watch_event data-remote=true data-id=" + event_id + " data-type=text/javascript data-url=events/" + event_id + "/watch>Watch Ride</a>";
+	content+="<br>";
+	content+="<a href=# id=join_event data-remote=true data-id=" + event_id + " data-type=text/javascript data-url=events/" + event_id + "/join>Join Ride</a>";
 	return(content);
 }
 
