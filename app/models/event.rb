@@ -1,10 +1,9 @@
-require 'mongo_joinable'
-
 class Event
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongo::Followable::Followed
   include Mongo::Joinable::Joined
+  
   ##
   # BikeWithMe's definition of an Event:
   # An event is defined by any activity at a 

@@ -1,4 +1,4 @@
-require 'mongo_joinable'
+
 
 class User
   include Mongoid::Document

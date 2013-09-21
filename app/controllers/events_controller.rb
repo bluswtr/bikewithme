@@ -1,5 +1,5 @@
-class EventsController < ApplicationController
-	before_filter :authenticate_user!, :only => [:new,:create,:watch]
+  class EventsController < ApplicationController
+	before_filter :authenticate_user!, :only => [:new,:create,:watch,:join]
 	def new
 		@event = Event.new
 		@descriptors = Descriptor.format_for_option_tag(1)
