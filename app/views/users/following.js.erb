@@ -1,6 +1,6 @@
 var div_id = $('#content');
 var content = "";
-<% @user.all_followees.each do |follow| %>
+<% @user.followees_by_type("user").each do |follow| %>
 	content += "<%=follow.name%>" + "<br>";
 <% end%>
 

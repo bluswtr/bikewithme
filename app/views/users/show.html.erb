@@ -1,7 +1,7 @@
 <h3>User</h3>
 <%= image_tag(@user.image, size: "50x50", alt: @user.name) if @user.image%><br>
 <p>User: <%= @user.name %></p>
-<p><%= link_to "Followers", user_followers_path(@user.id), :remote => true %> <%= @user.followers.count%>  <%= link_to "Following", user_following_path(@user.id), :remote => true %> <%= @user.followees.count%></p>
+<p><%= link_to "Followers", user_followers_path(@user.id), :remote => true %> <%= @user.followers_count_by_type("user")%>  <%= link_to "Following", user_following_path(@user.id), :remote => true %> <%= @user.followees_count_by_type("user")%></p>
 <p>Email: <%= @user.email if @user.email %></p>
 <p>Bio: <%= @user.bio if @user.bio %></p>
 
