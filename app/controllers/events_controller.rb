@@ -17,17 +17,6 @@
 		# show event/:id
 	end
 
-	##
-	# Watch a Ride a.k.a
-	# current_user follows event_id
-	def watch
-		@event_watched = Event.find(params[:event_id])
-		current_user.follow(@event_watched)
-		respond_to do |format|
-			format.js { render :partial => "event_watched" }
-		end
-	end
-
 	def join
 		@event_joined = Event.find(params[:event_id])
 		current_user.join(@event_joined)

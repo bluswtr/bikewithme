@@ -155,7 +155,7 @@ function user_content_helper(user,event_id) {
 	content+="<p>Organizer: " + user["name"] + "</p>";
 	if(!isEmpty(user["bio"]))
 		content+="<p>Bio: " + user["bio"] + "</p>";
-	content+="<a href=# id=watch_event data-remote=true data-id=" + event_id + " data-type=text/javascript data-url=events/" + event_id + "/watch>Watch Ride</a>";
+	content+="<a href=# id=watch_event data-remote=true data-id=" + event_id + " data-type=text/javascript data-url=events/" + event_id + "/watch/" + user["id"] +">Watch Ride</a>";
 	content+="<br>";
 	content+="<a href=# id=join_event data-remote=true data-id=" + event_id + " data-type=text/javascript data-url=events/" + event_id + "/join>Join Ride</a>";
 	return(content);
