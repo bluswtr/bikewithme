@@ -8,9 +8,12 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+ *= require twitter/bootstrap
  *= require_self
  *= require_tree .
 */
+@import "twitter/bootstrap";
+
 /*.brand {
   float: left;
   padding-right: 8px;
@@ -22,7 +25,7 @@ ul.nav {
 }
 ul.nav li {
   display: inline;
-}
+}*/
 #flash_notice, #flash_alert {
   padding: 5px 8px;
   margin: 10px 0;
@@ -34,4 +37,4 @@ ul.nav li {
 #flash_alert {
   background-color: #FCC;
   border: solid 1px #C66;
-}*/
+}

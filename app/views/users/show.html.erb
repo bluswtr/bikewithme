@@ -1,21 +1,23 @@
-<h3 style="display:inline">My Profile</h3>&nbsp;&nbsp;<%= link_to 'Edit', edit_user_registration_path %>
+<h3 style="display:inline">My Profile</h3>&nbsp;&nbsp;<%= link_to 'Edit', edit_user_registration_path %><br><br>
 
 
 <ul class="list-group">
-
 	<li class="list-group-item">	
-	<%= image_tag(@user.image, size: "50x50", alt: @user.name) if @user.image%><br>
-	<p><b>Name:</b> <%= @user.name %></p>
-	<p><b>Email:</b> <%= @user.email if @user.email %></p>
-	<p><b>Bio:</b> <%= @user.bio if @user.bio %></p>
+		<%= image_tag(@user.image, size: "50x50", alt: @user.name) if @user.image %>
+		<% puts '<br>' if @user.image %>
+		<p><b>Name:</b> <%= @user.name %></p>
+		<p><b>Email:</b> <%= @user.email if @user.email %></p>
+		<p><b>Bio:</b> <%= @user.bio if @user.bio %></p>
 	</li>
 
-<li class="list-group-item">
-<h4><%= link_to "Followers", user_followers_path(@user.id), :remote => true %> <%= @user.followers_count_by_type("user")%></h4>
-<h4><%= link_to "Following", user_following_path(@user.id), :remote => true %> <%= @user.followees_count_by_type("user")%></h4>
+	<li class="list-group-item">
+		<h4><%= link_to "Followers", user_followers_path(@user.id), :remote => true %> <%= @user.followers_count_by_type("user")%></h4>
+		<h4><%= link_to "Following", user_following_path(@user.id), :remote => true %> <%= @user.followees_count_by_type("user")%></h4>
+	</li>
 
-<h4>Events Watched <%= @user.followers_count_by_type("event")%></h4>
-<h4>Events Joined <%= @user.joiners_count_by_type("event")%></h4>
-</li>
+	<li class="list-group-item">
+		<h4>Events Watched <%= @user.followers_count_by_type("event")%></h4>
+		<h4>Events Joined <%= @user.joiners_count_by_type("event")%></h4>
+	</li>
 </ul>
 <div id="content"></div>

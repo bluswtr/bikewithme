@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/anjlab/bootstrap-rails.git
+  revision: 01749c1f7341e89e7bff2dbfff45a402e32df296
+  specs:
+    anjlab-bootstrap-rails (3.0.0.3)
+      railties (>= 3.0)
+      sass (>= 3.2)
+
 PATH
   remote: lib/mongo_joinable
   specs:
@@ -225,11 +233,6 @@ GEM
     treetop (1.4.14)
       polyglot
       polyglot (>= 0.3.1)
-    twitter-bootstrap-rails (2.2.8)
-      actionpack (>= 3.1)
-      execjs
-      rails (>= 3.1)
-      railties (>= 3.1)
     tzinfo (0.3.37)
     uglifier (2.1.2)
       execjs (>= 0.3.0)
@@ -243,6 +246,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  anjlab-bootstrap-rails!
   better_errors (>= 0.7.2)
   binding_of_caller (>= 0.7.1)
   bson_ext
@@ -270,5 +274,4 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   therubyracer
   thin
-  twitter-bootstrap-rails
   uglifier (>= 1.0.3)

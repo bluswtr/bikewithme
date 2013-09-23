@@ -1,43 +1,47 @@
 
 <!--ul class="nav"-->
 
-    <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+<header class="nav navbar-inverse navbar-fixed-top bs-docs-nav" role=navigation>
+  <div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
-        </a>
-        <%= link_to "Bike With Me", root_path, :class => 'brand' %>
-        <p class="navbar-text pull-right"><%= current_user.name %></p>
-        <div class="nav-collapse">
-          <ul class="nav">
-<% if user_signed_in? %>
-    <li>
-    <%= link_to 'My Profile', user_path(current_user.id) %>
-    </li>
-    <li>
-    <%= link_to 'Add Event', new_event_path %>
-    </li>
-    <li>
-    <%= link_to 'Logout', destroy_user_session_path, :method=>'delete' %>
-    </li>
-  <% else %>
-    <li>
-    <%= link_to 'Login', new_user_session_path %>
-    </li>
-    <li>
-    <%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
-    </li>
-    <li>
-    <%= link_to 'Sign up', new_user_registration_path %>
-    </li>
-<% end %>
-          </ul>
-        </div>
-      </div>
+        </button>
+        <%= link_to "Bike With Me", root_path, :class => 'navbar-brand' %>
+        <% if user_signed_in? %>
+        <p class="navbar-text pull-right">
+            <%= current_user.name %>
+          &nbsp;&nbsp;
+        <span class="glyphicon glyphicon-user"></span></p>
+        <% end %>
+    </div>
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+      <ul class="nav navbar-nav">
+        <% if user_signed_in? %>
+            <li>
+            <%= link_to 'My Profile', user_path(current_user.id) %>
+            </li>
+            <li>
+            <%= link_to 'Add Event', new_event_path %>
+            </li>
+            <li>
+            <%= link_to 'Logout', destroy_user_session_path, :method=>'delete' %>
+            </li>
+          <% else %>
+            <li>
+            <%= link_to 'Login', new_user_session_path %>
+            </li>
+            <li>
+            <%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
+            </li>
+            <li>
+            <%= link_to 'Sign up', new_user_registration_path %>
+            </li>
+        <% end %>
+      </ul>
     </div>
   </div>
-  
+</header>
 <!--/ul-->

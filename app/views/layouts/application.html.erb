@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- Meta, Title, CSS -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= content_for?(:title) ? yield(:title) : "Bike With Me" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Bike With Me" %>">
@@ -12,15 +13,12 @@
   </head>
   <body class="<%= controller_name %> <%= action_name %>">
     <div id="container" class="container">
-      <header>
-        <%= render 'layouts/navigation' %>
-        <%= render 'layouts/messages' %>
-      </header>
+      <%= render 'layouts/navigation' %>
+      <%= render 'layouts/messages' %>
       <div id="main" role="main">
         <%= yield %>
       </div>
-      <footer>
-      </footer>
-    </div> <!--! end of #container -->
+      <%= render 'layouts/footer' %>
+    </div>
   </body>
 </html>
