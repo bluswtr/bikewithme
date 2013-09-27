@@ -59,7 +59,7 @@
 
 	def nearest
 
-		#where(:event_date.gt => Time.parse(Date.today))
+		# where(:event_date.gt => Time.parse(Date.today))
 		# query for the user and add to the hash somehow....
 		event_data = Hash.new
 		options = Array.new

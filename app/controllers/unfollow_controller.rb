@@ -1,5 +1,5 @@
 class UnfollowController < ApplicationController	
-
+	before_filter :authenticate_user!
 	def update
 		# in template check if already following 
 		# create a button that corresponds to that state

@@ -18,8 +18,9 @@ Rails3MongoidDevise::Application.routes.draw do
     collection do 
       get 'nearest'
     end
-    resources :watch, only: :update
-    put 'join'
+    resources :watch, only: [:destroy, :create]
+    resources :join, only: [:destroy, :create]
+    #put 'join'
   end
 
 end

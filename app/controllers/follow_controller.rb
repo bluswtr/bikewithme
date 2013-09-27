@@ -1,6 +1,7 @@
 
 
 class FollowController < ApplicationController	
+	before_filter :authenticate_user!
 	def update
 		##
 		# The follower gem will not create
