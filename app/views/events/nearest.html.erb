@@ -1,8 +1,0 @@
-
-<%= content_tag "div", id: "nearest", data:{geo:Event.desc.limit(10).geo_near([params["lng"].to_f,params["lat"].to_f]).max_distance(50)} do %>
-
-<%end%>
-
-<h2>Join a Ride</h2>
-<div id="geocoding_div"></div>
-<div id="map"></div>

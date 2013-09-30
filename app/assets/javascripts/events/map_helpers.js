@@ -40,7 +40,7 @@ function geolocate_nearest(callback_initmap) {
 }
 
 function update_coords_in_form(longitude,latitude) {
-	$('#event_meeting_point').val(longitude + "," + latitude);
+	$('#event_meeting_point').val(latitude + "," + longitude);
 	$('#longitude').val(longitude);
 	$('#latitude').val(latitude);
 }

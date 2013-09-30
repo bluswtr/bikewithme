@@ -15,10 +15,15 @@
 
 	def show
 		@event = Event.find(params[:id])
-		@watched = current_user.follower_of?(@event)
-		@joined = current_user.joiner_of?(@event)
-		respond_to do |format|
-			format.js { render :partial => "event_show" }
+		if user_signed_in?
+			@watched = current_user.follower_of?(@event)
+			@joined = current_user.joiner_of?(@event)
+			respond_to do |format|
+				format.js { render :partial => "event_show" }
+			end
+		else
+			# sign in to see more popup?
+			render nothing: true
 		end
 	end
 
