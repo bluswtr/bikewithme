@@ -3,6 +3,7 @@ class UsersController < ApplicationController
 
 	def index
 		@users = User.all
+		@following = current_user.followees_by_type("user")
 	end
 
 	def show
@@ -10,22 +11,26 @@ class UsersController < ApplicationController
 	end
 
 	def followers
-		@user = User.find(params[:user_id])
-		#render json: @user.all_followers
 		respond_to do |format|
-			format.html
 			format.js
 		end
 	end
 
 	def following #user's follow list
-		@user = User.find(params[:user_id])
-		#render json: @user.all_followees
-		#render layout: "follow"
 		respond_to do |format|
-			format.html
 			format.js
 		end
 	end
 
+	def my_watches
+		respond_to do |format|
+			format.js
+		end
+	end
+
+	def my_joins
+		respond_to do |format|
+			format.js
+		end
+	end
 end

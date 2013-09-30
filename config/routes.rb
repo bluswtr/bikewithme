@@ -10,13 +10,17 @@ Rails3MongoidDevise::Application.routes.draw do
   resources :users do
       get 'followers'
       get 'following'
-      resources :follow, only: :update
-      resources :unfollow, only: :update
+      get 'my_watches'
+      get 'my_joins'
+      resources :follow, only: [:destroy, :create]
+      #resources :follow, only: :update
+      #resources :unfollow, only: :update
   end
 
   resources :events do
     collection do 
       get 'nearest'
+      
     end
     resources :watch, only: [:destroy, :create]
     resources :join, only: [:destroy, :create]

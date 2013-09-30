@@ -1,7 +1,10 @@
 var div_id = $('#content');
-var content = "";
-<% @user.followers_by_type("user").each do |follow| %>
-	content += "<%=follow.name%>" + "<br>";
+var content = "<h4>Followers</h4>";
+
+<% if current_user.followers_count_by_type("user") != 0 %>
+	<% current_user.followers_by_type("user").each do |follow| %>
+		content += "<%=follow.name%>" + "<br>";
+	<% end%>
 <% end%>
 
 div_id.html(content);

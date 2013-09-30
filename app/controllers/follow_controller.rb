@@ -2,19 +2,36 @@
 
 class FollowController < ApplicationController	
 	before_filter :authenticate_user!
-	def update
+
+	def create
 		##
 		# The follower gem will not create
 		# a new follow relationship if it already exists
 		#
 		# create a button that corresponds to that state
-		@user = User.find(params[:id])
+		@user = User.find(params[:user_id])
 		current_user.follow(@user)
 
 		# send back http success
 		# if @contact.followed? head :created else head :not_found end
 		# head :created
-		render nothing: true
+		respond_to do |format|
+			format.js { render :partial => "users/user_followed" }
+		end
+	end 
+
+	def destroy
+		# in template check if already following 
+		# create a button that corresponds to that state
+		@user = User.find(params[:user_id])
+		current_user.unfollow(@user)
+
+		# send back http success
+		# if @contact.followed? head :created else head :not_found end
+		# head :created
+		respond_to do |format|
+			format.js { render :partial => "users/user_unfollowed" }
+		end
 	end 
 end
 

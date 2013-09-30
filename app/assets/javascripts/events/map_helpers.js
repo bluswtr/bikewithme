@@ -56,14 +56,13 @@ function init_map(curr_lat,curr_lng){
         style : 'SMALL',
         position: 'TOP_LEFT'
     },
-
 	click : function(e){
 		map.removeMarkers();
 		// mb = latitude, nb = longitude
 		map.addMarker({lat:e.latLng.mb,lng:e.latLng.nb});
 		update_coords_in_form(e.latLng.nb,e.latLng.mb);
     },
-
+	scrollwheel: false,
     panControl : false,
     streetViewControl : false,
     mapTypeControl: false,
@@ -128,71 +127,21 @@ function init_populated_map(data,lat,lng) {
 				event_id: event["_id"]
 			},
 			click: function(e){
-				var user_details = user_content_helper(e["details"]["event_owner"],e["details"]["event_id"]);
-				$('#content')[0].innerHTML = user_details;
-				$('#content').removeClass();
-				$('#content').addClass("slideUp");
 
-				// **
-				// move map to center of desired destination
-
-				// var coords = new google.maps.LatLng(e.position.ob,e.position.nb,"false");
-				// map.setCenter(e.position.ob,e.position.nb);
-				// map.panTo(coords);
-
-				// **
-				// marker click and callbacks 
-				$('#watch_event').click(function(){
-					$.ajax({
-							url: $('#watch_event').attr("data-url"),
-							type: 'PUT',
-							success: function(){
-								//$('#watch_event_button').prop("disabled",false);
-								// $('#watch_event_button').removeClass("btn-primary");
-								// $('#watch_event_button').addClass("btn-success");
-							}
-					});
-				});
-				$('#join_event').click(function(){
-					$.ajax({
-							url: $('#join_event').attr("data-url"),
-							type: 'PUT'
-					});
+				$.ajax({
+					url: '/events/' + e["details"]["event_id"],
+					type: 'GET',
+					success: function(){
+						//$('#watch_event_button').prop("disabled",false);
+						// $('#watch_event_button').removeClass("btn-primary");
+						// $('#watch_event_button').addClass("btn-success");
+					}
 				});
 			}
 		});
 	});
 	map.fitLatLngBounds(coords);
 	return map;
-}
-
-// @@
-// appears below map by using animation class .slideUp
-function user_content_helper(user,event_id) {
-	var content="";
-
-	// @@
-	// User Info
-	content+="<p>Organizer: " + user["name"] + "</p>";
-	if(!isEmpty(user["bio"]))
-		content+="<p>Bio: " + user["bio"] + "</p>";
-
-	// @@
-	// Details, Watch, Join
-	content+="<a href=#>More Details</a><br>";
-	content+="<div class=\"row\">";
-
-	// watch
-	content+="<div class=\"col-md-6\">";
-	content+="<a href=/events/" + event_id + "/watch id=watch_event data-remote=true data-method=post class=\"col-md-6 btn btn-primary btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
-	content+="<span>Watch Ride </span><span class=\"glyphicon glyphicon-eye-open\"></span></a><br></div>";
-
-	// join
-	content+="<div class=\"col-md-6\">";
-	content+="<a href=/events/" + event_id + "/join id=join_event data-remote=true data-method=post class=\"btn btn-primary btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
-	content+="Join Ride</button></a></div>";
-	content+="</div><!-- end row-->";
-	return(content);
 }
 
 // @@

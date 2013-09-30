@@ -9,12 +9,17 @@
 		# javascript in frontend takes over
 		if params[:event_id]
 			@event = Event.find(params[:event_id])
-			p @event
+			#p @event
 		end
 	end
 
 	def show
-		# show event/:id
+		@event = Event.find(params[:id])
+		@watched = current_user.follower_of?(@event)
+		@joined = current_user.joiner_of?(@event)
+		respond_to do |format|
+			format.js { render :partial => "event_show" }
+		end
 	end
 
 	def join
@@ -50,9 +55,6 @@
 		# get status after create
 
 		# redirect to post
-
-		# for now
-		#render nothing: true
 
 		# later render listings/auto-update?
 	end

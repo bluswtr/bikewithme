@@ -1,38 +1,22 @@
-<script>
-$(document).ready(function(){
 
-	$('.follow_button').click(function(){
-
-		// save url for ajax request
-		var follow_unfollow = this.getAttribute("data-url");
-
-		// toggle between follow and unfollow
-		if(this.innerHTML === "Follow") {
-			this.innerHTML = "Following";
-			this.setAttribute("data-url",follow_unfollow.replace(/follow/g,"unfollow"));
-		} else {
-			this.innerHTML = "Follow";
-			this.setAttribute("data-url",follow_unfollow.replace(/unfollow/g,"follow"));
-		}
-
-		// tell server to follow/unfollow this user
-		$.ajax({
-			url:follow_unfollow,
-			type:'PUT',
-		  	success: function(){
-		  		//alert("success");
-			}
-		});
-
-	});
-});
-</script>
 
 <h3>Users</h3>
 <ul class="users">
   <% @users.each do |user| %>
-  	<div><%= link_to user.name, user %> signed up <%= user.created_at.to_date %>
-         <%= link_to "Follow",'#', rel: false, data: {url:user_follow_path(current_user,user), id: user.id},id: "follow_button_" + user.id, class: "follow_button" %>
+  	<div>
+        <% if user.id != current_user.id %>
+        	<%= link_to user.name, user %> signed up <%= user.created_at.to_date %>
+	        <%= link_to "Follow",user_follow_index_path(user.id), rel: 'nofollow', class: "btn btn-primary", method: 'post', remote: 'true' %>
+	        <%= link_to "Unfollow",user_follow_path(user.id,current_user), rel: 'nofollow', class: "btn btn-warning", style: 'display:none', method: 'delete', remote: 'true' %>
+        <% end %>
     </div>
   <% end %>
 </ul>
+
+<script>
+	<!-- if following, hide follow button and vice versa -->
+	<% @following.each do |following| %>
+	$("a[href='/users/<%=following.id%>/follow']").hide();
+	$("a[href='/users/<%=following.id%>/follow/<%=current_user.id%>']").show();
+	<% end %>
+</script>

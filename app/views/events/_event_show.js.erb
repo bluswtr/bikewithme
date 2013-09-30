@@ -1,0 +1,83 @@
+
+var user_name = "<%=@event.user.name%>";
+var user_bio = "<%=@event.user.bio%>";
+var event_id = "<%=@event.id%>";
+
+	var user_details = user_content_helper(user_name,user_bio,event_id);
+	$('#content').html(user_details);
+	$('#content').removeClass();
+	$('#content').addClass("slideUp");
+
+	<% if @watched %>
+	$("a[href='/events/<%=@event.id%>/watch']").hide();
+	<% else %>
+	$("a[href='/events/<%=@event.id%>/watch/<%=current_user.id%>']").hide();
+	<% end %>
+
+	<% if @joined %>
+	$("a[href='/events/<%=@event.id%>/join']").hide();
+	<% else %>
+	$("a[href='/events/<%=@event.id%>/join/<%=current_user.id%>']").hide();
+	<% end %>
+	// **
+	// move map to center of desired destination
+
+	// var coords = new google.maps.LatLng(e.position.ob,e.position.nb,"false");
+	// map.setCenter(e.position.ob,e.position.nb);
+	// map.panTo(coords);
+
+	// **
+	// marker click and callbacks 
+	$('#watch_event').click(function(){
+		$.ajax({
+				url: $('#watch_event').attr("data-url"),
+				type: 'PUT',
+				success: function(){
+					//$('#watch_event_button').prop("disabled",false);
+					// $('#watch_event_button').removeClass("btn-primary");
+					// $('#watch_event_button').addClass("btn-success");
+				}
+		});
+	});
+	$('#join_event').click(function(){
+		$.ajax({
+				url: $('#join_event').attr("data-url"),
+				type: 'PUT'
+		});
+	});
+
+function user_content_helper(user_name,user_bio,event_id) {
+	var content="";
+
+	// @@
+	// User Info
+	content+="<p>Organizer: " + user_name + "</p>";
+	if(!isEmpty(user_bio))
+		content+="<p>Bio: " + user_bio + "</p>";
+
+	// @@
+	// Details, Watch, Join
+	content+="<a href=#>More Details</a><br>";
+	content+="<div class=\"row\">";
+
+	// watch
+	content+="<div class=\"col-md-6\">";
+	content+="<a href=/events/" + event_id + "/watch data-remote=true data-method=post class=\"col-md-6 btn btn-primary btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
+	content+="<span>Watch Ride </span><span class=\"glyphicon glyphicon-eye-open\"></span></a>";
+	//content+="<%= link_to '<span>Watch Ride </span><span class=\"glyphicon glyphicon-eye-open\"></span>',event_watch_index_path(@event.id), rel:'nofollow', class:'col-md-6 btn btn-primary btn-lg btn-block', method:'post', remote:'true' %>";
+	content+="<a href=/events/" + event_id + "/watch/<%=current_user.id%> data-remote=true data-method=delete class=\"col-md-6 btn btn-primary btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
+	content+="<span>Unwatch Ride </span><span class=\"glyphicon glyphicon-eye-close\"></span></a>";
+	content+="<br></div>";
+
+	// join
+	content+="<div class=\"col-md-6\">";
+	content+="<a href=/events/" + event_id + "/join data-remote=true data-method=post class=\"btn btn-primary btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
+	content+="Join Ride</button></a>";
+
+	content+="<a href=/events/" + event_id + "/join/<%=current_user.id%> data-remote=true data-method=delete class=\"col-md-6 btn btn-primary btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
+	content+="<span>Unjoin Ride </span></a>";
+	content+="</div>";
+	content+="</div><!-- end row-->";
+	return(content);
+}
+
