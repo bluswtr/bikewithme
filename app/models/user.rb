@@ -54,7 +54,7 @@ class User
 
   ##
   # Can create many events and thusly serves as the document owner
-  # by default and app shows up as the organizer
+  # by default. In the app, owner shows up as the organizer
   has_many :events
 
 

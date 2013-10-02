@@ -1,8 +1,8 @@
 var div_id = $('#content');
 var content = "<h4>Joined</h4>";
 
-<% if current_user.joinees_count_by_type("event") != 0 %>
-	<% current_user.joinees_by_type("event").each do |join| %>
+<% if @user.joinees_count_by_type("event") != 0 %>
+	<% @user.joinees_by_type("event").each do |join| %>
 		content += "<%=join.title%>" + "<br>";
 	<% end%>
 <% end%>

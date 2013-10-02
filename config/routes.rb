@@ -13,6 +13,7 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'my_watches'
       get 'my_joins'
       resources :follow, only: [:destroy, :create]
+      #resources :events, only: [:index]
       #resources :follow, only: :update
       #resources :unfollow, only: :update
   end
@@ -20,7 +21,6 @@ Rails3MongoidDevise::Application.routes.draw do
   resources :events do
     collection do 
       get 'nearest'
-      
     end
     resources :watch, only: [:destroy, :create]
     resources :join, only: [:destroy, :create]

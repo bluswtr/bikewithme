@@ -11,24 +11,28 @@ class UsersController < ApplicationController
 	end
 
 	def followers
+		@user = User.find(params[:user_id])
 		respond_to do |format|
 			format.js
 		end
 	end
 
 	def following #user's follow list
+		@user = User.find(params[:user_id])
 		respond_to do |format|
 			format.js
 		end
 	end
 
 	def my_watches
+		@user = User.find(params[:user_id])
 		respond_to do |format|
 			format.js
 		end
 	end
 
 	def my_joins
+		@user = User.find(params[:user_id])
 		respond_to do |format|
 			format.js
 		end
