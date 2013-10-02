@@ -37,4 +37,7 @@ class UsersController < ApplicationController
 			format.js
 		end
 	end
+
 end
+
+

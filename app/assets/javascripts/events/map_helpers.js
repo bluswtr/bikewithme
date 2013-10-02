@@ -129,13 +129,8 @@ function init_populated_map(data,lat,lng) {
 			click: function(e){
 
 				$.ajax({
-					url: '/events/' + e["details"]["event_id"],
-					type: 'GET',
-					success: function(){
-						//$('#watch_event_button').prop("disabled",false);
-						// $('#watch_event_button').removeClass("btn-primary");
-						// $('#watch_event_button').addClass("btn-success");
-					}
+					url: '/events/more_info/' + e["details"]["event_id"],
+					type: 'GET'
 				});
 			}
 		});

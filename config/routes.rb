@@ -2,7 +2,7 @@ Rails3MongoidDevise::Application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   authenticated :user do
-    root :to => 'events#index'
+    root :to => 'events#landing'
   end
   
   root :to => "events#index"
@@ -21,10 +21,10 @@ Rails3MongoidDevise::Application.routes.draw do
   resources :events do
     collection do 
       get 'nearest'
+      get 'more_info/:event_id', to: 'events#more_info'
     end
     resources :watch, only: [:destroy, :create]
     resources :join, only: [:destroy, :create]
-    #put 'join'
   end
 
 end

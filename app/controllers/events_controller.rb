@@ -1,20 +1,24 @@
   class EventsController < ApplicationController
-	before_filter :authenticate_user!, :only => [:new,:create,:watch,:join]
+	before_filter :authenticate_user!, :only => [:new,:create,:watch,:join,:more_info,:index]
 	def new
 		@event = Event.new
 		@descriptors = Descriptor.format_for_option_tag(1)
 	end
 
 	def index
-		# javascript in frontend takes over
-		if params[:event_id]
-			@event = Event.find(params[:event_id])
-			#p @event
-		end
+		# lists events owned by current_user
+	end
+
+	def landing
+		# routes to landing.html.erb
 	end
 
 	def show
 		@event = Event.find(params[:id])
+	end
+
+	def more_info
+		@event = Event.find(params[:event_id])
 		if user_signed_in?
 			@watched = current_user.follower_of?(@event)
 			@joined = current_user.joiner_of?(@event)

@@ -1,0 +1,19 @@
+<!-- if entered new address, pass in new params and refresh page -->
+<script>
+$(document).ready(function(){
+	geolocate_nearest();
+});
+</script>
+
+<div class="container">
+	<!--h2>Join a Ride</h2-->
+	<div id="time" align="right">
+	<button type="button" class="btn btn-default">All</button>
+	<button type="button" class="btn btn-default">This Week</button>
+	<button type="button" class="btn btn-default">Next Week</button>
+	<button type="button" class="btn btn-default">Friends</button>
+	<br><br>
+	</div>
+	<div id="map"></div>
+	<div id="content"></div>
+</div>
