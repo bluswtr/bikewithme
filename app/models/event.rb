@@ -17,7 +17,7 @@ class Event
   # Events don't follow anything
 
   field :title
-  field :date, :type => Time
+  field :date, :type => DateTime
 
   ##
   # Geospatial 2dsphere 
@@ -42,7 +42,7 @@ class Event
   embeds_one :bicycle_ride
   belongs_to :user
 
-  attr_accessible :title, :date, :bicycle_ride, :activity, :description, :meeting_point
+  attr_accessible :title, :date, :bicycle_ride, :activity, :description, :meeting_point, :event_date
 
   # example: index({ loc: "2d" }, { min: -200, max: 200 }).
   # chose 2dsphere over 2d because it has more features and 2d is largely a legacy index

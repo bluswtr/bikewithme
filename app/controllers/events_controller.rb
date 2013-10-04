@@ -1,4 +1,5 @@
-  class EventsController < ApplicationController
+
+class EventsController < ApplicationController
 	before_filter :authenticate_user!, :only => [:new,:create,:watch,:join,:more_info,:index]
 	def new
 		@event = Event.new
@@ -48,9 +49,7 @@
 		# Create if doesn't exist
 		longitude = params["longitude"].to_f
 		latitude = params["latitude"].to_f
-		date = Time.utc(params["event_date"]["year"],params["event_date"]["month"],params["event_date"]["day"],
-						params["event_date"]["hour"],params["event_date"]["minute"])
-		date.iso8601(3)
+		date = Time.utc(params["event_date"]["year"],params["event_date"]["month"],params["event_date"]["day"],params["event_date"]["hour"],params["event_date"]["minute"]).iso8601(3)
 		current_user.events.create( title:params["event"]["title"],
 								  meeting_point:[longitude,latitude],
 								  event_date:date,
@@ -75,8 +74,10 @@
 		event_data = Hash.new
 		options = Array.new
 		nearest_events = Hash.new
+		distance = 50.fdiv(111.12)
 		$i = 0
-		Event.desc.limit(10).geo_near([params["lng"].to_f,params["lat"].to_f]).max_distance(50).each do |event|
+
+		Event.desc.limit(10).geo_near([params["lng"].to_f,params["lat"].to_f]).max_distance(distance).each do |event|
 			p event.meeting_point
 			#nearest_events.push(event)
 			temp = Array.new
