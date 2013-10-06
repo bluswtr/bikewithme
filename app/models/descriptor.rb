@@ -44,6 +44,6 @@ class Descriptor
 		Descriptor.where(activity_id: 1).each do |object|
 			descriptors[object.descriptor] = object.options
 		end
-		p descriptors
+		#p descriptors
 	end
 end

@@ -22,6 +22,9 @@ Rails3MongoidDevise::Application.routes.draw do
     collection do 
       get 'nearest'
       get 'more_info/:event_id', to: 'events#more_info'
+      get 'nearest_this_week'
+      get 'nearest_friends'
+      get 'nearest_all'
     end
     resources :watch, only: [:destroy, :create]
     resources :join, only: [:destroy, :create]

@@ -147,11 +147,15 @@ function event_content_helper(event_content,options) {
 	var road_type = event_content["bicycle_ride"]["road_type"];
 	var terrain = event_content["bicycle_ride"]["terrain"];
 
+	var pace_options = options[0]["options"];
+	var road_type_options = options[2]["options"];
+	var terrain_options = options[1]["options"];
+
 	content+="<b>Description: </b>" + event_content["description"] + "<br><br>";
 	content+="<b>Distance: </b>" + event_content["bicycle_ride"]["distance"] + " miles<br>";
-	content+="<b>Pace: </b>" + options["pace"][pace] + "<br>";
-	content+="<b>Road Type: </b>" + options["terrain"][terrain] + "<br>";
-	content+="<b>Terrain: </b>" + options["road_type"][road_type].replace(/'/g,"") + "<br>";
+	content+="<b>Pace: </b>" + pace_options[pace] + "<br>";
+	content+="<b>Road Type: </b>" + road_type_options[road_type] + "<br>";
+	content+="<b>Terrain: </b>" + terrain_options[terrain].replace(/'/g,"") + "<br>";
 	return(content);
 }
 

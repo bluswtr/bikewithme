@@ -17,7 +17,7 @@ class Event
   # Events don't follow anything
 
   field :title
-  field :date, :type => DateTime
+  field :date, :type => Time
 
   ##
   # Geospatial 2dsphere 
