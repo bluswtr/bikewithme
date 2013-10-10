@@ -1,10 +1,9 @@
 <script>
 	geolocate();
 </script>
-
 <h2>Add Location of New Event</h2>
+<div id="map" class="map_half"></div><br>
 <div id="geocoding_div"></div>
-<div id="map"></div>
 <a name="form"></a>
 <!-- backend request to our db -->
 <%= form_for @event, url: {action: "create"}, html: {class: "new_event_form"} do |event| %>

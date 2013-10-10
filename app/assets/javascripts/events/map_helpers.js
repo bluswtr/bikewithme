@@ -1,5 +1,6 @@
 var el = '#map';
 var infoWindowMaxWidth = 280;
+var map;
 
 function geolocate() {
 
@@ -45,12 +46,12 @@ function update_coords_in_form(longitude,latitude) {
 	$('#latitude').val(latitude);
 }
 
-function init_map(curr_lat,curr_lng){
+function init_map(lat,lng){
 
 	var map = new GMaps({
     el: el,
-    lat: curr_lat,
-    lng: curr_lng,
+    lat: lat,
+    lng: lng,
     zoomControl : true,
     zoomControlOpt: {
         style : 'SMALL',
@@ -58,9 +59,8 @@ function init_map(curr_lat,curr_lng){
     },
 	click : function(e){
 		map.removeMarkers();
-		// mb = latitude, nb = longitude
-		map.addMarker({lat:e.latLng.mb,lng:e.latLng.nb});
-		update_coords_in_form(e.latLng.nb,e.latLng.mb);
+		map.addMarker({lat:e.latLng.lat(),lng:e.latLng.lng()});
+		update_coords_in_form(e.latLng.lng(),e.latLng.lat());
     },
 	scrollwheel: false,
     panControl : false,
@@ -70,15 +70,14 @@ function init_map(curr_lat,curr_lng){
 	});
 
 	map.addMarker({
-        lat: curr_lat,
-        lng: curr_lng,
-        title: 'Your Location',
-        infoWindow: {
-		  content: '<p>HTML Content</p>'
+        lat: lat,
+        lng: lng,
+    	infoWindow: {
+			content: "Your Ride Starting Point"
 		}
 	});
 
-	update_coords_in_form(curr_lng,curr_lat);
+	update_coords_in_form(lng,lat);
 	return map;
 }
 
@@ -86,7 +85,7 @@ function init_map(curr_lat,curr_lng){
 // Called by: events/show
 // Populates map with data from db
 function init_populated_map(data,lat,lng) {
-	var map = new GMaps({
+	map = new GMaps({
     el: el,
     lat: lat,
     lng: lng,
@@ -127,7 +126,6 @@ function init_populated_map(data,lat,lng) {
 				event_id: event["_id"]
 			},
 			click: function(e){
-
 				$.ajax({
 					url: '/events/more_info/' + e["details"]["event_id"],
 					type: 'GET'
@@ -176,7 +174,7 @@ function put_address_flow(map) {
 	f.appendChild(s);
 	$('#geocoding_div').append(f);
 
-	$('#geocoding_form').before('<label>Address</label><br>');
+	$('#geocoding_form').before('<label>Enter an address to change your ride\'s starting position:</label><br>');
 
 	$('#geocoding_form').submit(function(e){
 		e.preventDefault();

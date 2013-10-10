@@ -1,1 +1,27 @@
-<h4><%= @event.title %></h4>
+<script>
+$(document).ready(function(){
+init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>);
+});
+</script>
+<h4><%= @event.title %></h4> <span><%= link_to 'Edit',edit_event_path(@event.id) %></span>
+<div id="map" class="map_half"></div><br>
+<ul class="list-group">
+	<li class="list-group-item">
+		<p><b>When:</b> <%= @event.event_date %></p>
+	</li>
+	<li class="list-group-item">
+		<p><b>Description:</b> <%= @event.description %></p>
+	</li>
+	<li class="list-group-item">
+		<p><b>Distance:</b> <%= @event.bicycle_ride.distance %> miles</p>
+	</li>
+	<li class="list-group-item">
+		<p><b>Pace:</b> <%= @descriptors["pace"][@event.bicycle_ride.pace][0] %></p>
+	</li>
+	<li class="list-group-item">
+		<p><b>Terrain:</b> <%= @descriptors["terrain"][@event.bicycle_ride.terrain][0] %></p>
+	</li>
+	<li class="list-group-item">
+		<p><b>Road Type:</b> <%= @descriptors["road_type"][@event.bicycle_ride.road_type][0] %></p>
+	</li>
+</div>

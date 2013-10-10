@@ -22,7 +22,7 @@ Rails3MongoidDevise::Application.routes.draw do
     collection do 
       get 'nearest'
       get 'more_info/:event_id', to: 'events#more_info'
-      get 'nearest_this_week'
+      get 'next_seven_days'
       get 'nearest_friends'
       get 'nearest_all'
     end

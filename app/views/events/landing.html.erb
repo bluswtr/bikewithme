@@ -8,12 +8,11 @@ $(document).ready(function(){
 <div class="container">
 	<!--h2>Join a Ride</h2-->
 	<div id="time" align="right">
-	<button type="button" class="btn btn-default">All</button>
-	<button type="button" class="btn btn-default">This Week</button>
-	<button type="button" class="btn btn-default">Next Week</button>
-	<button type="button" class="btn btn-default">Friends</button>
-	<br><br>
+		<button type="button" class="btn btn-default">All</button>
+		<%=link_to 'This Week', next_seven_days_events_path, rel:'nofollow', class:"btn btn-default",  method:'get', remote:'true' %>
+		<button type="button" class="btn btn-default">Friends</button>
+		<br><br>
 	</div>
-	<div id="map"></div>
+	<div id="map" class="map_full"></div>
 	<div id="content"></div>
 </div>

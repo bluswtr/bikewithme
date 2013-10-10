@@ -2,6 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#map {
+.map_full {
 	height: 600px;
+}
+
+.map_half {
+	height: 300px;
 }
