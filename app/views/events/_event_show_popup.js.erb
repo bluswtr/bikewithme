@@ -51,20 +51,23 @@ function user_content_helper(user_name,user_bio,event_id) {
 
 	// @@
 	// User Info
-	content+="<p>Organizer: " + user_name + "</p>";
-	if(!isEmpty(user_bio))
-		content+="<p>Bio: " + user_bio + "</p>";
+	// content+="<p>Organizer: " + user_name + "</p>";
+	// if(!isEmpty(user_bio))
+	// 	content+="<p>Bio: " + user_bio + "</p>";
 
 	// @@
 	// Details, Watch, Join
-	content+="<a href=#>More Details</a><br>";
-	content+="<div class=\"row\">";
+	// content+="<a href=#>More Details</a><br>";
+	// content+="<div class=\"row\">";
+
+	content+="<br><div class=\"col-md-6\">";
+	content+="<a href=/events/" + event_id + " class=\"btn btn-primary btn-lg btn-block\">More Details</a></div><br>";
 
 	// watch
 	content+="<div class=\"col-md-6\">";
 	content+="<a href=/events/" + event_id + "/watch data-remote=true data-method=post class=\"col-md-6 btn btn-primary btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
 	content+="<span>Watch Ride </span><span class=\"glyphicon glyphicon-eye-open\"></span></a>";
-	//content+="<%= link_to '<span>Watch Ride </span><span class=\"glyphicon glyphicon-eye-open\"></span>',event_watch_index_path(@event.id), rel:'nofollow', class:'col-md-6 btn btn-primary btn-lg btn-block', method:'post', remote:'true' %>";
+
 	content+="<a href=/events/" + event_id + "/watch/<%=current_user.id%> data-remote=true data-method=delete class=\"col-md-6 btn btn-primary btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
 	content+="<span>Stop Watching Ride </span><span class=\"glyphicon glyphicon-eye-close\"></span></a>";
 	content+="<br></div>";

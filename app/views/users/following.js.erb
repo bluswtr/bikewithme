@@ -2,8 +2,8 @@ var div_id = $('#content');
 var content = "<h4>Following</h4>";
 
 <% if @user.followees_count_by_type("user") != 0 %>
-	<% @user.followees_by_type("user").each do |follow| %>
-		content += "<%=follow.name%>" + "<br>";
+	<% @user.followees_by_type("user").each do |following| %>
+		content += "<%= escape_javascript link_to following.name, user_path(following.id) %>" + "<br>";
 	<% end%>
 <% end%>
 

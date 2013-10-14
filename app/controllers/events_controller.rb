@@ -16,7 +16,26 @@ class EventsController < ApplicationController
 	end
 
 	def update
+		event = Event.find(params[:id])
 		flash.now[:notice] = "Event updated"
+
+		longitude = params["longitude"].to_f
+		latitude = params["latitude"].to_f 
+
+		event.title = params[:event][:title]
+		event.description = params[:event][:description]
+		event.meeting_point = [longitude,latitude]
+		event.event_date = to_utc(params)
+		event.bicycle_ride.distance = params[:bicycle_ride][:distance]
+		event.bicycle_ride.pace = params[:bicycle_ride][:pace]
+		event.bicycle_ride.terrain = params[:bicycle_ride][:terrain]
+		event.bicycle_ride.road_type = params[:bicycle_ride][:road_type]
+
+		if event.changed?
+			event.save
+		end
+
+		redirect_to event_url(event), notice: "Event Updated"
 	end
 
 	def landing
@@ -110,10 +129,11 @@ class EventsController < ApplicationController
 					distance:params["bicycle_ride"]["distance"],
 					road_type:params["bicycle_ride"]["road_type"]}
 					)
-		flash.now[:notice] = "Event saved" 
-		respond_to do |format|
-			format.js { render :partial => "show" }
-		end
+		#flash.now[:notice] = "Event saved" 
+		# respond_to do |format|
+		# 	format.js { render :partial => "show" }
+		# end
+		redirect_to event_url(@event), notice: "Event Saved"
 	end
 
 	def nearest

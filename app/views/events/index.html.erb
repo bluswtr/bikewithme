@@ -1,4 +1,11 @@
-<h4>My Events</h4>
+<h3 class='title_inline'>My Events</h3> <%= link_to raw('<span class="glyphicon glyphicon-plus-sign"></span>'), new_event_path, :class => 'icon-lg red'%><br><br>
+
+<table class='table table-hover'>
 <% current_user.events.each do |event| %>
-<%= link_to event.title, event_path(event.id) %><br>
+	<tr><td>
+			<h4 class='title-inline'><%= link_to event.title, event_path(event.id) %></h4>
+		</td><td class='td_bar warning'>
+			<%= link_to raw('<span class="glyphicon glyphicon-edit"></span>'),edit_event_path(event.id), :class => 'icon-lg' %>
+		</td></tr>
 <% end %>
+</table>

@@ -1,9 +1,9 @@
 <script>
 $(document).ready(function(){
-init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>);
+	init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>);
 });
 </script>
-<h4><%= @event.title %></h4> <span><%= link_to 'Edit',edit_event_path(@event.id) %></span>
+<span><h4 style="display:inline"><%= @event.title %></h4> <%= link_to raw('<span class="glyphicon glyphicon-edit"></span>'),edit_event_path(@event.id) %></span><br><br>
 <div id="map" class="map_half"></div><br>
 <ul class="list-group">
 	<li class="list-group-item">
@@ -24,4 +24,6 @@ init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>);
 	<li class="list-group-item">
 		<p><b>Road Type:</b> <%= @descriptors["road_type"][@event.bicycle_ride.road_type][0] %></p>
 	</li>
+	<br>
+	<%= link_to raw('Edit <span class="glyphicon glyphicon-edit"></span>'),edit_event_path(@event.id), :class => "btn btn-primary btn-lg" %>
 </div>

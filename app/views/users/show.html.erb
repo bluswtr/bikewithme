@@ -24,7 +24,9 @@
 
 	<li class="list-group-item">
 		<h4><%= link_to "Events Watched", user_my_watches_path(@user.id), :remote => true %>  <%= @user.followees_count_by_type("event")%></h4>
-		<h4><%= link_to "Events Joined", user_my_joins_path(@user.id), :remote => true %>  <%= @user.joinees_count_by_type("event")%></h4>
+		<% if current_user.id == @user.id %>
+			<h4><%= link_to "Events Joined", user_my_joins_path(@user.id), :remote => true %>  <%= @user.joinees_count_by_type("event")%></h4>
+		<% end %>
 	</li>
 
 	<li class="list-group-item">

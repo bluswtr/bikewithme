@@ -3,7 +3,7 @@ var content = "<h4>Joined</h4>";
 
 <% if @user.joinees_count_by_type("event") != 0 %>
 	<% @user.joinees_by_type("event").each do |join| %>
-		content += "<%=join.title%>" + "<br>";
+		content += "<%=escape_javascript link_to join.title, event_path(join.id) %>" + "<br>";
 	<% end%>
 <% end%>
 div_id.html(content);

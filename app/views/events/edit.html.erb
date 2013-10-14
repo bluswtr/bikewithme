@@ -5,46 +5,67 @@ $(document).ready(function(){
 });
 </script>
 
-<h4 style="display:inline">Editing: <%= @event.title %></h4><br><br>
-<div id="map" class="map_half"></div>
-<a name="form"></a>
-<!-- backend request to our db -->
-<div id="geocoding_div"></div><br>
-<%= form_for @event, url: {action: "update"} do |event| %>
+<h3 style="display:inline"><%= @event.title %></h3><br><br>
+<div id="map" class="map_half"></div><br>
 
-	<div class="input-group">
-		<span class="input-group-addon"><%= event.label :title %></span>
+<!-- type address here -->
+<form class='form-group' role='form' id='geocoding_form'>
+	<div class="form-group">
+		<label>Use a different location</label>
+		<input type='textfield' id='address' class='form-control'>
+		<input type='submit'>
+	</div>
+</form><br>
+
+<%= form_for @event, :role => 'form', url: {action: "update"} do |event| %>
+
+	<div class="form-group">
+		<%= event.label :title %>
 		<%= event.text_field :title, :class => 'form-control' %>
 	</div><br>
 
-	<div class="input-group">
-	  <span class="input-group-addon"><%= event.label :meeting_point %></span>
+	<div class="form-group">
+	  	<%= event.label :meeting_point %>
 		<%= event.text_field :meeting_point, :class => 'form-control' %>
 	</div><br>
 
-	<p><%= select_datetime Time.now, prefix: :event_date, ampm: true, start_year: Time.now.year, end_year: Time.now.year + 1, order: [:day, :month, :year]%></p>
-	<p><%= event.label :description %><br />
-	<%= event.text_area :description, :placeholder => 'A fun ride. Come one, come all.' %></p>
+	<div class="form-group">
+		<%= event.label :event_date, 'Date & Time' %><br>
+		<%= select_datetime @event.event_date, { prefix: :event_date, ampm: true, start_year: @event.event_date.year, end_year: Time.now.year + 1, order: [:day, :month, :year]} , {:class => 'form-control'} %>
+	</div><br>
+
+	<div class="form-group">
+		<%= event.label :description %>
+		<%= event.text_area :description, :class => 'form-control', :rows => '3', :placeholder => 'A fun ride. Come one, come all.' %>
+	</div><br>
+
 	<%= event.hidden_field :activity_id, :value =>1 %>
 	<input type=hidden name=longitude id=longitude>
 	<input type=hidden name=latitude id=latitude>
-	
-	<%= fields_for :bicycle_ride do |bicycle_ride_form| %>		
-			<div class="input-group">
-		  		<span class="input-group-addon"><%= bicycle_ride_form.label :distance %></span>
-				<%= bicycle_ride_form.text_field :distance, :placeholder => 'Miles', :class => 'form-control' %>
-			</div><br>
+	<%= fields_for :bicycle_ride do |bicycle_ride_form| %>
 
-			<p><%= bicycle_ride_form.label :pace %>
-				<%= bicycle_ride_form.select(:pace, @descriptors["pace"], :selected => @descriptors["pace"][@event.bicycle_ride.pace][0]) %></p>
+		<div class="form-group">
+	  		<%= bicycle_ride_form.label :distance %> (in miles)
+			<%= bicycle_ride_form.text_field :distance, :class => 'form-control', :value => @event.bicycle_ride.distance %>
+		</div><br>
 
-			<p><%= bicycle_ride_form.label :terrain %>
-			<%= bicycle_ride_form.select(:terrain, @descriptors["terrain"], :selected => @descriptors["terrain"][@event.bicycle_ride.terrain][0]) %></p>
-			
-			<p><%= bicycle_ride_form.label :road_type %>
-			<%= bicycle_ride_form.select(:road_type, @descriptors["road_type"], :selected => @descriptors["road_type"][@event.bicycle_ride.road_type][0]) %></p>
-	<% end%>
-	<div><%= event.submit "Update Event" %></div>
+		<div class="form-group">
+		<%= bicycle_ride_form.label :pace %>
+		<%= bicycle_ride_form.select :pace, @descriptors["pace"], {}, { :class => 'form-control', :selected => @descriptors["pace"][@event.bicycle_ride.pace] }%>
+		</div><br>
+
+		<div class="form-group">
+			<%= bicycle_ride_form.label :terrain %>
+			<%= bicycle_ride_form.select :terrain, @descriptors["terrain"], {}, { :class => 'form-control', :selected => @descriptors["terrain"][@event.bicycle_ride.terrain]} %></div><br>
+
+		<div class="form-group">
+			<%= bicycle_ride_form.label :road_type %>
+			<%= bicycle_ride_form.select :road_type, @descriptors["road_type"], {}, { :class => 'form-control', :selected => @descriptors["road_type"][@event.bicycle_ride.road_type]} %>
+		</div><br>
+	<% end %>
+
+	<div><%= event.submit "Update Event", :class => "btn btn-warning btn-lg" %></div><br>
+	<%= link_to raw('Delete <span class="glyphicon glyphicon-remove"></span>'),edit_event_path(@event.id), :class => "btn btn-danger btn-lg" %>
 <% end %>
 
 

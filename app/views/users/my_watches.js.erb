@@ -3,7 +3,7 @@ var content = "<h4>Watching</h4>";
 
 <% if @user.followees_count_by_type("event") != 0 %>
 	<% @user.followees_by_type("event").each do |watch| %>
-		content += "<%=watch.title%>" + "<br>";
+		content += "<%= escape_javascript link_to watch.title, event_path(watch.id) %>" + "<br>";
 	<% end%>
 <% end%>
 

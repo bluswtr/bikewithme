@@ -6,15 +6,15 @@ function geolocate() {
 
 	if (navigator.geolocation) {
 	    navigator.geolocation.getCurrentPosition(function(position){
-		    var map = init_map(position.coords.latitude,position.coords.longitude);
-		    put_address_flow(map);
+			var map = init_map(position.coords.latitude,position.coords.longitude);
+			put_address_flow(map);
 		},function(error){
-		    // please add in newer versions: use ip address to determine nearest location?
-		    alert("sorry, cannot get your location\n turn on your location settings in:");
+			// please add in newer versions: use ip address to determine nearest location?
+			alert("sorry, cannot get your location\n turn on your location settings in:");
 		});
 	} else {
-	    //provide links to Firefox 3.5
-	    alert("your browser doesn't support geolocation");
+		//provide links to Firefox 3.5
+		alert("your browser doesn't support geolocation");
 	}
 
 }
@@ -161,20 +161,6 @@ function event_content_helper(event_content,options) {
 // used in events/show, events/new
 // gives users the option of using an address to find desired location
 function put_address_flow(map) {
-	var f = document.createElement("form");
-	var s = document.createElement("input");
-	var t = document.createElement("input");
-
-	f.setAttribute('id','geocoding_form');
-	t.setAttribute('type','textfield');
-	t.setAttribute('id','address');
-	s.setAttribute('type','submit');
-
-	f.appendChild(t);
-	f.appendChild(s);
-	$('#geocoding_div').append(f);
-
-	$('#geocoding_form').before('<label>Enter an address to change your ride\'s starting position:</label><br>');
 
 	$('#geocoding_form').submit(function(e){
 		e.preventDefault();
@@ -185,7 +171,7 @@ function put_address_flow(map) {
 					var latlng = results[0].geometry.location;
 					map.setCenter(latlng.lat(),latlng.lng());
 					map.removeMarkers();
-					map.addMarker({lat: latlng.lat(),lng: latlng.lng()});
+					map.addMarker({lat:latlng.lat(),lng:latlng.lng()});
 					update_coords_in_form(latlng.lng(),latlng.lat());
 				}
 			}
