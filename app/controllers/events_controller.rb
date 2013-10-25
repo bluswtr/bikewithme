@@ -17,7 +17,6 @@ class EventsController < ApplicationController
 
 	def update
 		event = Event.find(params[:id])
-		flash.now[:notice] = "Event updated"
 
 		longitude = params["longitude"].to_f
 		latitude = params["latitude"].to_f 
@@ -129,10 +128,7 @@ class EventsController < ApplicationController
 					distance:params["bicycle_ride"]["distance"],
 					road_type:params["bicycle_ride"]["road_type"]}
 					)
-		#flash.now[:notice] = "Event saved" 
-		# respond_to do |format|
-		# 	format.js { render :partial => "show" }
-		# end
+
 		redirect_to event_url(@event), notice: "Event Saved"
 	end
 

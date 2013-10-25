@@ -47,9 +47,6 @@ class User
   field :bio
   field :image
 
-  # 1st pass: during sign up do a diff between our db and fb data
-  # 2nd pass: anytime the user requests it using the
-  #           "find friend/followers" feature
   has_and_belongs_to_many :contacts 
 
   ##
@@ -57,6 +54,8 @@ class User
   # by default. In the app, owner shows up as the organizer
   has_many :events
 
+  # Does the user's facebook friend list need to be updated? State goes here.
+  field :update_fb_friends, :type => Boolean, :default => 1
 
   ## Confirmable
   # field :confirmation_token,   :type => String
@@ -104,24 +103,8 @@ class User
     end
   end
 
-  def self.create_friendlist(auth)
-    user = User.where(:provider => auth.provider, :uid => auth.uid).first
-    response = HTTParty.get("https://graph.facebook.com/" + auth.uid + "/friends?access_token=" + auth.credentials.token)
-    #puts response.body, response.code, response.message, response.headers.inspect
-    #puts response.yaml
-    friendlist_hash = JSON.parse response.body
-    #user.contacts << friendlist_hash["data"]
+  # def self.create_friendlist(auth)
 
-    #contact = user.contacts.create(uid:"5", name:"user mcuserton")
-
-    friendlist_hash["data"].each do |contact|
-      response = HTTParty.get("https://graph.facebook.com/" + contact["id"] + "/picture?redirect=false&access_token=" + auth.credentials.token)
-      image_hash = JSON.parse response.body
-      user.contacts.create(name: contact["name"], 
-                           _id: contact["id"], 
-                           image: image_hash["data"]["url"])
-      puts "contact " + contact["name"] + "\n"
-    end
-  end
+  # end
 
 end

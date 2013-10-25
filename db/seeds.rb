@@ -10,12 +10,12 @@
 puts 'DEFAULT USERS'
 Follow.delete_all
 User.delete_all
-
 Contact.delete_all
-Contact.create(name: user.name, _id: user.id, email:user.email)
 
 user = User.create! :name => ENV['ADMIN_NAME'].dup, :email => ENV['ADMIN_EMAIL'].dup, :password => ENV['ADMIN_PASSWORD'].dup, :password_confirmation => ENV['ADMIN_PASSWORD'].dup
 puts 'user: ' << user.name
+
+Contact.create(name: user.name, _id: user.id, email:user.email)
 
 open("/Users/bluswtr/Documents/01_Programming/Apps/bikewithme/db/users.txt") do |some_users|
 	some_users.read.each_line() do |a_user|
@@ -25,11 +25,7 @@ open("/Users/bluswtr/Documents/01_Programming/Apps/bikewithme/db/users.txt") do 
 							  password:password,
 							  password_confirmation:password_confirmation,
 							)
-		#p user
-		contact = Contact.create(name: name, _id: user.id, email:email)
-		#p contact
-	# 	contact = Contact.find(contact._id)
-	# p contact
+		contact = Contact.create(name: name, email:email)
 	end
 
 end

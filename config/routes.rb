@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails3MongoidDevise::Application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
@@ -5,7 +7,7 @@ Rails3MongoidDevise::Application.routes.draw do
     root :to => 'events#landing'
   end
   
-  root :to => "events#index"
+  root :to => "events#landing"
   devise_for :users
   resources :users do
       get 'followers'
@@ -29,5 +31,7 @@ Rails3MongoidDevise::Application.routes.draw do
     resources :watch, only: [:destroy, :create]
     resources :join, only: [:destroy, :create]
   end
+
+  mount Sidekiq::Web, at: '/sidekiq'
 
 end

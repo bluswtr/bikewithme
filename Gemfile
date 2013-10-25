@@ -30,7 +30,7 @@ gem "cucumber-rails", ">= 1.3.1", :group => :test, :require => false
 gem "launchy", ">= 2.2.0", :group => :test
 gem "capybara", ">= 2.0.3", :group => :test
 gem "factory_girl_rails", ">= 4.2.0", :group => [:development, :test]
-gem "devise", ">= 2.2.3"
+gem "devise", ">= 2.2.3"	# user signup and authentication mechanics
 gem "quiet_assets", ">= 1.0.2", :group => :development
 gem "figaro", ">= 0.6.3"
 gem "better_errors", ">= 0.7.2", :group => :development
@@ -41,4 +41,10 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'httparty'
 gem 'mongo_followable', '~>0.3.2'
-gem 'mongo_joinable', :path => "lib/mongo_joinable"
+gem 'mongo_joinable', :path => "lib/mongo_joinable" # allows join-ability to events
+gem 'sidekiq' # run code in background using threads; provides concurrency
+gem 'kiqstand' # ensures that MongoDB sessions are disconnected after each worker runs; helps avoid overloading mongo
+gem 'sinatra', require: false # required by sidekiq web app
+gem 'slim' # required by sidekiq web app
+
+
