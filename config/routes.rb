@@ -15,6 +15,9 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'my_watches'
       get 'my_joins'
       resources :follow, only: [:destroy, :create]
+      collection do
+        get 'friends'
+      end
       #resources :events, only: [:index]
       #resources :follow, only: :update
       #resources :unfollow, only: :update
@@ -27,6 +30,7 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'next_seven_days'
       get 'nearest_friends'
       get 'nearest_all'
+      get 'invite'
     end
     resources :watch, only: [:destroy, :create]
     resources :join, only: [:destroy, :create]

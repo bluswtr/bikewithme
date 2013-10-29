@@ -38,6 +38,12 @@ class UsersController < ApplicationController
 		end
 	end
 
+	def friends
+		@friend_ids = current_user.contact_ids
+		@friends = current_user.contacts.find(@friend_ids)
+		render :json => @friends.to_json
+	end
+
 end
 
 

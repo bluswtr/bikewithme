@@ -107,6 +107,12 @@ class EventsController < ApplicationController
 		render nothing: true
 	end
 	
+	def invite
+		respond_to do |format|
+			format.html
+		end
+	end
+
 	def create
 		##
 		# About mongodb geospatial insertions: mongodb will take an array with two 
