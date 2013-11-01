@@ -43,7 +43,6 @@ class UsersController < ApplicationController
 		@friends = current_user.contacts.find(@friend_ids)
 		render :json => @friends.to_json
 	end
-
 end
 
 

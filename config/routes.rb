@@ -18,9 +18,6 @@ Rails3MongoidDevise::Application.routes.draw do
       collection do
         get 'friends'
       end
-      #resources :events, only: [:index]
-      #resources :follow, only: :update
-      #resources :unfollow, only: :update
   end
 
   resources :events do
@@ -30,8 +27,10 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'next_seven_days'
       get 'nearest_friends'
       get 'nearest_all'
-      get 'invite'
+      get 'compose_invite'
+      post 'invite'
     end
+    #resources :invite
     resources :watch, only: [:destroy, :create]
     resources :join, only: [:destroy, :create]
   end

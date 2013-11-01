@@ -55,7 +55,7 @@ class EventsController < ApplicationController
 				format.js { render :partial => "event_show_popup" }
 			end
 		else
-			# sign in to see more popup?
+			# perhaps prompt the user to signup?
 			render nothing: true
 		end
 	end
@@ -107,10 +107,15 @@ class EventsController < ApplicationController
 		render nothing: true
 	end
 	
-	def invite
+	def compose_invite
 		respond_to do |format|
 			format.html
 		end
+	end
+
+	def invite
+		UserMailer.invite(params,current_user).deliver
+		render nothing: true
 	end
 
 	def create
@@ -135,7 +140,7 @@ class EventsController < ApplicationController
 					road_type:params["bicycle_ride"]["road_type"]}
 					)
 
-		redirect_to event_url(@event), notice: "Event Saved"
+		redirect_to compose_invite_events_url(), notice: "Event Saved"
 	end
 
 	def nearest

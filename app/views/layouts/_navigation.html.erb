@@ -10,8 +10,7 @@
         <%= link_to "Bike With Me", root_path, :class => 'navbar-brand' %>
         <% if user_signed_in? %>
           <p class="navbar-text pull-right">
-          <%= current_user.name %>
-          &nbsp;&nbsp;
+          <%= current_user.name %>&nbsp;&nbsp;
           <span class="glyphicon glyphicon-user"></span></p>
         <% end %>
     </div>

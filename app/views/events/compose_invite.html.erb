@@ -1,0 +1,27 @@
+<html lang="en" ng-app="inviteApp">
+<body ng-controller="FriendListCtrl">
+	<div class="container">
+		<div class="row">
+		    <div class="col-md-6 page-header">
+		    	<h1>Compose Invite</h1>
+		    	<%= form_tag action: "invite" do |event| %>
+					To: <textarea rows="5" class="form-control" id="email_list" name="to">{{to_field}}</textarea><br \>
+					Subject: <input type="textfield" class="form-control" name="subject" value="<%= current_user.name %> wants you to go biking with them :-)"><br \>
+					Message: <textarea rows="5" class="form-control" name=message>testing</textarea><br \>
+					<input type="submit" method="post"><br \><br \>
+				<% end %>
+		    </div>
+		</div>
+		<div class="row">
+		    <div class="pull-left col-md-6">
+			Search Friends <span class="glyphicon glyphicon-search"></span><input type="textfield" class="form-control" ng-model="query"><br \>
+			</div>
+		</div>
+		<div class="row">
+			<div ng-repeat="friend in friends | filter:query | orderBy:orderProp">
+				<button type="button" class="btn btn-md btn-default col-xs-12 col-sm-6 col-md-4" ng-click="addFriend(friend.email)"><img class="pull-left img-rounded" ng-src = "{{friend.image}}"> <p class="pull-left" style="padding-left:6px;"> {{friend.name}}</p></button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
