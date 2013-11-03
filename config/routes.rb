@@ -30,7 +30,7 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'compose_invite'
       post 'invite'
     end
-    #resources :invite
+    resources :guest, only: [:create]
     resources :watch, only: [:destroy, :create]
     resources :join, only: [:destroy, :create]
   end

@@ -7,12 +7,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if @user.persisted?
       sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
       set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
-      #User.create_friendlist(request.env["omniauth.auth"])
-      #@db_user = User.where(:provider => auth.provider, :uid => fb_uid).first
 
       ##
       # if the user is NEW or a Facebook Realtime Update was initiated
-      # the flag 'update_fb_friends' in the user object will be raised
+      # 'update_fb_friends' in the user object will be set to true
       if(@user.update_fb_friends && defined? @user.uid)
         FacebookWorker.perform_async(auth.credentials.token,auth.uid.to_s,@user.id.to_s)
       end

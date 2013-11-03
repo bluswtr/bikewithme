@@ -50,36 +50,32 @@ function user_content_helper(user_name,user_bio,event_id) {
 	var content="";
 
 	// @@
-	// User Info
-	// content+="<p>Organizer: " + user_name + "</p>";
-	// if(!isEmpty(user_bio))
-	// 	content+="<p>Bio: " + user_bio + "</p>";
-
-	// @@
 	// Details, Watch, Join
-	// content+="<a href=#>More Details</a><br>";
-	// content+="<div class=\"row\">";
 
-	content+="<br><div class=\"col-md-6\">";
-	content+="<a href=/events/" + event_id + " class=\"btn btn-primary btn-lg btn-block\">More Details</a></div><br>";
+	content+="<br><div class=\"container\">";
+	content+="<div class=\"row\">";
+	content+="<div class=\"col-md-6\">";
+	content+="<a href=/events/" + event_id + " class=\"btn btn-info btn-lg btn-block\"><span>More Details </span><span class=\"glyphicon glyphicon-asterisk\"></span></a></div></div>";
 
 	// watch
+	content+="<div class=\"row\">";
 	content+="<div class=\"col-md-6\">";
-	content+="<a href=/events/" + event_id + "/watch data-remote=true data-method=post class=\"col-md-6 btn btn-primary btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
+	content+="<a href=/events/" + event_id + "/watch data-remote=true data-method=post class=\"btn btn-default btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
 	content+="<span>Watch Ride </span><span class=\"glyphicon glyphicon-eye-open\"></span></a>";
 
-	content+="<a href=/events/" + event_id + "/watch/<%=current_user.id%> data-remote=true data-method=delete class=\"col-md-6 btn btn-primary btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
-	content+="<span>Stop Watching Ride </span><span class=\"glyphicon glyphicon-eye-close\"></span></a>";
-	content+="<br></div>";
+	content+="<a href=/events/" + event_id + "/watch/<%=current_user.id%> data-remote=true data-method=delete class=\"btn btn-success btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
+	content+="<span>You're Watching </span><span class=\"glyphicon glyphicon-eye-open\"></span></a>";
+	content+="</div></div>";
 
 	// join
+	content+="<div class=\"row\">";
 	content+="<div class=\"col-md-6\">";
-	content+="<a href=/events/" + event_id + "/join data-remote=true data-method=post class=\"btn btn-primary btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">Join Ride</a>";
+	content+="<a href=/events/" + event_id + "/join data-remote=true data-method=post class=\"btn btn-default btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">Join Ride</a>";
 
-	content+="<a href=/events/" + event_id + "/join/<%=current_user.id%> data-remote=true data-method=delete class=\"col-md-6 btn btn-primary btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
-	content+="<span>Leave Ride</span></a>";
-	content+="</div>";
-	content+="</div><!-- end row-->";
+	content+="<a href=/events/" + event_id + "/join/<%=current_user.id%> data-remote=true data-method=delete class=\"btn btn-success btn-lg btn-block\" data-toggle=\"button\" rel=\"nofollow\">";
+	content+="<span>You're Going </span><span class=\"glyphicon glyphicon-ok-sign\"></span></a>";
+	content+="</div></div>";
+	content+="</div><!--end container-->";
 	return(content);
 }
 
