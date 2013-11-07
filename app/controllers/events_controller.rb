@@ -107,11 +107,11 @@ class EventsController < ApplicationController
 		render nothing: true
 	end
 	
-	def compose_invite
-		respond_to do |format|
-			format.html
-		end
-	end
+	# def compose_invite
+	# 	respond_to do |format|
+	# 		format.html
+	# 	end
+	# end
 
 	def invite
 		UserMailer.invite(params,current_user).deliver

@@ -1,25 +1,48 @@
 <html lang="en" ng-app="inviteApp">
-<body ng-controller="FriendListCtrl">
+<body ng-controller="FriendListCtrl" ng-init="init('<%= @event.id %>')">
+	<!-- javascript modified from Facebook API -->
+	<div id="fb-root"></div>
+	<script>
+	  window.fbAsyncInit = function() {
+	    // init the FB JS SDK
+	    FB.init({
+	      appId      : '<%= ENV["APP_ID"] %>',                        // App ID from the app dashboard
+	      channelUrl : '//'+ window.location.host +'/channel.html', // Channel file for x-domain comms
+	      status     : true,                                 // Check Facebook Login status
+	      xfbml      : true                                  // Look for social plugins on the page
+	    });
+
+	    // Additional initialization code such as adding Event Listeners goes here
+	  };
+
+	  // Load the SDK asynchronously
+	  (function(d, s, id){
+	     var js, fjs = d.getElementsByTagName(s)[0];
+	     if (d.getElementById(id)) {return;}
+	     js = d.createElement(s); js.id = id;
+	     js.src = "//connect.facebook.net/en_US/all.js";
+	     fjs.parentNode.insertBefore(js, fjs);
+	   }(document, 'script', 'facebook-jssdk'));
+	</script>
+
 	<div class="container">
 		<div class="row">
-		    <div class="col-md-6 page-header">
-		    	<h1>Compose Invite</h1>
-		    	<%= form_tag action: "invite" do |event| %>
-					To: <textarea rows="5" class="form-control" id="email_list" name="to">{{to_field}}</textarea><br \>
-					Subject: <input type="textfield" class="form-control" name="subject" value="<%= current_user.name %> wants you to go biking with them :-)"><br \>
-					Message: <textarea rows="5" class="form-control" name=message>testing</textarea><br \>
-					<input type="submit" method="post"><br \><br \>
-				<% end %>
-		    </div>
-		</div>
+			Search Friends <span class="glyphicon glyphicon-search"></span>
+			<input type="textfield" class="form-control" ng-model="query">
+		</div><br \>
 		<div class="row">
-		    <div class="pull-left col-lg-6 col-sm-12 col-xs-12">
-			Search Friends <span class="glyphicon glyphicon-search"></span><input type="textfield" class="form-control" ng-model="query"><br \>
+			<h3>Guests Invited</h3><div class="col-xs-12 col-sm-6 col-md-4 btn btn-md btn-default" ng-repeat="friend in invited | filter:query | orderBy:orderProp">
+				<img class="pull-left img-circle" ng-src = "{{friend.image}}"> 
+				<p class="pull-left" style="padding-left:6px;"> {{friend.name}}</p>
+				<p class="pull-right"> Invited</p>
 			</div>
-		</div>
+		</div><br \>
 		<div class="row">
-			<div ng-repeat="friend in friends | filter:query | orderBy:orderProp">
-				<button type="button" class="btn btn-md btn-default col-xs-12 col-sm-6 col-md-4" ng-click="addFriend(friend.email)"><img class="pull-left img-rounded" ng-src = "{{friend.image}}"> <p class="pull-left" style="padding-left:6px;"> {{friend.name}}</p></button>
+			<h3>Invite More Guests</h3><div ng-repeat="friend in not_yet_invited | filter:query | orderBy:orderProp">
+				<a href="/events/<%= @event.id %>/invite?contact_id={{friend._id}}" data-remote="true" data-method="post" class="btn btn-md btn-default col-xs-12 col-sm-6 col-md-4" data-toggle="button" rel="nofollow" ng-click="addFriend(friend.fb_uid,friend.name,'<%= event_url(@event.id) %>','<%= @event.id %>');">
+				<img class="pull-left img-circle" ng-src = "{{friend.image}}"> 
+				<p class="pull-left" style="padding-left:6px;"> {{friend.name}}</p>
+				<p class="pull-right"> Invite</p></a>
 			</div>
 		</div>
 	</div>

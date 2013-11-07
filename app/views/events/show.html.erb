@@ -9,6 +9,13 @@ $(document).ready(function(){
 	<% end %>
 <div id="map" class="map_half"></div><br>
 <ul class="list-group">
+	<% if @event.user == current_user && @event.joiners_count_by_type("user") != 0 %>
+	<li class="list-group-item">
+		<p><b>Joined:</b> <% @event.all_joiners.each do |joiner| %>
+			<%= joiner.name %> 
+			<% end %> </p>
+	</li>
+	<% end %>
 	<li class="list-group-item">
 		<p><b>When:</b> <%= @event.event_date %></p>
 	</li>

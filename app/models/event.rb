@@ -3,6 +3,8 @@ class Event
   include Mongoid::Timestamps
   include Mongo::Followable::Followed
   include Mongo::Joinable::Joined
+  include Mongo::Invitable::Invited
+  include Mongo::Invitable::Inviter
 
   
   ##

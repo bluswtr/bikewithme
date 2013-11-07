@@ -3,7 +3,7 @@
 
 class Contact
   include Mongoid::Document
-  # include Mongo::Followable::Followed
+  include Mongo::Invitable::Invited
 
   has_and_belongs_to_many :users
   field :name

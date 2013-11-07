@@ -7,6 +7,11 @@ GIT
       sass (>= 3.2)
 
 PATH
+  remote: lib/mongo_invitable
+  specs:
+    mongo_invitable (0.3.2)
+
+PATH
   remote: lib/mongo_joinable
   specs:
     mongo_joinable (0.3.2)
@@ -105,6 +110,8 @@ GEM
       railties (>= 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
+    fb-channel-file (0.0.2)
+      rails (>= 3.0)
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
@@ -283,6 +290,7 @@ DEPENDENCIES
   devise (>= 2.2.3)
   email_spec (>= 1.4.0)
   factory_girl_rails (>= 4.2.0)
+  fb-channel-file
   figaro (>= 0.6.3)
   httparty
   jquery-rails
@@ -290,6 +298,7 @@ DEPENDENCIES
   launchy (>= 2.2.0)
   less-rails
   mongo_followable (~> 0.3.2)
+  mongo_invitable!
   mongo_joinable!
   mongoid (>= 3.1.2)
   mongoid-rspec (>= 1.7.0)
