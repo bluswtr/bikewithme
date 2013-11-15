@@ -34,8 +34,16 @@ $(document).ready(function(){
 	<li class="list-group-item">
 		<p><b>Road Type:</b> <%= @descriptors["road_type"][@event.bicycle_ride.road_type][0] %></p>
 	</li>
+	<li class="list-group-item">
+		<p><b>Privacy:</b> This Event is 
+		<% if @event.make_private %>
+			Private</p>
+		<% else %>
+			Public</p>
+		<% end %>
+	</li>
 	<br>
-	<% if @event.user == current_user %>
+	<% if @event.user == current_user && @event.user == current_user %>
 	<%= link_to raw('Edit <span class="glyphicon glyphicon-edit"></span>'),edit_event_path(@event.id), :class => "btn btn-primary btn-lg" %>
 	<% end %>
 </div>

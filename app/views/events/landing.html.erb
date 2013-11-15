@@ -11,7 +11,7 @@ $(document).ready(function(){
 		<%=link_to 'Add Event', new_event_path, class:"btn btn-primary pull-left" %>
 		<button type="button" class="btn btn-default">All</button>
 		<%=link_to 'This Week', next_seven_days_events_path, rel:'nofollow', class:"btn btn-default",  method:'get', remote:'true' %>
-		<button type="button" class="btn btn-default">Friends</button>
+		<%=link_to_function 'Friends', 'nearest_friends()', class:"btn btn-default",  method:'get', remote:'true' %>
 		<br><br>
 	</div>
 	<div class="container">

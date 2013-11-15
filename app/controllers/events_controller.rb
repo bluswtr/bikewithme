@@ -25,6 +25,7 @@ class EventsController < ApplicationController
 		event.description = params[:event][:description]
 		event.meeting_point = [longitude,latitude]
 		event.event_date = to_utc(params)
+		event.make_private = params[:event][:make_private]
 		event.bicycle_ride.distance = params[:bicycle_ride][:distance]
 		event.bicycle_ride.pace = params[:bicycle_ride][:pace]
 		event.bicycle_ride.terrain = params[:bicycle_ride][:terrain]
@@ -97,11 +98,6 @@ class EventsController < ApplicationController
 		end
 	end
 
-	def nearest_friends
-		puts "friends"
-		render nothing: true
-	end	
-
 	def nearest_all
 		puts "all"
 		render nothing: true
@@ -132,6 +128,7 @@ class EventsController < ApplicationController
 					title:params["event"]["title"],
 					meeting_point:[longitude,latitude],
 					event_date:date,
+					make_private:params["event"]["make_private"],
 					description:params["event"]["description"],
 					activity_id:params["event"]["activity_id"],
 					bicycle_ride:{pace:params["bicycle_ride"]["pace"],
@@ -140,33 +137,33 @@ class EventsController < ApplicationController
 					road_type:params["bicycle_ride"]["road_type"]}
 					)
 
-		redirect_to compose_invite_events_url(), notice: "Event Saved"
+		redirect_to new_event_invite_url(@event.id), notice: "Event Saved"
+	end
+
+	def nearest_friends
+		# TODO don't forget to take care of 0 or nil case
+		if(current_user.followers_count_by_type("user")==0)
+			respond_to do |format|
+				format.js { render :partial => "modal_no_friends_yet" }
+			end
+		else
+			event_data = Event.nearest("friends",lnglat,current_user)
+			# p event_data
+			render :json => event_data.to_json
+		end
 	end
 
 	def nearest
-		# query for the user and add to the hash somehow....
-		event_data = Hash.new
-		options = Array.new
-		nearest_events = Hash.new
-		distance = 50.fdiv(111.12)
-		$i = 0
-
 		session[:lat] = params["lat"].to_f
-		session[:lng] = params["lng"].to_f
-		Event.desc.limit(10).geo_near(lnglat).max_distance(distance).each do |event|
-			#p event.meeting_point
-			#nearest_events.push(event)
-			temp = Array.new
-			temp = User.find(event.user_id)
-			nearest_events[$i] = {user:temp, event: event}
-			$i+=1
-		end
-
-		options = Descriptor.get_options
-		event_data["nearest_events"] = nearest_events
-		event_data["options"] = options
-
-		#p event_data.to_json
+    	session[:lng] = params["lng"].to_f
+		# takes params[:filter] (friends, public, private), params[:lat], session[:lng], params[:distance]
+		event_data = Event.nearest("public",lnglat,nil)
+		# render unless event_data is nil
+		# if event_data
+		# 	render :json => event_data.to_json
+		# else
+		# 	# show error modal
+		# end
 		render :json => event_data.to_json
 	end
 

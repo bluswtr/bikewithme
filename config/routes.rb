@@ -27,8 +27,6 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'next_seven_days'
       get 'nearest_friends'
       get 'nearest_all'
-      #get 'compose_invite'
-      #post 'invite'
     end
     resources :invite, only: [:create, :new] do
       collection do

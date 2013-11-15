@@ -84,8 +84,15 @@ function init_map(lat,lng){
 // @@ 
 // Called by: events/show
 // Populates map with data from db
+
+
 function init_populated_map(data,lat,lng) {
-	map = new GMaps({
+	map = init_landing_map(lat,lng);
+	return populate_map(data);
+}
+
+function init_landing_map(lat,lng){
+	return new GMaps({
     el: el,
     lat: lat,
     lng: lng,
@@ -100,7 +107,9 @@ function init_populated_map(data,lat,lng) {
     mapTypeControl: false,
     overviewMapControl: false
 	});
+}
 
+function populate_map(data) {
 	var coords = new Array();
 	$.each(data["nearest_events"],function(index,value){
 		var event = data["nearest_events"][index]["event"];
@@ -161,7 +170,6 @@ function event_content_helper(event_content,options) {
 // used in events/show, events/new
 // gives users the option of using an address to find desired location
 function put_address_flow(map) {
-
 	$('#geocoding_form').submit(function(e){
 		e.preventDefault();
 		GMaps.geocode({
@@ -177,4 +185,14 @@ function put_address_flow(map) {
 			}
 		});
 	});
+}
+
+// get nearest friends from landing page
+function nearest_friends(){
+    $.get("/events/nearest_friends",
+		function(data) {
+			map.removeMarkers();
+			populate_map(data);
+		}
+	);
 }
