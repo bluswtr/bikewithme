@@ -41,10 +41,10 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'httparty'
 gem 'mongo_followable', '~>0.3.2'
-gem 'mongo_joinable', :path => "lib/mongo_joinable" # allows join-ability to events
+gem 'mongo_joinable', :path => "lib/joinable" # allows join-ability to events
 gem 'sidekiq' # run code in background using threads; provides concurrency
 gem 'kiqstand' # ensures that MongoDB sessions are disconnected after each worker runs; helps avoid overloading mongo
 gem 'sinatra', require: false # required by sidekiq web app
 gem 'slim' # required by sidekiq web app
-gem 'mongo_invitable', :path => "lib/mongo_invitable" # keeps track of invites for events
+gem 'mongo_invitable', :path => "lib/invitable" # keeps track of invites for events
 gem 'fb-channel-file' # Improves performance of FB Javascript SDK (recommended by FB)

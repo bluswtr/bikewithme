@@ -1,0 +1,9 @@
+[submodule "lib/joinable"]
+	path = lib/joinable
+	url = git@github.com:bluswtr/mongo_joinable.git
+[submodule "lib/invitable"]
+	path = lib/invitable
+	url = git@github.com:bluswtr/mongo_invitable.git
+[submodule "mongo_joinable"]
+	path = mongo_joinable
+	url = git@github.com:bluswtr/mongo_joinable.git
