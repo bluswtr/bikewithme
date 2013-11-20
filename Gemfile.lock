@@ -299,7 +299,7 @@ DEPENDENCIES
   mongo_followable (~> 0.3.2)
   mongo_invitable!
   mongo_joinable!
-  mongoid (>= 3.1.2)
+  mongoid (~> 3.1.2)
   mongoid-rspec (>= 1.7.0)
   omniauth
   omniauth-facebook
