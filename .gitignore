@@ -70,6 +70,9 @@ pickle-email-*.html
 # Textmate project files
 /*.tmproj
 
+# emacs temp files
+*~
+
 # vim artifacts
 **.swp
 
