@@ -1,11 +1,3 @@
-GIT
-  remote: git://github.com/anjlab/bootstrap-rails.git
-  revision: 271f73becbb2aea9c1b771e09419b9bc0287fe55
-  specs:
-    anjlab-bootstrap-rails (3.0.2.0)
-      railties (>= 3.0)
-      sass (>= 3.2)
-
 PATH
   remote: lib/invitable
   specs:
@@ -74,7 +66,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.3)
-    commonjs (0.2.7)
     connection_pool (1.1.0)
     cucumber (1.3.10)
       builder (>= 2.1.2)
@@ -135,12 +126,6 @@ GEM
       moped (~> 1.4)
     launchy (2.4.0)
       addressable (~> 2.3)
-    less (2.4.0)
-      commonjs (~> 0.2.7)
-    less-rails (2.4.2)
-      actionpack (>= 3.1)
-      less (~> 2.4.0)
-    libv8 (3.16.14.3)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -212,7 +197,6 @@ GEM
     redis (3.0.6)
     redis-namespace (1.3.2)
       redis (~> 3.0.4)
-    ref (1.0.5)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
@@ -252,9 +236,6 @@ GEM
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
     temple (0.6.7)
-    therubyracer (0.12.0)
-      libv8 (~> 3.16.14.0)
-      ref
     thin (1.6.1)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
@@ -278,7 +259,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  anjlab-bootstrap-rails!
   better_errors (>= 0.7.2)
   binding_of_caller (>= 0.7.1)
   bson_ext
@@ -295,7 +275,6 @@ DEPENDENCIES
   jquery-rails
   kiqstand
   launchy (>= 2.2.0)
-  less-rails
   mongo_followable (~> 0.3.2)
   mongo_invitable!
   mongo_joinable!
@@ -310,6 +289,5 @@ DEPENDENCIES
   sidekiq
   sinatra
   slim
-  therubyracer
   thin
   uglifier (>= 1.0.3)
