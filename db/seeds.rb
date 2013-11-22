@@ -17,7 +17,7 @@ puts 'user: ' << user.name
 
 Contact.create(name: user.name, _id: user.id, email:user.email)
 
-open("/Users/bluswtr/Documents/01_Programming/Apps/bikewithme/db/users.txt") do |some_users|
+open("db/users.txt") do |some_users|
 	some_users.read.each_line() do |a_user|
 		name,email,password,password_confirmation = a_user.chomp.split(",")
 		user = User.create(name:name,
@@ -39,7 +39,7 @@ end
 # end
 
 Event.delete_all
-open("/Users/bluswtr/Documents/01_Programming/Apps/bikewithme/db/events.txt") do |some_events|
+open("db/events.txt") do |some_events|
 	some_events.read.each_line() do |an_event|
 		title,latitude,longitude,description,activity_id,pace,terrain,distance,road_type = an_event.chomp.split("@")
 		user.events.create(  title:title,
@@ -57,7 +57,7 @@ open("/Users/bluswtr/Documents/01_Programming/Apps/bikewithme/db/events.txt") do
 end
 
 Descriptor.delete_all
-open("/Users/bluswtr/Documents/01_Programming/Apps/bikewithme/db/descriptors.txt") do |some_descriptors|
+open("db/descriptors.txt") do |some_descriptors|
 	some_descriptors.read.each_line() do |a_descriptor|
 		descriptor_arr = Array.new
 		descriptor_arr= a_descriptor.chomp.split(",")
