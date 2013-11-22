@@ -58,11 +58,11 @@ class Event
   ACTIVITY = ['Bicycle Ride',1]
 
   def self.private_only(lnglat,distance,query_limit)
-    Event.where(make_private: "1").desc.limit(query_limit).geo_near(lnglat).max_distance(distance)
+    Event.where(make_private: "1").desc.limit(query_limit).geo_near(lnglat).max_distance(distance).spherical
   end
 
   def self.public_only(lnglat,distance,query_limit)
-    Event.where(make_private: "0").desc.limit(query_limit).geo_near(lnglat).max_distance(distance)
+    Event.where(make_private: "0").desc.limit(query_limit).geo_near(lnglat).max_distance(distance).spherical
   end
 
   def self.friends_only(lnglat,distance,user,query_limit)
@@ -85,7 +85,7 @@ class Event
           end
         end
       end
-      Event.desc.limit(query_limit).geo_near(lnglat).max_distance(distance).find(@events)
+      Event.desc.limit(query_limit).geo_near(lnglat).max_distance(distance).spherical.find(@events)
     end
   end
 

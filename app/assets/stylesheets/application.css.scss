@@ -13,6 +13,9 @@
  *= require_tree .
 */
 
+
+body { padding-top: 70px;}
+
 // override bootstrap paths
 @font-face {
   font-family: 'Glyphicons Halflings';
@@ -23,7 +26,6 @@
        url('../assets/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 
-body { padding-top: 70px;}
 
 #flash_notice, #flash_alert {
   padding: 5px 8px;
