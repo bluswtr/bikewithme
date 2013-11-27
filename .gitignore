@@ -79,8 +79,6 @@ pickle-email-*.html
 # Ignore application configuration
 /config/application.yml
 README.textile
-/public/assets/application*
-/public/assets/jquery*
 
 # personal notes
 implementation_notes.txt
