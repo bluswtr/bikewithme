@@ -3,8 +3,8 @@
 /* Controllers */
 
 var inviteApp = angular.module('inviteApp', []);
-
-inviteApp.controller('FriendListCtrl', function FriendListCtrl($scope, $http) {
+FriendListCtrl.$inject = ['$scope', '$http']; // See: A note on minification in angularjs docs
+function FriendListCtrl($scope, $http) {
 
 	$scope.orderProp = 'name';
 
@@ -12,27 +12,26 @@ inviteApp.controller('FriendListCtrl', function FriendListCtrl($scope, $http) {
 
 	$scope.addFriend = function(fb_uid,name,link,event_id) {
 
+		FB.ui(
+			{
+			  method: 'send',
+			  link: link,
+			  to: fb_uid,
+			});
 
-		FB.ui({
-		  method: 'send',
-		  link: link,
-		  to: fb_uid
-		});
-
-		// remove new guest from 'not_yet_invited', add to 'invited'
+		// update arrays if send button was clicked
+		// bug alert: preferrably executed after user clicks but no callback available from facebook send module. therefore this executes EVERYTIME. solutions, ideas?
 		var index_to_delete = null;
 		$.each($scope.not_yet_invited, function(index,value){
 			if($scope.not_yet_invited[index]['fb_uid'] == fb_uid) {
-				console.log($scope.not_yet_invited[index]["name"]);
+				//console.log($scope.not_yet_invited[index]["name"]);
 				$scope.invited.push($scope.not_yet_invited[index]);
 				index_to_delete = index;
 			}
 		});
-
-		// js is unhappy about deleting things while still looping through it. So, deleting after it's done looping
 		if(index_to_delete != null)
 			$scope.not_yet_invited.splice(index_to_delete,1);
-	};
+	}
 
 	$scope.init = function (event_id) {
 		var root = window.location.host;
@@ -48,5 +47,7 @@ inviteApp.controller('FriendListCtrl', function FriendListCtrl($scope, $http) {
 			$scope.not_yet_invited = data;
 		});
 	}
-});
+}
+
+inviteApp.controller('FriendListCtrl',FriendListCtrl);
 
