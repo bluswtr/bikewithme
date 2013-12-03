@@ -6,7 +6,7 @@ function geolocate() {
 
 	if (navigator.geolocation) {
 	    navigator.geolocation.getCurrentPosition(function(position){
-			var map = init_map(position.coords.latitude,position.coords.longitude);
+			var map = init_map(position.coords.latitude,position.coords.longitude,1);
 			put_address_flow(map);
 		},function(error){
 			// please add in newer versions: use ip address to determine nearest location?
@@ -46,7 +46,16 @@ function update_coords_in_form(longitude,latitude) {
 	$('#latitude').val(latitude);
 }
 
-function init_map(lat,lng){
+function init_map(lat,lng,editable){
+
+	var allow_edit = "";
+	if(editable) {
+		allow_edit = function(e){
+			map.removeMarkers();
+			map.addMarker({lat:e.latLng.lat(),lng:e.latLng.lng()});
+			update_coords_in_form(e.latLng.lng(),e.latLng.lat());
+	    }
+	}
 
 	var map = new GMaps({
     el: el,
@@ -57,11 +66,7 @@ function init_map(lat,lng){
         style : 'SMALL',
         position: 'TOP_LEFT'
     },
-	click : function(e){
-		map.removeMarkers();
-		map.addMarker({lat:e.latLng.lat(),lng:e.latLng.lng()});
-		update_coords_in_form(e.latLng.lng(),e.latLng.lat());
-    },
+	click : allow_edit,
 	scrollwheel: false,
     panControl : false,
     streetViewControl : false,

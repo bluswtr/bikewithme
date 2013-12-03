@@ -1,6 +1,6 @@
 <script>
 $(document).ready(function(){
-	var map = init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>);
+	var map = init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>,1);
 	put_address_flow(map);
 });
 </script>
