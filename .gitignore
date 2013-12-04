@@ -86,3 +86,5 @@ implementation_notes.txt
 # production.log
 log/*.log
 
+# ignore precompiled files
+public/assets

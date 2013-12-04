@@ -47,8 +47,8 @@ function update_coords_in_form(longitude,latitude) {
 }
 
 function init_map(lat,lng,editable){
-
-	var allow_edit = "";
+	var map;
+	var allow_edit;
 	if(editable) {
 		allow_edit = function(e){
 			map.removeMarkers();
@@ -57,7 +57,7 @@ function init_map(lat,lng,editable){
 	    }
 	}
 
-	var map = new GMaps({
+	map = new GMaps({
     el: el,
     lat: lat,
     lng: lng,
