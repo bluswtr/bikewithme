@@ -1,0 +1,20 @@
+<div class="container col-centered">
+	<h2>Already a user?</h2>
+	<%= render "devise/shared/omniauth" %>
+
+	<div class='col-md-12'><hr></div>
+
+	<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+	  <div><b>Or... Sign In with Your</b> <%= f.label :email %><br />
+	  <%= f.email_field :email, :autofocus => true, :class => 'wide-button form-control' %><br /></div>
+
+	  <div><%= f.label :password %> <%= render "devise/shared/password_recovery" %>
+	  <%= f.password_field :password, :class => 'wide-button form-control' %></div>
+
+	  <div><br>
+	  	<div><%= f.submit "Sign in",:class => "btn btn-success btn-lg wide-button"%></div><br>
+	  	<div class='col-md-12'>New user?<br><%= render "devise/shared/login" %></div>
+	  </div>
+	<% end %>	
+	
+</div>

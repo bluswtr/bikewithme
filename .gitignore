@@ -83,3 +83,6 @@ README.textile
 # personal notes
 implementation_notes.txt
 
+# production.log
+log/*.log
+

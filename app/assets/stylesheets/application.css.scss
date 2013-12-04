@@ -27,6 +27,14 @@ body { padding-top: 70px;}
        url('../assets/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 
+.wide-button {
+  width: 260px;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
 
 #flash_notice, #flash_alert {
   padding: 5px 8px;
