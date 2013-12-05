@@ -35,6 +35,7 @@ Rails3MongoidDevise::Application.routes.draw do
       collection do
         get 'not_yet_invited'
         get 'invited'
+        get 'invitation'
       end
     end
     resources :watch, only: [:destroy, :create]

@@ -36,4 +36,9 @@ class InviteController < ApplicationController
 		@not_yet_invited = current_user.contacts.find(not_yet_invited)
 		render :json => @not_yet_invited.to_json
 	end
+
+	def invitation
+		@event = Event.find(params[:event_id])
+		@descriptors = Descriptor.format_for_option_tag(1)
+	end
 end

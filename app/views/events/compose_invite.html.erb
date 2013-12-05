@@ -39,7 +39,7 @@
 		</div><br \>
 		<div class="row">
 			<h3>Invite More Guests</h3><div ng-repeat="friend in not_yet_invited | filter:query | orderBy:orderProp">
-				<a href="/events/<%= @event.id %>/invite?contact_id={{friend._id}}" data-remote="true" data-method="post" class="btn btn-md btn-default col-xs-12 col-sm-6 col-md-4" data-toggle="button" rel="nofollow" ng-click="addFriend(friend.fb_uid,friend.name,'<%= event_url(@event.id) %>','<%= @event.id %>');">
+				<a href="/events/<%= @event.id %>/invite?contact_id={{friend._id}}" data-remote="true" data-method="post" class="btn btn-md btn-default col-xs-12 col-sm-6 col-md-4" data-toggle="button" rel="nofollow" ng-click="addFriend(friend,'<%= invitation_event_invite_index_url(@event.id) %>','<%= @event.id %>');">
 				<img class="pull-left img-circle" ng-src = "{{friend.image}}"> 
 				<p class="pull-left" style="padding-left:6px;"> {{friend.name}}</p>
 				<p class="pull-right"> Invite</p></a>

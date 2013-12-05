@@ -10,13 +10,13 @@ function FriendListCtrl($scope, $http) {
 
 	$scope.invited = "";
 
-	$scope.addFriend = function(fb_uid,name,link,event_id) {
+	$scope.addFriend = function(friend,link,event_id) {
 
 		FB.ui(
 			{
 			  method: 'send',
-			  link: link,
-			  to: fb_uid,
+			  link: link + '?id=' + friend._id,
+			  to: friend.fb_uid,
 			});
 
 		// update arrays if send button was clicked
