@@ -5,6 +5,9 @@ Devise.setup do |config|
   require "omniauth-facebook"
   config.omniauth :facebook, ENV['APP_ID'], ENV['APP_SECRET'], { :strategy_class => OmniAuth::Strategies::Facebook, :scope =>  'email, read_friendlists' }
 
+  require 'omniauth-strava'
+  config.omniauth :strava, ENV['STRAVA_ID'], ENV['STRAVA_SECRET']
+
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.

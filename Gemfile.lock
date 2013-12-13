@@ -8,6 +8,13 @@ PATH
   specs:
     mongo_joinable (0.3.2)
 
+PATH
+  remote: lib/omniauth-strava
+  specs:
+    omniauth-strava (0.0.6)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -300,6 +307,7 @@ DEPENDENCIES
   mongoid-rspec (~> 1.7.0)
   omniauth
   omniauth-facebook
+  omniauth-strava!
   quiet_assets (~> 1.0.2)
   rails (= 3.2.13)
   rspec-rails (~> 2.12.2)

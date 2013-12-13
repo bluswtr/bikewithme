@@ -19,4 +19,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       redirect_to new_user_registration_url
     end
   end
+
+  def strava
+    auth = request.env["omniauth.auth"]
+    p auth
+    render nothing: true
+  end
 end

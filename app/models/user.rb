@@ -20,7 +20,7 @@ class User
   # Omniauth
   field :provider
   field :uid
-  devise :omniauthable, :omniauth_providers => [:facebook]
+  devise :omniauthable, :omniauth_providers => [:facebook, :strava]
 
   ## Database authenticatable
   field :email,              :type => String, :default => ""
