@@ -27,15 +27,28 @@
 		<li class="list-group-item">
 			<p><b>Distance:</b> <%= @event.bicycle_ride.distance %> miles</p>
 		</li>
-		<li class="list-group-item">
-			<p><b>Pace:</b> <%= @descriptors["pace"][@event.bicycle_ride.pace][0] %></p>
-		</li>
-		<li class="list-group-item">
+		<% if defined? @descriptors["pace"][@event.bicycle_ride.pace][0]%>
+			<li class="list-group-item">
+			<p><b>Pace:</b> 
+				<%=@descriptors["pace"][@event.bicycle_ride.pace][0]%></p>
+			</li>
+		<%end%>
+		<% if defined? @descriptors["terrain"][@event.bicycle_ride.terrain][0]%>
+			<li class="list-group-item">
 			<p><b>Terrain:</b> <%= @descriptors["terrain"][@event.bicycle_ride.terrain][0] %></p>
-		</li>
-		<li class="list-group-item">
+			</li>
+		<%end%>
+		<% if defined? @descriptors["road_type"][@event.bicycle_ride.terrain][0]%>
+			<li class="list-group-item">
 			<p><b>Road Type:</b> <%= @descriptors["road_type"][@event.bicycle_ride.road_type][0] %></p>
-		</li>
+			</li>
+		<%end%>
+
+		<% if @event.bicycle_ride.elevation_gain != nil %>
+			<li class="list-group-item">
+			<p><b>Total Elevation Gain:</b> <%= @event.bicycle_ride.elevation_gain %> ft</p>
+			</li>
+		<%end%>
 		<li class="list-group-item">
 			<p><b>Privacy:</b> This Event is 
 			<% if @event.make_private %>
@@ -44,9 +57,8 @@
 				Public
 			<% end %></p>
 		</li>
-
+	</ul>
 		<% if @event.user == current_user && @event.user == current_user %>
 			<br><%= link_to raw('Edit <span class="glyphicon glyphicon-edit"></span>'),edit_event_path(@event.id), :class => "btn btn-primary btn-lg" %>
 		<% end %>
-	</ul>
 </div>

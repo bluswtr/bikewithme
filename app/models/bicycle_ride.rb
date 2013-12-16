@@ -11,7 +11,8 @@ class BicycleRide
   field :terrain, :type => Integer #1234, flat, rollers, hilly, steep (overall)
   field :distance, :type => Integer #in miles
   field :road_type, :type => Integer #pavement, dirt-trail
-  attr_accessible :road_type, :pace, :terrain, :distance
+  field :elevation_gain, :type => Integer
+  attr_accessible :road_type, :pace, :terrain, :distance, :elevation_gain
 
   ##
   # Arrays

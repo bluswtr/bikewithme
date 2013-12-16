@@ -16,30 +16,17 @@ class EventsController < ApplicationController
 	end
 
 	def update
-		event = Event.find(params[:id])
-
-		longitude = params["longitude"].to_f
-		latitude = params["latitude"].to_f 
-
-		event.title = params[:event][:title]
-		event.description = params[:event][:description]
-		event.meeting_point = [longitude,latitude]
-		event.event_date = to_utc(params)
-		event.make_private = params[:event][:make_private]
-		event.bicycle_ride.distance = params[:bicycle_ride][:distance]
-		event.bicycle_ride.pace = params[:bicycle_ride][:pace]
-		event.bicycle_ride.terrain = params[:bicycle_ride][:terrain]
-		event.bicycle_ride.road_type = params[:bicycle_ride][:road_type]
-
-		if event.changed?
-			event.save
-		end
-
+		event = Event.update_default(params)
 		redirect_to event_url(event), notice: "Event Updated"
 	end
 
+	def create
+		@event = Event.create_custom(current_user,params)
+		redirect_to new_event_invite_url(@event.id), notice: "Event Saved"
+	end
+
 	def landing
-		# routes to landing.html.erb
+		# routes to views/events/landing.html.erb
 	end
 
 	def show
@@ -112,32 +99,6 @@ class EventsController < ApplicationController
 	def invite
 		UserMailer.invite(params,current_user).deliver
 		render nothing: true
-	end
-
-	def create
-		##
-		# About mongodb geospatial insertions: mongodb will take an array with two 
-		# values, convert the first into longitude and the next into latitude.
-
-		##
-		# Create if doesn't exist
-		longitude = params["longitude"].to_f
-		latitude = params["latitude"].to_f 
-		date = Time.utc(params["event_date"]["year"],params["event_date"]["month"],params["event_date"]["day"],params["event_date"]["hour"],params["event_date"]["minute"])
-		@event = 	current_user.events.create( 
-					title:params["event"]["title"],
-					meeting_point:[longitude,latitude],
-					event_date:date,
-					make_private:params["event"]["make_private"],
-					description:params["event"]["description"],
-					activity_id:params["event"]["activity_id"],
-					bicycle_ride:{pace:params["bicycle_ride"]["pace"],
-					terrain:params["bicycle_ride"]["terrain"],
-					distance:params["bicycle_ride"]["distance"],
-					road_type:params["bicycle_ride"]["road_type"]}
-					)
-
-		redirect_to new_event_invite_url(@event.id), notice: "Event Saved"
 	end
 
 	def nearest_friends

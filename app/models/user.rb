@@ -18,9 +18,14 @@ class User
          :recoverable, :rememberable, :trackable, :validatable
 
   # Omniauth
-  field :provider
-  field :uid
+  field :provider #answers the question signed in as... facebook or strava user?
   devise :omniauthable, :omniauth_providers => [:facebook, :strava]
+
+  # Facebook
+  field :uid
+
+  # Strava
+  field :strava_uid
 
   ## Database authenticatable
   field :email,              :type => String, :default => ""
@@ -56,6 +61,7 @@ class User
 
   # Does the user's facebook friend list need to be updated? State goes here.
   field :update_fb_friends, :type => Boolean, :default => 1
+  field :update_strava_objects, :type => Boolean, :default => 1
 
   ## Confirmable
   # field :confirmation_token,   :type => String
@@ -84,12 +90,12 @@ class User
     user = User.where(:provider => auth.provider, :uid => auth.uid).first
     unless user 
       user = User.create(name:auth.extra.raw_info.name,
-                           provider:auth.provider,
-                           uid:auth.uid,
-                           email:auth.info.email,
-                           password:Devise.friendly_token[0,20],
-                           image:auth.info.image
-                           )
+                         provider:auth.provider,
+                         uid:auth.uid,
+                         email:auth.info.email,
+                         password:Devise.friendly_token[0,20],
+                         image:auth.info.image
+                         )
     end
     user
   end
@@ -103,8 +109,20 @@ class User
     end
   end
 
-  # def self.create_friendlist(auth)
-
-  # end
-
+  ## Strava Helpers
+  # check with our db and see if this user exists
+  # create a new user in our db if this user does not exist
+  def self.find_for_strava_oauth(auth, signed_in_resource=nil)
+    user = User.where(:provider => auth.provider, :uid => auth.strava_uid).first
+    unless user 
+      user = User.create(name:auth.info.name,
+                         provider:auth.provider,
+                         strava_uid:auth.uid,
+                         email:auth.info.email,
+                         password:Devise.friendly_token[0,20],
+                         image:auth.info.profile_medium
+                         )
+    end
+    user
+  end
 end
