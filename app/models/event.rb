@@ -54,7 +54,7 @@ class Event
   belongs_to :user
   field :make_private, :type => Boolean, :default => 0
 
-  attr_accessible :activity_id,:title,:date,:bicycle_ride,:activity,:description,:meeting_point,:event_date,:make_private
+  attr_accessible :activity_id,:title,:date,:bicycle_ride,:activity,:description,:meeting_point,:event_date,:make_private,:polyline,:strava_activity_id
 
   # example: index({ loc: "2d" }, { min: -200, max: 200 }).
   # chose 2dsphere over 2d because it has more features and 2d is largely a legacy index
@@ -160,12 +160,15 @@ class Event
 
   # strava stream hash
   # creating: name,activity_id,distance,elevation_gain
-  def self.create_stream(params,user)
+  def self.create_stream(params,user,polyline)
     @event =  user.events.create(
+              strava_activity_id:params['id'],
               title:params['name'],
               meeting_point:[params['start_longitude'].to_f,params['start_latitude'].to_f],
-              bicycle_ride:{ distance:(params['distance']/5280).floor,
-                             elevation_gain:params['total_elevation_gain']}
+              bicycle_ride:{  distance:(params['distance']/5280).floor,
+                              elevation_gain:params['total_elevation_gain']
+                              },
+              polyline:polyline['data']
               )
   end
 

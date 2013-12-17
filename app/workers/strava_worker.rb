@@ -9,12 +9,32 @@ class StravaWorker
 		url = strava_url+activities+token
 		p url
 
-		# temporarily create response from strava
+		# get full list of user activities
 	    user = User.find(db_uid)
 		response = URI.parse(url).read
 		activities_hash = JSON.parse response
 		activities_hash.each do |activity|
-			Event.create_stream(activity,user)
+			begin
+				# get details on the current activity ie: polyline
+				stream = 'activities/' + activity['id'].to_s + '/streams/latlng?resolution=low&access_token='
+				url = strava_url+stream+token
+				p url
+				response = URI.parse(url).read
+				activity_hash = JSON.parse response
+				
+				# save into user's profile
+				activity_hash.each do |polyline|
+					# only except json that might be activities... ie: with no error messages...
+					if polyline["type"] == "latlng"
+						p activity['name']
+						Event.create_stream(activity,user,polyline)
+					end
+				end
+
+			# handle HTTP exceptions
+			rescue OpenURI::HTTPError => ex
+				puts "HTTPError"
+			end
 		end
 
 		friends = "athlete/friends?access_token="
