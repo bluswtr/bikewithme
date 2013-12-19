@@ -1,8 +1,14 @@
 <script>
-$(document).ready(function(){
-	var map = init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>,1);
-	put_address_flow(map);
-});
+	$(document).ready(function(){
+		var editable = true;
+		var map = init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>,editable);
+		put_address_flow(map);
+		var polyline = <%= @event.polyline %>;
+		if (polyline[0][0] != 0 && polyline[0][1] != 0) {
+			draw_streams(polyline,map);
+		    map.fitLatLngBounds(convert_coords_to_bounds_obj(polyline));
+		}
+	});
 </script>
 
 <h2 style="display:inline"><%= @event.title %></h2><br><br>
@@ -49,19 +55,26 @@ $(document).ready(function(){
 			<%= bicycle_ride_form.text_field :distance, :class => 'form-control', :value => @event.bicycle_ride.distance %>
 		</div><br>
 
+		<% if defined? @event.bicycle_ride.pace %>
 		<div class="form-group">
 		<%= bicycle_ride_form.label :pace %>
 		<%= bicycle_ride_form.select :pace, @descriptors["pace"], {}, { :class => 'form-control', :selected => @descriptors["pace"][@event.bicycle_ride.pace] }%>
 		</div><br>
+		<% end %>
 
+		<% if defined? @event.bicycle_ride.terrain %>
 		<div class="form-group">
 			<%= bicycle_ride_form.label :terrain %>
 			<%= bicycle_ride_form.select :terrain, @descriptors["terrain"], {}, { :class => 'form-control', :selected => @descriptors["terrain"][@event.bicycle_ride.terrain]} %></div><br>
+		<% end %>
 
+		<% if defined? @event.bicycle_ride.road_type %>
 		<div class="form-group">
 			<%= bicycle_ride_form.label :road_type %>
 			<%= bicycle_ride_form.select :road_type, @descriptors["road_type"], {}, { :class => 'form-control', :selected => @descriptors["road_type"][@event.bicycle_ride.road_type]} %>
 		</div>
+		<% end %>
+
 	<% end %>
 	<p><%= event.check_box :make_private %> <b>This event is private.</b></p><br>
 	<div><%= event.submit "Update Event", :class => "btn btn-warning btn-lg" %>

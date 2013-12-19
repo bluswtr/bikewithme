@@ -32,7 +32,7 @@ class Event
   ##
   # Polyline, Array of geo coordinates
   # An array of arrays... [[37.71618004133281,-122.44663953781128],[37.71618004133281,-122.54543781128]...]
-  field :polyline, :type => Array
+  field :polyline, :type => Array, :default => [[0,0]]
 
   field :city
 
@@ -71,7 +71,7 @@ class Event
   end
 
   def self.public_only(lnglat,distance,query_limit)
-    Event.where(make_private: "0").desc.limit(query_limit).geo_near(lnglat).max_distance(distance).spherical
+    Event.where(make_private: "0").geo_near(lnglat).max_distance(distance).spherical
   end
 
   def self.friends_only(lnglat,distance,user,query_limit)
@@ -124,10 +124,15 @@ class Event
 
         # return name, userid, 
         temp = User.find(event.user_id)
-
-        # REVISE return only necessary user data
-        nearest_events[i] = {user:temp, event: event}
+        nearest_events[i] = {user:{name:temp.name,userid:temp._id},event:event}
         i+=1
+        if i == 15
+          # nearest_events.each do |nearby_event|
+          #   p nearby_event
+          #   puts ""
+          # end
+          break
+        end
       end
 
       options = Descriptor.get_options
@@ -145,16 +150,19 @@ class Event
     latitude = params["latitude"].to_f 
     date = Time.utc(params["event_date"]["year"],params["event_date"]["month"],params["event_date"]["day"],params["event_date"]["hour"],params["event_date"]["minute"])
     @event =  user.events.create( 
-              title:params["event"]["title"],
-              meeting_point:[longitude,latitude],
-              event_date:date,
-              make_private:params["event"]["make_private"],
-              description:params["event"]["description"],
-              activity_id:params["event"]["activity_id"],
-              bicycle_ride:{pace:params["bicycle_ride"]["pace"],
-              terrain:params["bicycle_ride"]["terrain"],
-              distance:params["bicycle_ride"]["distance"],
-              road_type:params["bicycle_ride"]["road_type"]}
+                title:params["event"]["title"],
+                meeting_point:[longitude,latitude],
+                event_date:date,
+                make_private:params["event"]["make_private"],
+                description:params["event"]["description"],
+                activity_id:params["event"]["activity_id"],
+                bicycle_ride:
+                  {
+                    pace:params["bicycle_ride"]["pace"],
+                    terrain:params["bicycle_ride"]["terrain"],
+                    distance:params["bicycle_ride"]["distance"],
+                    road_type:params["bicycle_ride"]["road_type"]
+                  }
               )
   end
 
@@ -162,13 +170,16 @@ class Event
   # creating: name,activity_id,distance,elevation_gain
   def self.create_stream(params,user,polyline)
     @event =  user.events.create(
-              strava_activity_id:params['id'],
-              title:params['name'],
-              meeting_point:[params['start_longitude'].to_f,params['start_latitude'].to_f],
-              bicycle_ride:{  distance:(params['distance']/5280).floor,
-                              elevation_gain:params['total_elevation_gain']
-                              },
-              polyline:polyline['data']
+                strava_activity_id:params['id'],
+                title:params['name'],
+                event_date:params['start_date'],
+                meeting_point:[polyline['data'][0][1].to_f,polyline['data'][0][0].to_f],
+                polyline:polyline['data'],
+                bicycle_ride:
+                  {
+                    distance:(params['distance']/5280).floor,
+                    elevation_gain:params['total_elevation_gain']
+                  }
               )
   end
 

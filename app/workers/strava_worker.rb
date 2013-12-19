@@ -16,7 +16,7 @@ class StravaWorker
 		activities_hash.each do |activity|
 			begin
 				# get details on the current activity ie: polyline
-				stream = 'activities/' + activity['id'].to_s + '/streams/latlng?resolution=low&access_token='
+				stream = 'activities/' + activity['id'].to_s + '/streams/latlng?resolution=medium&access_token='
 				url = strava_url+stream+token
 				p url
 				response = URI.parse(url).read
@@ -45,7 +45,7 @@ class StravaWorker
 			Contact.create_strava_contact(friend,user)
 		end
 
-		user.update_attribute(:update_strava_friends, false)
+		user.update_attribute(:update_strava_objects, false)
 	end
 
 	# def create_streams(token,db_uid)

@@ -81,7 +81,7 @@ class User
   field :name, :type => String
   validates_presence_of :name
   accepts_nested_attributes_for :contacts
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at, :bio, :provider, :uid, :image, :contacts, :events
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at, :bio, :provider, :uid, :image, :contacts, :events, :update_strava_objects
 
   ## Omniauth-Facebook Helpers
   # check with our db and see if this user exists

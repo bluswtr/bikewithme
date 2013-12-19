@@ -119,10 +119,9 @@ function populate_map(data) {
 	$.each(data["nearest_events"],function(index,value){
 		var event = data["nearest_events"][index]["event"];
 		var user = data["nearest_events"][index]["user"];
-		var temp = new google.maps.LatLng(event["meeting_point"][1],event["meeting_point"][0]);
-		coords.push(temp);
+		coords.push(new google.maps.LatLng(event["meeting_point"][1],event["meeting_point"][0]));
 		var event_details = event_content_helper(event,data["options"]);
-	
+
 		map.addMarker({
 	        lat: event["meeting_point"][1],
 	        lng: event["meeting_point"][0],
@@ -133,9 +132,9 @@ function populate_map(data) {
 				maxWidth: infoWindowMaxWidth
 			},
 			details: {
-				event_owner: { name: user["name"],
-					id: user["_id"],
-					bio: user["bio"]
+				event_owner: 
+					{ 	name: user["name"],
+						id: user["_id"]
 					},
 				event_id: event["_id"]
 			},
@@ -146,6 +145,7 @@ function populate_map(data) {
 				});
 			}
 		});
+		console.log(event["meeting_point"][1] + ',' + event["meeting_point"][0]);
 	});
 	map.fitLatLngBounds(coords);
 	return map;
@@ -167,7 +167,8 @@ function event_content_helper(event_content,options) {
 	content+="<b>Distance: </b>" + event_content["bicycle_ride"]["distance"] + " miles<br>";
 	content+="<b>Pace: </b>" + pace_options[pace] + "<br>";
 	content+="<b>Road Type: </b>" + road_type_options[road_type] + "<br>";
-	content+="<b>Terrain: </b>" + terrain_options[terrain].replace(/'/g,"") + "<br>";
+	if (typeof terrain_options[terrain] != 'undefined')
+		content+="<b>Terrain: </b>" + terrain_options[terrain].replace(/'/g,"") + "<br>";
 	return(content);
 }
 
@@ -200,4 +201,24 @@ function nearest_friends(){
 			populate_map(data);
 		}
 	);
+}
+
+function draw_streams(polyline,map){
+	map.drawPolyline({
+	    path: polyline,
+	    strokeColor: '#131540',
+	    strokeOpacity: 0.6,
+	    strokeWeight: 6
+	});
+}
+
+function convert_coords_to_bounds_obj(polylines){
+	var coords = new Array();
+	var lat = 0;
+	var lng = 1;
+	polylines.forEach(function(polyline){
+		var temp = new google.maps.LatLng(polyline[lat],polyline[lng]);
+		coords.push(temp);
+	});
+	return coords;
 }

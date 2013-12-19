@@ -2,23 +2,11 @@
 	$(document).ready(function(){
 		var editable = false;
 		var map = init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>,editable);
-		map.drawPolyline({
-	        path: <%= @event.polyline %>,
-	        strokeColor: '#131540',
-	        strokeOpacity: 0.6,
-	        strokeWeight: 6
-	    });
-	    function convert_coords_to_bounds_obj(polylines){
-	    	var coords = new Array();
-	    	var lat = 0;
-	    	var lng = 1;
-	    	polylines.forEach(function(polyline){
-	    		var temp = new google.maps.LatLng(polyline[lat],polyline[lng]);
-				coords.push(temp);
-			});
-			return coords;
-	    }
-	    map.fitLatLngBounds(convert_coords_to_bounds_obj(<%= @event.polyline %>));
+		var polyline = <%= @event.polyline %>;
+		if (polyline[0][0] != 0 && polyline[0][1] != 0) {
+			draw_streams(polyline,map);
+		    map.fitLatLngBounds(convert_coords_to_bounds_obj(polyline));
+		}
 	});
 </script>
 <span><h4 style="display:inline"><%= @event.title %></h4> 
