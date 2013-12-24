@@ -76,7 +76,7 @@
 		<% end %>
 
 	<% end %>
-	<p><%= event.check_box :make_private %> <b>This event is private.</b></p><br>
+	<p><%= event.check_box :is_private %> <b>This event is private.</b></p><br>
 	<div><%= event.submit "Update Event", :class => "btn btn-warning btn-lg" %>
 	<%= link_to raw('Delete <span class="glyphicon glyphicon-remove"></span>'),edit_event_path(@event.id), :class => "btn btn-danger btn-lg" %></div><br>
 <% end %>

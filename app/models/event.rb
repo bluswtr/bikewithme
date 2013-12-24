@@ -52,9 +52,9 @@ class Event
   field :activity_id, :type => Integer
   embeds_one :bicycle_ride
   belongs_to :user
-  field :make_private, :type => Boolean, :default => 0
+  field :is_private, :type => Boolean, :default => 0
 
-  attr_accessible :activity_id,:title,:date,:bicycle_ride,:activity,:description,:meeting_point,:event_date,:make_private,:polyline,:strava_activity_id
+  attr_accessible :activity_id,:title,:date,:bicycle_ride,:activity,:description,:meeting_point,:event_date,:is_private,:polyline,:strava_activity_id
 
   # example: index({ loc: "2d" }, { min: -200, max: 200 }).
   # chose 2dsphere over 2d because it has more features and 2d is largely a legacy index
@@ -67,11 +67,11 @@ class Event
   ACTIVITY = ['Bicycle Ride',1]
 
   def self.private_only(lnglat,distance,query_limit)
-    Event.where(make_private: "1").desc.limit(query_limit).geo_near(lnglat).max_distance(distance).spherical
+    Event.where(is_private: "1").desc.limit(query_limit).geo_near(lnglat).max_distance(distance).spherical
   end
 
   def self.public_only(lnglat,distance,query_limit)
-    Event.where(make_private: "0").geo_near(lnglat).max_distance(distance).spherical
+    Event.where(is_private: "0").geo_near(lnglat).max_distance(distance).spherical
   end
 
   def self.friends_only(lnglat,distance,user,query_limit)
@@ -88,7 +88,7 @@ class Event
           @a_friends_events = a_follow.joinees_by_type("event") 
           @a_friends_events.each do |event|
             # push to @events, unless the event is private
-            unless event.make_private
+            unless event.is_private
               @events.push(event);
             end
           end
@@ -153,7 +153,7 @@ class Event
                 title:params["event"]["title"],
                 meeting_point:[longitude,latitude],
                 event_date:date,
-                make_private:params["event"]["make_private"],
+                is_private:params["event"]["is_private"],
                 description:params["event"]["description"],
                 activity_id:params["event"]["activity_id"],
                 bicycle_ride:
@@ -193,7 +193,7 @@ class Event
     event.description = params[:event][:description]
     event.meeting_point = [longitude,latitude]
     event.event_date = date
-    event.make_private = params[:event][:make_private]
+    event.is_private = params[:event][:is_private]
     event.bicycle_ride.distance = params[:bicycle_ride][:distance]
     event.bicycle_ride.pace = params[:bicycle_ride][:pace]
     event.bicycle_ride.terrain = params[:bicycle_ride][:terrain]

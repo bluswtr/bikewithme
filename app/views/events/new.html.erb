@@ -43,7 +43,7 @@
 			<%= bicycle_ride_form.select:road_type, @descriptors["road_type"], {}, { :class => 'form-control' } %></p>
 		<% end%>
 
-	<p><%= event.check_box :make_private %> <b>Make this event private?</b></p><br><br>
+	<p><%= event.check_box :is_private %> <b>Make this event private?</b></p><br><br>
 	<div><%= event.submit "Add Event", :class => "btn btn-primary btn-lg"  %></div>
 <% end %>
 

@@ -4,7 +4,7 @@
 <% current_user.events.each do |event| %>
 	<tr><td>
 			<h4 class='title-inline'><%= link_to event.title, event_path(event.id) %> 
-			<% if !event.make_private %>
+			<% if !event.is_private %>
 				<span class="glyphicon glyphicon-globe"></span></h4>
 			<% else %>
 				</h4>
