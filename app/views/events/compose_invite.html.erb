@@ -1,5 +1,5 @@
 <html lang="en" ng-app="inviteApp">
-<body ng-controller="FriendListCtrl" ng-init="init('<%= @event.id %>')">
+<body ng-controller="FriendListCtrl" ng-init="init('<%= @event.id %>','<%= current_user.id %>')">
 	<!-- javascript modified from Facebook API -->
 	<div id="fb-root"></div>
 	<script>
@@ -38,7 +38,11 @@
 			</div>
 		</div><br \>
 		<div class="row">
-			<h3>Friends on Bike With Me</h3>
+			<h3>Following on Bike With Me</h3>
+
+		</div>
+		<div class="row">
+			<h3>Followed on Bike With Me</h3>
 		</div>
 		<div class="row">
 			<h3>Invite Your Facebook Friends</h3><div ng-repeat="friend in not_yet_invited | filter:query | orderBy:orderProp">

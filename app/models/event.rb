@@ -126,6 +126,7 @@ class Event
         temp = User.find(event.user_id)
         nearest_events[i] = {user:{name:temp.name,userid:temp._id},event:event}
         i+=1
+        # stop retrieving results after the ith row
         if i == 15
           # nearest_events.each do |nearby_event|
           #   p nearby_event

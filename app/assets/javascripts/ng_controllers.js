@@ -33,13 +33,15 @@ function FriendListCtrl($scope, $http) {
 			$scope.not_yet_invited.splice(index_to_delete,1);
 	}
 
-	$scope.init = function (event_id) {
+	$scope.init = function (event_id,current_user_id) {
 		var root = window.location.host;
 		var protocol = window.location.protocol;
 
 		// pull invite list from database, set to angular variables
 		$scope.invited_url = protocol+'//'+root+'/events/'+event_id+'/invite/invited';
 		$scope.not_yet_invited_url = protocol+'//'+root+'/events/'+event_id+'/invite/not_yet_invited';
+		$scope.followed =  protocol+'//'+root+'/users/'+current_user_id+'/followers';
+		$scope.following =  protocol+'//'+root+'/users/'+current_user_id+'/following';
 		$http.get($scope.invited_url).success(function(data) {
 			$scope.invited = data;
 		});

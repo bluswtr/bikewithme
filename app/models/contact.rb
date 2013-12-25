@@ -5,24 +5,27 @@ class Contact
   include Mongoid::Document
   include Mongo::Invitable::Invited
 
-  has_and_belongs_to_many :users
+  belongs_to :user
   field :name
   field :image
   field :fb_uid
   field :email
   field :strava_uid
-  # field :uid
-  attr_accessible :name, :image, :email, :fb_uid, :strava_uid
+  field :is_user, :default => false # is this a user that has signed up with us?
+  attr_accessible :name, :image, :email, :fb_uid, :strava_uid, :is_user
   # run 'rake db:mongoid:create_indexes' to create indexes
   index({ _id: 1 }, { unique: true, background: true })
 
   def self.create_fb_contact(params,user)
-    email = contact["username"] + "@facebook.com"
+    email = params["name"] + "@facebook.com"
+    user_status = false
+    user_status = Contact.is_already_a_user('fb',params["id"])
     user.contacts << Contact.new(
-        fb_uid: contact["id"],
-        name:   contact["name"], 
+        fb_uid: params["id"],
+        name:   params["name"], 
         email:  email,
-        image:  contact["picture"]["data"]["url"]
+        image:  params["picture"]["data"]["url"],
+        is_user: user_status
         )
   end
 
@@ -33,6 +36,20 @@ class Contact
         name: name, 
         image: params["profile_medium"]
         )
+  end
+
+  def self.is_already_a_user(strava_or_fb,uid)
+    @user = nil
+    if strava_or_fb == 'strava'
+      @user = User.find_by(strava_uid:uid)
+    else
+      @user = User.find_by(uid:uid)
+    end
+    if @user
+      true
+    else
+      false
+    end
   end
 
 end

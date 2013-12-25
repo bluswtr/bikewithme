@@ -17,6 +17,7 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'following'
       get 'my_watches'
       get 'my_joins'
+      get 'find_friends'
       resources :follow, only: [:destroy, :create]
       collection do
         get 'friends'

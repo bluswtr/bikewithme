@@ -33,7 +33,7 @@ class InviteController < ApplicationController
 		not_yet_invited = []
 		not_yet_invited = friend_ids.select { |friend_id| !invited_ids.include?(friend_id) }
 
-		@not_yet_invited = current_user.contacts.find(not_yet_invited)
+		@not_yet_invited = current_user.contacts.find(not_yet_invited).where(:fb_uid.gt => 0)
 		render :json => @not_yet_invited.to_json
 	end
 
@@ -42,7 +42,7 @@ class InviteController < ApplicationController
 		@descriptors = Descriptor.format_for_option_tag(1)
 		# current_user.followee_of?(@group)
 		invited = is_invited(params[:contact_id],@event)
-		puts "is_invited? #{invited}"
+		#puts "is_invited? #{invited}"
 		if !invited
 			redirect_to root_url(), notice: "We are so sorry but that invitation doesn't exist. Want to join a public ride instead?"
 		end

@@ -78,6 +78,7 @@ class User
   # field :authentication_token, :type => String
   # run 'rake db:mongoid:create_indexes' to create indexes
   index({ email: 1 }, { unique: true, background: true })
+  index({ uid: 1, strava_uid: 1 }, { background: true })
   field :name, :type => String
   validates_presence_of :name
   accepts_nested_attributes_for :contacts
