@@ -20,7 +20,8 @@ class Contact
     email = params["name"] + "@facebook.com"
     user_status = false
     user_status = Contact.is_already_a_user('fb',params["id"])
-    user.contacts << Contact.new(
+    #user.contacts << Contact.new(
+    user.contacts.create(
         fb_uid: params["id"],
         name:   params["name"], 
         email:  email,
@@ -31,13 +32,16 @@ class Contact
 
   def self.create_strava_contact(params,user)
     name = params["firstname"] + " " + params["lastname"]
-    user.contacts << Contact.new(
+    #user.contacts << Contact.new(
+    user.contacts.create(
         strava_uid: params["id"],
         name: name, 
         image: params["profile_medium"]
         )
   end
 
+  ## 
+  # Is the user on this app yet?
   def self.is_already_a_user(strava_or_fb,uid)
     @user = nil
     if strava_or_fb == 'strava'

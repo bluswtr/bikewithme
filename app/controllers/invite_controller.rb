@@ -33,7 +33,7 @@ class InviteController < ApplicationController
 		not_yet_invited = []
 		not_yet_invited = friend_ids.select { |friend_id| !invited_ids.include?(friend_id) }
 
-		@not_yet_invited = current_user.contacts.find(not_yet_invited).where(:fb_uid.gt => 0)
+		@not_yet_invited = current_user.contacts.exists(fb_uid:true).find(not_yet_invited)
 		render :json => @not_yet_invited.to_json
 	end
 

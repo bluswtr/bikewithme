@@ -11,6 +11,7 @@ puts 'DEFAULT USERS'
 Follow.delete_all
 User.delete_all
 Contact.delete_all
+Micropost.delete_all
 
 user = User.create! :name => ENV['ADMIN_NAME'].dup, :email => ENV['ADMIN_EMAIL'].dup, :password => ENV['ADMIN_PASSWORD'].dup, :password_confirmation => ENV['ADMIN_PASSWORD'].dup
 puts 'user: ' << user.name

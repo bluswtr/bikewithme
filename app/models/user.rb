@@ -52,7 +52,9 @@ class User
   field :bio
   field :image
 
-  has_and_belongs_to_many :contacts 
+  has_many :contacts
+
+  has_many :microposts
 
   ##
   # Can create many events and thusly serves as the document owner
@@ -77,12 +79,13 @@ class User
   ## Token authenticatable
   # field :authentication_token, :type => String
   # run 'rake db:mongoid:create_indexes' to create indexes
+  # An index w/ a value of 1 specifies an index that orders items in ascending order. A value of -1 specifies an index that orders items in descending order.
   index({ email: 1 }, { unique: true, background: true })
   index({ uid: 1, strava_uid: 1 }, { background: true })
   field :name, :type => String
   validates_presence_of :name
   accepts_nested_attributes_for :contacts
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at, :bio, :provider, :uid, :image, :contacts, :events, :update_strava_objects
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at, :bio, :provider, :uid, :image, :contacts, :events, :update_strava_objects, :microposts, :contacts
 
   ## Omniauth-Facebook Helpers
   # check with our db and see if this user exists

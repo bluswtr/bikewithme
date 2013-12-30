@@ -18,7 +18,9 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'my_watches'
       get 'my_joins'
       get 'find_friends'
+      get 'status_feed'
       resources :follow, only: [:destroy, :create]
+      resources :microposts, only: [:create, :destroy, :show]
       collection do
         get 'friends'
       end
@@ -42,6 +44,8 @@ Rails3MongoidDevise::Application.routes.draw do
     resources :watch, only: [:destroy, :create]
     resources :join, only: [:destroy, :create]
   end
+
+
 
   mount Sidekiq::Web, at: '/sidekiq'
 

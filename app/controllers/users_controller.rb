@@ -48,6 +48,27 @@ class UsersController < ApplicationController
 		puts "find_friends"
 		render nothing:true
 	end
+
+	##
+	# Show activity of users current_user follows
+	def status_feed
+		# get following list
+		@user = User.find(current_user.id)
+		following_ids = []
+		if @user.followees_count_by_type("user") != 0
+			following_list = @user.followees_by_type("user")
+			following_list.each do |following|
+     			following_ids.push(following._id)
+     		end
+     		# want: Micropost.desc.find(user:following_ids)
+			@microposts = Micropost.in(user:following_ids).limit(30)
+			# p following_ids
+			# @microposts.each do |post|
+			# 	puts post.content
+			# end
+		end
+		render 'users/feed'
+	end
 end
 
 
