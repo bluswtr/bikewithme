@@ -33,7 +33,15 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'next_seven_days'
       get 'nearest_friends'
       get 'nearest_all'
+      # get 'post_event'
+      # get 'choose_an_event'
+      # get 'find_event'
+      # get 'edit_description'
+      get 'home'
+      resources :eventpost
+      resources :eventsearch, only: [:create, :new, :show]   
     end
+
     resources :invite, only: [:create, :new] do
       collection do
         get 'not_yet_invited'

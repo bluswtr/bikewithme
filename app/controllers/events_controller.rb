@@ -34,6 +34,9 @@ class EventsController < ApplicationController
 		@descriptors = Descriptor.format_for_option_tag(1)
 	end
 
+	def home
+	end
+
 	def more_info
 		@event = Event.find(params[:event_id])
 		if user_signed_in?

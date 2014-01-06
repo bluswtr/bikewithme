@@ -50,11 +50,15 @@ class Event
 
   field :description
   field :activity_id, :type => Integer
+
+  ##
+  # When creating a new document, a field from bicycle_ride model needs to be filled
   embeds_one :bicycle_ride
   belongs_to :user
   field :is_private, :type => Boolean, :default => 0
+  field :publishing_status, :type => Boolean, :default => 0
 
-  attr_accessible :activity_id,:title,:date,:bicycle_ride,:activity,:description,:meeting_point,:event_date,:is_private,:polyline,:strava_activity_id
+  attr_accessible :activity_id,:title,:date,:bicycle_ride,:activity,:description,:meeting_point,:event_date,:is_private,:polyline,:strava_activity_id, :publishing_status
 
   # example: index({ loc: "2d" }, { min: -200, max: 200 }).
   # chose 2dsphere over 2d because it has more features and 2d is largely a legacy index
@@ -141,6 +145,38 @@ class Event
       event_data["options"] = options
       return event_data
     end
+  end
+
+  def self.init(user,title,longitude,latitude,description,distance) 
+      @event =  user.events.create( 
+                title:title,
+                meeting_point:[longitude.to_f,latitude.to_f],
+                description:description,
+                bicycle_ride:
+                  {
+                     distance:distance
+                  }
+                )
+  end
+
+  # def self.update_polyline
+  # end
+
+  # def self.update_bicycle_ride
+  # end
+
+  def self.update_time(event,year,month,day,hour,minute)
+    event.event_date = Time.utc(year,month,day,hour,minute)
+    event.save
+    event
+  end
+
+  ## 
+  # is_private -> true/false
+  def self.update_is_private(event,is_private)
+    event.is_private = is_private
+    event.save
+    event
   end
 
   def self.create_custom(user,params)

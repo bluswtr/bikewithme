@@ -36,6 +36,7 @@ class Contact
     user.contacts.create(
         strava_uid: params["id"],
         name: name, 
+        email: params['email'],
         image: params["profile_medium"]
         )
   end
