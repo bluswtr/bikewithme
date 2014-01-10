@@ -2,6 +2,49 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+html {
+	height:100%;
+}
+
+body {
+	height:100%;
+}
+
+.content {
+	height:100%;
+}
+
+.events-home-container {
+	background-image: url("/images/home.jpg"); 
+	height:100%;
+}
+
+#main:not(.events-home-container) {
+	@extend .pad-page-container;
+	min-height:100%;
+}
+
+.pad-page-container {
+	padding-top:20px;
+	padding-left:30px;
+}
+
+.footer {
+	color:#d8d8d6;
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		left bottom,
+		color-stop(0, #293446),
+		color-stop(1, #383C5C)
+	);
+	background-image: -o-linear-gradient(bottom, #293446 0%, #383C5C 100%);
+	background-image: -moz-linear-gradient(bottom, #293446 0%, #383C5C 100%);
+	background-image: -webkit-linear-gradient(bottom, #293446 0%, #383C5C 100%);
+	background-image: -ms-linear-gradient(bottom, #293446 0%, #383C5C 100%);
+	background-image: linear-gradient(to bottom, #293446 0%, #383C5C 100%);
+}
+
 .map_full {
 	height: 600px;
 }

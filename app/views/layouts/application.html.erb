@@ -11,11 +11,11 @@
     <%= csrf_meta_tags %>
     <%= yield(:head) %>
   </head>
-  <body class="<%= controller_name %> <%= action_name %>">
-    <div id="container" class="container">
+  <body>
+    <div class='content'>
       <%= render 'layouts/navigation' %>
       <%= render 'layouts/messages' %>
-      <div id="main" role="main">
+      <div id='main' class="<%= controller_name %>-<%= action_name %>-container" role="main">
         <%= yield %>
       </div>
       <%= render 'layouts/footer' %>
