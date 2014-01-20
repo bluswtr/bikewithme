@@ -14,6 +14,7 @@ class MicropostsController < ApplicationController
 	# Show current user's activity
 	def show
 		@microposts = current_user.microposts
+		p @microposts
 		render 'users/feed'
 	end
 

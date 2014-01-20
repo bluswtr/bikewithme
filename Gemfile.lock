@@ -133,6 +133,9 @@ GEM
     json (1.8.1)
     jwt (0.1.8)
       multi_json (>= 1.5)
+    kaminari (0.15.0)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     kiqstand (1.1.0)
       mongoid (~> 3.1)
       moped (~> 1.4)
@@ -298,6 +301,7 @@ DEPENDENCIES
   figaro (~> 0.6.3)
   httparty
   jquery-rails
+  kaminari
   kiqstand
   launchy (~> 2.2.0)
   mongo_followable (~> 0.3.2)

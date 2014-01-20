@@ -2,6 +2,12 @@ var el = '#map';
 var infoWindowMaxWidth = 280;
 var map;
 
+function save_geolocation() {
+	$.post("/events/save_latlng",
+    	{lat:position.coords.latitude,lng:position.coords.longitude}
+	);
+}
+
 function geolocate() {
 
 	if (navigator.geolocation) {
@@ -19,11 +25,11 @@ function geolocate() {
 
 }
 
-function geolocate_nearest(callback_initmap) {
+function geolocate_nearest() {
 
 	if (navigator.geolocation) {
 	    navigator.geolocation.getCurrentPosition(function(position){
-		    $.get("/events/nearest",
+		    $.get("/events/nearest_json",
 		    	{lat:position.coords.latitude,lng:position.coords.longitude},
 		    	function(data) {
 					init_populated_map(data,position.coords.latitude,position.coords.longitude);
@@ -159,9 +165,9 @@ function event_content_helper(event_content,options) {
 	var road_type = event_content["bicycle_ride"]["road_type"];
 	var terrain = event_content["bicycle_ride"]["terrain"];
 
-	var pace_options = options[0]["options"];
-	var road_type_options = options[2]["options"];
-	var terrain_options = options[1]["options"];
+	var pace_options = options["pace"];
+	var road_type_options = options["road_type"];
+	var terrain_options = options["terrain"];
 
 	content+="<b>Description: </b>" + event_content["description"] + "<br><br>";
 	content+="<b>Distance: </b>" + event_content["bicycle_ride"]["distance"] + " miles<br>";

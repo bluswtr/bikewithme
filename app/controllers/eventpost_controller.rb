@@ -1,6 +1,6 @@
 
 class EventpostController < ApplicationController
-
+	before_filter :authenticate_user!
 	def create
 	# post new ride as unpublished and switch back to show ride w/ selected ride populated
 	@event = Event.init(current_user,params['event']['title'],params['longitude'],params['latitude'],params['event']['description'],params['bicycle_ride']['distance'])

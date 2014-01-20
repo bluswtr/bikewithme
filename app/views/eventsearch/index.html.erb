@@ -1,0 +1,8 @@
+<h3>Rides Near Me</h3>
+<%= paginate @event_data %>
+<% @event_data.each do |data|%>
+<div class='cell'>
+<p><%= data[:event][:title] %></p>
+<p><%= data %></p>
+</div><br>
+<% end %>

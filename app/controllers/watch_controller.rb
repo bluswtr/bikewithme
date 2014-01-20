@@ -6,7 +6,7 @@ class WatchController < ApplicationController
 	def create
 		@event_watched = Event.find(params[:event_id])
 		current_user.follow(@event_watched)
-		content = "#{current_user.name} is watching <a href=#{event_url(params[:event_id])}>#{@event_joined.title}</a>"
+		content = "#{current_user.name} is watching <a href=#{event_url(params[:event_id])}>#{@event_watched.title}</a>"
 		Micropost.create(current_user,content)
 		respond_to do |format|
 			format.js { render :partial => "events/event_watched" }

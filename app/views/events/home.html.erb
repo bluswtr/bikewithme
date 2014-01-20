@@ -1,6 +1,12 @@
+<script>
+$(document).ready(function(){
+	save_geolocation();
+});
+</script>
+
 <div style='display: table;position: absolute;height: 90%;width: 100%;'>
 	<div style='display: table-cell; vertical-align: middle;'>
 	<div style='width:300px; margin-left:auto; margin-right:auto;'>
-	<%=link_to 'Find Ride', root_path, :class => 'btn btn-default btn-lg btn-block' %>
+	<%=link_to 'Find Ride', eventsearch_index_path, :class => 'btn btn-default btn-lg btn-block' %>
 	<%=link_to 'Post Ride', eventpost_index_path, :class => 'btn btn-default btn-lg btn-block' %>
 </div></div></div>

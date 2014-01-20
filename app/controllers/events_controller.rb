@@ -112,23 +112,42 @@ class EventsController < ApplicationController
 			end
 		else
 			event_data = Event.nearest("friends",lnglat,current_user)
-			# p event_data
 			render :json => event_data.to_json
 		end
 	end
 
-	def nearest
-		session[:lat] = params["lat"].to_f
-    	session[:lng] = params["lng"].to_f
+	def nearest_json
+	    event_data = Hash.new
+	    nearest_events = Hash.new
+	    options = Array.new
+	    rows_to_display = 15
+		save_latlng(params["lat"],params["lng"])
+    	no_results = ->(obj){ if obj == 0 || obj == nil then return true end }
 		# takes params[:filter] (friends, public, private), params[:lat], session[:lng], params[:distance]
-		event_data = Event.nearest("public",lnglat,nil)
-		# render unless event_data is nil
-		# if event_data
-		# 	render :json => event_data.to_json
-		# else
-		# 	# show error modal
-		# end
+		nearest_event_data = Event.nearest("public",lnglat,nil)
+	    unless no_results.call(nearest_event_data)
+			i = 0
+			nearest_event_data.each do |event|
+				temp = Array.new
+				# return name, userid, 
+				temp = User.find(event.user_id)
+				nearest_events[i] = {user:{name:temp.name,userid:temp._id},event:event}
+				i+=1
+				# Number of rows to display
+				if i == rows_to_display
+					break
+				end
+			end
+
+			options = Descriptor.get_options
+			event_data["nearest_events"] = nearest_events
+			event_data["options"] = options
+		end
 		render :json => event_data.to_json
+	end
+
+	def save_geolocation
+		save_latlng(params["lat"],params["lng"])
 	end
 
 end

@@ -46,3 +46,4 @@ gem 'mongo_invitable', :path => "lib/invitable" # keeps track of invites for eve
 gem 'fb-channel-file' # Improves performance of FB Javascript SDK (recommended by FB)
 gem 'angularjs-rails' # added to help with deploying on heroku
 gem 'omniauth-strava', :path => 'lib/omniauth-strava'
+gem 'kaminari' # infinite scroll/pagination

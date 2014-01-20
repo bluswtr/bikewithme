@@ -7,10 +7,10 @@ Rails3MongoidDevise::Application.routes.draw do
   }
 
   authenticated :user do
-    root :to => 'events#landing'
+    root :to => 'events#home'
   end
   
-  root :to => "events#landing"
+  root :to => "events#home"
   devise_for :users
   resources :users do
       get 'followers'
@@ -28,18 +28,15 @@ Rails3MongoidDevise::Application.routes.draw do
 
   resources :events do
     collection do 
-      get 'nearest'
+      get 'nearest_json'
       get 'more_info/:event_id', to: 'events#more_info'
       get 'next_seven_days'
       get 'nearest_friends'
       get 'nearest_all'
-      # get 'post_event'
-      # get 'choose_an_event'
-      # get 'find_event'
-      # get 'edit_description'
       get 'home'
+      get 'landing'
       resources :eventpost
-      resources :eventsearch, only: [:create, :new, :show]   
+      resources :eventsearch, only: [:create, :new, :show, :index]   
     end
 
     resources :invite, only: [:create, :new] do

@@ -70,15 +70,15 @@ class Event
 
   ACTIVITY = ['Bicycle Ride',1]
 
-  def self.private_only(lnglat,distance,query_limit)
-    Event.where(is_private: "1").desc.limit(query_limit).geo_near(lnglat).max_distance(distance).spherical
+  def self.private_only(lnglat,distance)
+    Event.where(is_private: "1").desc.geo_near(lnglat).max_distance(distance).spherical
   end
 
-  def self.public_only(lnglat,distance,query_limit)
+  def self.public_only(lnglat,distance)
     Event.where(is_private: "0").geo_near(lnglat).max_distance(distance).spherical
   end
 
-  def self.friends_only(lnglat,distance,user,query_limit)
+  def self.friends_only(lnglat,distance,user)
     # find friends aka: a user's follows who are also contacts
 
     @following = user.followees_by_type("user")
@@ -103,47 +103,14 @@ class Event
   end
 
   def self.nearest(event_filter,lnglat,current_user)
-
-    # initialize
-    event_data = Hash.new
-    nearest_events = Hash.new
-    options = Array.new
     vicinity = 50 # miles
     query_limit = 10
     distance = vicinity.fdiv(111.12) # convert from degree to miles
-    no_results = ->(obj){ if obj == 0 || obj == nil then return true end }
 
-    # switch statement for filter
     events = case
-      when event_filter == "friends" then Event.friends_only(lnglat,distance,current_user,query_limit)
-      when event_filter == "public" then Event.public_only(lnglat,distance,query_limit)
-      when event_filter == "private" then Event.private_only(lnglat,distance,query_limit)
-    end
-
-    # return the event's organizer info and the event info unless the query yeields no results
-    unless no_results.call(events)
-      i = 0
-      events.each do |event|
-        temp = Array.new
-
-        # return name, userid, 
-        temp = User.find(event.user_id)
-        nearest_events[i] = {user:{name:temp.name,userid:temp._id},event:event}
-        i+=1
-        # stop retrieving results after the ith row
-        if i == 15
-          # nearest_events.each do |nearby_event|
-          #   p nearby_event
-          #   puts ""
-          # end
-          break
-        end
-      end
-
-      options = Descriptor.get_options
-      event_data["nearest_events"] = nearest_events
-      event_data["options"] = options
-      return event_data
+      when event_filter == "friends" then Event.friends_only(lnglat,distance,current_user)
+      when event_filter == "public" then Event.public_only(lnglat,distance)
+      when event_filter == "private" then Event.private_only(lnglat,distance)
     end
   end
 
@@ -158,12 +125,6 @@ class Event
                   }
                 )
   end
-
-  # def self.update_polyline
-  # end
-
-  # def self.update_bicycle_ride
-  # end
 
   def self.update_time(event,year,month,day,hour,minute)
     event.event_date = Time.utc(year,month,day,hour,minute)
