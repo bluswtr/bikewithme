@@ -3,9 +3,13 @@ var infoWindowMaxWidth = 280;
 var map;
 
 function save_geolocation() {
-	$.post("/events/save_latlng",
-    	{lat:position.coords.latitude,lng:position.coords.longitude}
-	);
+	if (navigator.geolocation) {
+	    navigator.geolocation.getCurrentPosition(function(position){
+			$.post("/events/save_geolocation",
+		    	{lat:position.coords.latitude,lng:position.coords.longitude}
+			);
+		});
+	}
 }
 
 function geolocate() {

@@ -19,6 +19,7 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'my_joins'
       get 'find_friends'
       get 'status_feed'
+      post 'save_geolocation'
       resources :follow, only: [:destroy, :create]
       resources :microposts, only: [:create, :destroy, :show]
       collection do

@@ -34,6 +34,8 @@ class Event
   # An array of arrays... [[37.71618004133281,-122.44663953781128],[37.71618004133281,-122.54543781128]...]
   field :polyline, :type => Array, :default => [[0,0]]
 
+  field :altitude, :type => Array, :default => [0,0]
+
   field :city
 
   field :state
@@ -58,7 +60,7 @@ class Event
   field :is_private, :type => Boolean, :default => 0
   field :publishing_status, :type => Boolean, :default => 0
 
-  attr_accessible :activity_id,:title,:date,:bicycle_ride,:activity,:description,:meeting_point,:event_date,:is_private,:polyline,:strava_activity_id, :publishing_status
+  attr_accessible :activity_id,:title,:date,:bicycle_ride,:activity,:description,:meeting_point,:event_date,:is_private,:polyline,:strava_activity_id, :publishing_status, :altitude
 
   # example: index({ loc: "2d" }, { min: -200, max: 200 }).
   # chose 2dsphere over 2d because it has more features and 2d is largely a legacy index
@@ -166,13 +168,14 @@ class Event
 
   # strava stream hash
   # creating: name,activity_id,distance,elevation_gain
-  def self.create_stream(params,user,polyline)
+  def self.create_stream(params,user,polyline,altitude)
     @event =  user.events.create(
                 strava_activity_id:params['id'],
                 title:params['name'],
                 event_date:params['start_date'],
                 meeting_point:[polyline['data'][0][1].to_f,polyline['data'][0][0].to_f],
                 polyline:polyline['data'],
+                altitude:altitude['data'],
                 bicycle_ride:
                   {
                     distance:(params['distance']/5280).floor,
