@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.sparkline.min
 //= require bootstrap.min
 //= require angular
 //= require angular-animate

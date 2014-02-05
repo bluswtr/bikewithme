@@ -3,6 +3,9 @@
 <% @event_data.each do |data|%>
 <div class='cell'>
 <p><%= data[:event][:title] %></p>
-<p><%= data %></p>
+<p><span class="<%= data[:event][:_id] %>">Loading..</span></p>
+<script>
+	$('.<%= data[:event][:_id] %>').sparkline(<%= data[:event][:altitude] %>, {height: '100',width:'800'});
+</script>
 </div><br>
 <% end %>
