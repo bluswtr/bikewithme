@@ -12,9 +12,10 @@ class EventsearchController < ApplicationController
 
 		unless no_results.call(nearest_event_data)
 			nearest_event_data.each do |event|
+
 				temp = Array.new
 				temp = User.find(event.user_id)
-				nearest_events[i] = {user:{name:temp.name,userid:temp._id},event:event}
+				nearest_events[i] = {user:{name:temp.name,userid:temp._id},event:event,bicycle_ride:event.bicycle_ride}
 				i+=1
 				if i == rows_to_display
 					break
