@@ -27,6 +27,9 @@
             <%= link_to 'Find Friends', user_find_friends_path(current_user.id) %>
             </li>
             <li>
+            <%= link_to 'Status Feed', user_status_feed_path(current_user.id) %>
+            </li>
+            <li>
             <%= link_to 'Logout', destroy_user_session_path, :method=>'delete' %>
             </li>
           <% else %>

@@ -1,7 +1,11 @@
 <script>
 	geolocate();
 </script>
-<h2 style="display:inline">Add Custom Event</h2><br><br>
+<ul class="nav nav-tabs">
+<li><%= link_to "My Events", events_path %></li>
+<li class="active"><%= link_to "Add Custom Event", new_event_path %></li>
+</ul>
+<br><br>
 <div id="map" class="map_half"></div><br>
 <!-- type address here -->
 <form class='form-group' role='form' id='geocoding_form'>

@@ -1,4 +1,8 @@
-<h3 class='title_inline'>My Events</h3> <%= link_to raw('<span class="glyphicon glyphicon-plus-sign"></span>'), new_event_path, :class => 'icon-lg red'%><br><br>
+<ul class="nav nav-tabs">
+<li class="active"><%= link_to "My Events", events_path %></li>
+<li><%= link_to "Add Custom Event", new_event_path %></li>
+</ul>
+<br><br>
 
 <table class='table table-hover'>
 <% current_user.events.each do |event| %>

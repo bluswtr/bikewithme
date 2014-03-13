@@ -19,7 +19,6 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'my_joins'
       get 'find_friends'
       get 'status_feed'
-      post 'save_geolocation'
       resources :follow, only: [:destroy, :create]
       resources :microposts, only: [:create, :destroy, :show]
       collection do
@@ -36,8 +35,9 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'nearest_all'
       get 'home'
       get 'landing'
+      post 'save_geolocation'
       resources :eventpost
-      resources :eventsearch, only: [:create, :new, :show, :index]   
+      resources :eventsearch, only: [:create, :new, :show, :index]
     end
 
     resources :invite, only: [:create, :new] do

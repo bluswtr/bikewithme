@@ -1,5 +1,8 @@
-<% unless @microposts == nil %>
+<h3>Status Feed</h3>
+<% if @microposts != nil %>
 	<% @microposts.each do |post|%>
 	<p><%= post.content.html_safe %></p>
 	<% end %>
+<% else %>
+	No updates from friends yet. <%= link_to "Find your friends", user_find_friends_path(current_user.id) %>
 <% end %>
