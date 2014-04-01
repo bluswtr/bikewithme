@@ -15,7 +15,7 @@ class EventsController < ApplicationController
 		@descriptors = Descriptor.format_for_option_tag(1)
 	end
 
-	def update
+	def update	
 		event = Event.update_default(params)
 		redirect_to event_url(event), notice: "Event Updated"
 	end
@@ -148,6 +148,7 @@ class EventsController < ApplicationController
 
 	def save_geolocation
 		save_latlng(params["lat"],params["lng"])
+		render nothing:true
 	end
 
 end

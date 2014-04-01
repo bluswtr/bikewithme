@@ -1,0 +1,60 @@
+<%= form_for @event, :role => 'form', url: {action: 'update'}, method: :put do |event| %> 
+	<%= link_to "< Back", edit_eventpost_path(@event.id) %><br>
+	Step 2/2 Time and Ride Details
+	<div class="form-group">
+		<%= event.label :title %>
+		<%= event.text_field :title, :class => 'form-control' %>
+	</div><br>
+
+	<div class="form-group">
+		<%= event.label :description %>
+		<%= event.text_area :description, :class => 'form-control', :rows => '3', :placeholder => 'A fun ride. Come one, come all.' %>
+	</div><br>
+
+	<%= fields_for :bicycle_ride do |bicycle_ride_form| %>
+
+		<div class="form-group">
+	  		<%= bicycle_ride_form.label :distance %> (in miles)
+	  		<% if defined? @event.bicycle_ride.distance %>
+				<%= bicycle_ride_form.text_field :distance, :class => 'form-control', :value => distance %>
+		   	<% else %>
+		   		<%= bicycle_ride_form.text_field :distance, :class => 'form-control' %>
+			<% end %>
+		</div><br>
+
+		<div class="form-group">
+			<%= bicycle_ride_form.label :pace %>
+			<% if defined? @event.bicycle_ride.pace %>
+				<%= bicycle_ride_form.select :pace, @descriptors["pace"], {}, { :class => 'form-control', :selected => @descriptors["pace"][@event.bicycle_ride.pace] } %>
+			<% else %>
+				<%= bicycle_ride_form.select :pace, @descriptors["pace"], {}, { :class => 'form-control' } %>
+			<% end %>
+		</div><br>
+
+		<div class="form-group">
+			<%= bicycle_ride_form.label :terrain %>
+			<% if defined? @event.bicycle_ride.terrain %>
+				<%= bicycle_ride_form.select :terrain, @descriptors["terrain"], {}, { :class => 'form-control', :selected => @descriptors["terrain"][@event.bicycle_ride.terrain]} %></div><br>
+			<% else %>
+				<%= bicycle_ride_form.select :terrain, @descriptors["terrain"], {}, { :class => 'form-control'} %></div><br>
+			<% end %>
+
+		<div class="form-group">
+			<%= bicycle_ride_form.label :road_type %>
+		<% if defined? @event.bicycle_ride.road_type %>	
+			<%= bicycle_ride_form.select :road_type, @descriptors["road_type"], {}, { :class => 'form-control', :selected => @descriptors["road_type"][@event.bicycle_ride.road_type]} %>
+		<% else %>
+			<%= bicycle_ride_form.select :road_type, @descriptors["road_type"], {}, { :class => 'form-control' } %>			
+		<% end %>
+		</div>
+	<% end %>
+
+	Date & Time:
+	<input type="date" name='date' />
+	<input type="time" name='time' />
+	<p><%= event.check_box :is_private %> <b>Only my friends can see this ride.</b></p><br>
+	<div>
+		<%= event.submit "Save For Later", :class => "btn btn-warning btn-lg", :name => 'draft' %>
+		<%= event.submit "Publish Now", :class => "btn btn-success btn-lg",:name => 'publish' %>
+	</div><br> 
+<% end %>

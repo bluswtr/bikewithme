@@ -2,19 +2,19 @@
 	geolocate();
 </script>
 <ul class="nav nav-tabs">
-<li><%= link_to "My Events", events_path %></li>
+<li><%= link_to "Post Previous Ride", eventpost_index_path %></li>
 <li class="active"><%= link_to "Add Custom Event", new_event_path %></li>
 </ul>
 <br><br>
 <div id="map" class="map_half"></div><br>
 <!-- type address here -->
-<form class='form-group' role='form' id='geocoding_form'>
+<!-- <form class='form-group' role='form' id='geocoding_form'>
 	<div class="form-group">
 		<label>Use a different location</label>
 		<input type='textfield' id='address' class='form-control'>
 		<input type='submit'>
 	</div>
-</form><br>
+</form><br> -->
 
 <!-- backend request to our db -->
 <%= form_for @event, url: {action: "create"}, html: {class: "new_event_form"} do |event| %>

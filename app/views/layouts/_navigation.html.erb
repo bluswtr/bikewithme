@@ -10,8 +10,9 @@
         <%= link_to "Bike With Me", root_path, :class => 'navbar-brand' %>
         <% if user_signed_in? %>
           <p class="navbar-text pull-right">
-          <%= link_to current_user.name, user_status_feed_path(current_user.id) %> &nbsp;&nbsp;
-          <span class="glyphicon glyphicon-user"></span></p>
+          <%= link_to raw('<span class="glyphicon glyphicon-plus-sign"></span>'),new_event_path %> &nbsp;
+          <%= link_to current_user.name, user_status_feed_path(current_user.id) %> &nbsp;
+          </p>
         <% end %>
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -21,7 +22,7 @@
             <%= link_to 'My Profile', user_path(current_user.id) %>
             </li>
             <li>
-            <%= link_to 'My Events', events_path %>
+            <%= link_to 'My Rides', events_path %>
             </li>
             <li>
             <%= link_to 'Find Friends', user_find_friends_path(current_user.id) %>

@@ -1,13 +1,15 @@
-<h3 class='title_inline'>Choose a Ride</h3> <%= link_to 'Custom Ride', new_event_path %><br><br>
+<ul class="nav nav-tabs">
+<li class="active"><%= link_to "Post Previous Ride", eventpost_index_path %></li>
+<li><%= link_to "Add Custom Ride", new_event_path %></li>
+</ul>
+<br><br>
+
 <table class='table table-hover'>
 <% current_user.events.each do |event| %>
-	<tr><td>
-			<h4 class='title-inline'><%= link_to event.title, edit_eventpost_path(event.id) %> 
-			<% if !event.is_private %>
-				<span class="glyphicon glyphicon-globe"></span></h4>
-			<% else %>
-				</h4>
-			<% end %>
+	<% if event.publishing_status == false || event.publishing_status == 'none' %>
+		<tr><td>
+			<h4 class='title-inline'><%= link_to event.title, edit_eventpost_path(event.id) %></h4>
 		</td></tr>
+	<% end %>
 <% end %>
 </table>

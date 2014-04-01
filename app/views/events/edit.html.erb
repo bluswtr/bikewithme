@@ -15,13 +15,13 @@
 <div id="map" class="map_half"></div><br>
 
 <!-- type address here -->
-<form class='form-group' role='form' id='geocoding_form'>
+<!-- <form class='form-group' role='form' id='geocoding_form'>
 	<div class="form-group">
 		<label>Use a different location</label>
 		<input type='textfield' id='address' class='form-control'>
 		<input type='submit'>
 	</div>
-</form><br>
+</form><br> -->
 
 <%= form_for @event, :role => 'form', url: {action: "update"} do |event| %>
 
@@ -39,7 +39,7 @@
 		<%= event.label :event_date, 'Date & Time' %><br>
 		<%= select_datetime @event.event_date, { prefix: :event_date, ampm: true, start_year: @event.event_date.year, end_year: Time.now.year + 1, order: [:day, :month, :year]} , {:class => 'form-control'} %>
 	</div><br>
-
+	
 	<div class="form-group">
 		<%= event.label :description %>
 		<%= event.text_area :description, :class => 'form-control', :rows => '3', :placeholder => 'A fun ride. Come one, come all.' %>

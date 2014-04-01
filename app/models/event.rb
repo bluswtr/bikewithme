@@ -5,6 +5,12 @@ class Event
   include Mongo::Joinable::Joined
   include Mongo::Invitable::Invited
   include Mongo::Invitable::Inviter
+
+  include Geocoder::Model::Mongoid
+
+  # TODO: error check if we hit Google's geocoding limit
+  reverse_geocoded_by :coordinates, :skip_index =>true, :coordinates => :meeting_point
+  after_validation :reverse_geocode#, if: ->(obj){ obj.address.present? and obj.address_changed? }  # auto-fetch address
   
   ##
   # BikeWithMe's definition of an Event:
@@ -27,7 +33,9 @@ class Event
   # Mongodb expects an array with two floats in it. 
   # Like so: [longitude,latitude]
   # Example: [37.71618004133281,-122.44663953781128]
-  field :meeting_point, :type => Array 
+  #field :coordinates, :type => Array
+  field :meeting_point, :type => Array
+  field :address
 
   ##
   # Polyline, Array of geo coordinates
@@ -58,9 +66,9 @@ class Event
   embeds_one :bicycle_ride
   belongs_to :user
   field :is_private, :type => Boolean, :default => 0
-  field :publishing_status, :type => Boolean, :default => 0
+  field :publishing_status, :default => 'false' # modes: published, draft, false (ie: downloaded from strava)
 
-  attr_accessible :activity_id,:title,:date,:bicycle_ride,:activity,:description,:meeting_point,:event_date,:is_private,:polyline,:strava_activity_id, :publishing_status, :altitude
+  attr_accessible :activity_id,:title,:date,:bicycle_ride,:activity,:description,:meeting_point,:event_date,:is_private,:polyline,:strava_activity_id, :publishing_status, :altitude,:address
 
   # example: index({ loc: "2d" }, { min: -200, max: 200 }).
   # chose 2dsphere over 2d because it has more features and 2d is largely a legacy index
@@ -71,6 +79,10 @@ class Event
   # has_many :activities #eat, bike, swim #has pointer to activity-related details
 
   ACTIVITY = ['Bicycle Ride',1]
+
+  def coordinates
+    meeting_point
+  end
 
   def self.private_only(lnglat,distance)
     Event.where(is_private: "1").desc.geo_near(lnglat).max_distance(distance).spherical
@@ -116,18 +128,6 @@ class Event
     end
   end
 
-  def self.init(user,title,longitude,latitude,description,distance) 
-      @event =  user.events.create( 
-                title:title,
-                meeting_point:[longitude.to_f,latitude.to_f],
-                description:description,
-                bicycle_ride:
-                  {
-                     distance:distance
-                  }
-                )
-  end
-
   def self.update_time(event,year,month,day,hour,minute)
     event.event_date = Time.utc(year,month,day,hour,minute)
     event.save
@@ -138,6 +138,12 @@ class Event
   # is_private -> true/false
   def self.update_is_private(event,is_private)
     event.is_private = is_private
+    event.save
+    event
+  end
+
+  def self.update_publishing_status(event,publishing_status)
+    event.publishing_status = publishing_status
     event.save
     event
   end

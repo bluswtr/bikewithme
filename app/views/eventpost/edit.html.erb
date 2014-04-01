@@ -12,69 +12,32 @@
 </script>
 
 <h2 style="display:inline">Step 1/2 Modify Ride<br><br><%= @event.title %></h2><br><br>
-<div id="map" class="map_half"></div><br>
+<div id="map" class="map_half"></div>
 
 <!-- type address here -->
-<form class='form-group' role='form' id='geocoding_form'>
-	<div class="form-group">
+<!-- <form class='form-group' role='form' id='geocoding_form'>
+	<div class='form-group'>
 		<label>Use a different location</label>
 		<input type='textfield' id='address' class='form-control'>
 		<input type='submit'>
 	</div>
-</form><br>
+</form><br> -->
 
 <%= form_for @event, :role => 'form', url: eventpost_index_path, method: :post do |event| %>
 
-	<input type='hidden' name='polyline' value=<%= @event.polyline %>>
+	<input type='hidden' name='polyline' value=<%= @event.polyline %>
+	<input type='hidden' name='longitude' id='longitude'>
+	<input type='hidden' name='latitude' id='latitude'>
 
-	<div class="form-group">
-		<%= event.label :title %>
-		<%= event.text_field :title, :class => 'form-control' %>
-	</div><br>
+	<br>
+	<div class='form-group'>
+	  	<b>Meeting Point Address</b>
+	  	<%= event.text_field :address, :class => 'form-control' %>
+	</div>
 
-	<div class="form-group">
-	  	<%= event.label :meeting_point %>
-		<%= event.text_field :meeting_point, :class => 'form-control' %>
-	</div><br>
-	
-	<div class="form-group">
-		<%= event.label :description %>
-		<%= event.text_area :description, :class => 'form-control', :rows => '3', :placeholder => 'A fun ride. Come one, come all.' %>
-	</div><br>
+	<%= event.hidden_field :activity_id, :value => 1 %>
 
-	<%= event.hidden_field :activity_id, :value =>1 %>
-	<input type=hidden name=longitude id=longitude>
-	<input type=hidden name=latitude id=latitude>
-	<%= fields_for :bicycle_ride do |bicycle_ride_form| %>
-
-		<div class="form-group">
-	  		<%= bicycle_ride_form.label :distance %> (in miles)
-			<%= bicycle_ride_form.text_field :distance, :class => 'form-control', :value => @event.bicycle_ride.distance %>
-		</div><br>
-
-		<% if defined? @event.bicycle_ride.pace %>
-		<div class="form-group">
-		<%= bicycle_ride_form.label :pace %>
-		<%= bicycle_ride_form.select :pace, @descriptors["pace"], {}, { :class => 'form-control', :selected => @descriptors["pace"][@event.bicycle_ride.pace] }%>
-		</div><br>
-		<% end %>
-
-		<% if defined? @event.bicycle_ride.terrain %>
-		<div class="form-group">
-			<%= bicycle_ride_form.label :terrain %>
-			<%= bicycle_ride_form.select :terrain, @descriptors["terrain"], {}, { :class => 'form-control', :selected => @descriptors["terrain"][@event.bicycle_ride.terrain]} %></div><br>
-		<% end %>
-
-		<% if defined? @event.bicycle_ride.road_type %>
-		<div class="form-group">
-			<%= bicycle_ride_form.label :road_type %>
-			<%= bicycle_ride_form.select :road_type, @descriptors["road_type"], {}, { :class => 'form-control', :selected => @descriptors["road_type"][@event.bicycle_ride.road_type]} %>
-		</div>
-		<% end %>
-
-	<% end %>
-	<div><%= event.submit "Next", :class => "btn btn-warning btn-lg" %>
-	</div><br>
+	<div><%= event.submit 'Next', :class => 'btn btn-warning btn-lg' %></div>
 <% end %>
 
 
