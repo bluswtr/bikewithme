@@ -11,8 +11,16 @@ class BicycleRide
   field :terrain, :type => Integer #1234, flat, rollers, hilly, steep (overall)
   field :distance, :type => Integer, :default => 0 #in miles
   field :road_type, :type => Integer #pavement, dirt-trail
-  field :elevation_gain, :type => Integer
-  attr_accessible :road_type, :pace, :terrain, :distance, :elevation_gain
+  field :total_elevation_gain, :type => Float
+ 
+  ##
+  # Polyline, Array of geo coordinates
+  # An array of arrays... [[37.71618004133281,-122.44663953781128],[37.71618004133281,-122.54543781128]...]
+  field :polyline, :type => Array, :default => [[0,0]]
+  field :altitude, :type => Array, :default => [0,0]
+
+  attr_accessible :road_type, :pace, :terrain, :distance,:total_elevation_gain,:altitude,:polyline
+
 
   ##
   # Arrays

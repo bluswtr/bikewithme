@@ -3,7 +3,7 @@
 		var editable = true;
 		var map = init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>,editable);
 		put_address_flow(map);
-		var polyline = <%= @event.polyline %>;
+		var polyline = <%= @event.bicycle_ride.polyline %>;
 		if (polyline[0][0] != 0 && polyline[0][1] != 0) {
 			draw_streams(polyline,map);
 		    map.fitLatLngBounds(convert_coords_to_bounds_obj(polyline));
@@ -23,11 +23,12 @@
 	</div>
 </form><br> -->
 
-<%= form_for @event, :role => 'form', url: eventpost_index_path, method: :post do |event| %>
+<%= form_for @event, :role => 'form', url: {action: "update"} do |event| %>
 
-	<input type='hidden' name='polyline' value=<%= @event.polyline %>
+	<input type='hidden' name='clone_id' value='<%= @event.id %>'>
 	<input type='hidden' name='longitude' id='longitude'>
 	<input type='hidden' name='latitude' id='latitude'>
+	<input type='hidden' name='polyline' value='<%= @event.bicycle_ride.polyline %>'>
 
 	<br>
 	<div class='form-group'>
@@ -37,7 +38,7 @@
 
 	<%= event.hidden_field :activity_id, :value => 1 %>
 
-	<div><%= event.submit 'Next', :class => 'btn btn-warning btn-lg' %></div>
+	<div><%= event.submit 'Next', :class => 'btn btn-primary btn-lg' %> <%= event.submit 'Cancel', :class => 'btn btn-default btn-lg', :name => 'cancel'%></div>
 <% end %>
 
 

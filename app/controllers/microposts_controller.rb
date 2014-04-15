@@ -6,8 +6,7 @@ class MicropostsController < ApplicationController
 	end
 
 	def delete
-		micropost = Micropost.find(params['micropost_id'])
-		Micropost.delete(current_user,micropost)
+		Micropost.where(params['micropost_id']).delete
 	end
 
 	##

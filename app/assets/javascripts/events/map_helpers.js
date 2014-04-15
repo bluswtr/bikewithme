@@ -54,16 +54,25 @@ function update_coords_in_form(longitude,latitude) {
 	$('#event_meeting_point').val(latitude + "," + longitude);
 	$('#longitude').val(longitude);
 	$('#latitude').val(latitude);
+	var params = latitude + "," + longitude;
+	$.post("/events/geolocation_search",
+    	{ ip_latlng_address:params },
+    	function(address){
+    		console.log(address);
+    		$('#event_address').val(address);
+		}
+	);
 }
 
 function init_map(lat,lng,editable){
 	var map;
 	var allow_edit;
+
 	if(editable) {
-		allow_edit = function(e){
+		allow_edit = function(coords){
 			map.removeMarkers();
-			map.addMarker({lat:e.latLng.lat(),lng:e.latLng.lng()});
-			update_coords_in_form(e.latLng.lng(),e.latLng.lat());
+			map.addMarker({lat:coords.latLng.lat(),lng:coords.latLng.lng()});
+			update_coords_in_form(coords.latLng.lng(),coords.latLng.lat());
 	    }
 	}
 

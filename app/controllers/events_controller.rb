@@ -1,6 +1,6 @@
 
 class EventsController < ApplicationController
-	before_filter :authenticate_user!, :only => [:new,:create,:watch,:join,:more_info,:index]
+	before_filter :authenticate_user!, :only => [:new,:create,:watch,:join,:more_info,:index,:delete,:edit,:update]
 	def new
 		@event = Event.new
 		@descriptors = Descriptor.format_for_option_tag(1)
@@ -8,6 +8,7 @@ class EventsController < ApplicationController
 
 	def index
 		# lists events owned by current_user
+		@events = current_user.events.in(:publishing_status => 'published').union.in(:publishing_status => 'draft').order_by(:updated_at.desc).page params[:page]
 	end
 
 	def edit
@@ -23,6 +24,14 @@ class EventsController < ApplicationController
 	def create
 		@event = Event.create_custom(current_user,params)
 		redirect_to new_event_invite_url(@event.id), notice: "Event Saved"
+	end
+
+	def destroy
+		event = Event.find(params[:id])
+		temp = event.clone
+		title = temp.title
+		event.delete
+		redirect_to action: 'index', notice: "Event #{title} removed", status: 303
 	end
 
 	def landing
@@ -151,4 +160,19 @@ class EventsController < ApplicationController
 		render nothing:true
 	end
 
+	# def save_geolocation_to_object
+	# 	event = Event.find(params[:id])
+	# 	Event.update_coordinates(event,params[:lat],params[:lng])
+	# end
+
+	# def save_address_to_object
+	# 	Event.update_address(params[:id],params["address"])
+	# end
+
+	def geolocation_search
+		Event.find
+		address = Event.geocoder_search(params[:ip_latlng_address])
+		# return formatted_address
+		render :json => address[0].formatted_address.to_json
+	end
 end

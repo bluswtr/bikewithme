@@ -37,13 +37,6 @@ class Event
   field :meeting_point, :type => Array
   field :address
 
-  ##
-  # Polyline, Array of geo coordinates
-  # An array of arrays... [[37.71618004133281,-122.44663953781128],[37.71618004133281,-122.54543781128]...]
-  field :polyline, :type => Array, :default => [[0,0]]
-
-  field :altitude, :type => Array, :default => [0,0]
-
   field :city
 
   field :state
@@ -68,7 +61,7 @@ class Event
   field :is_private, :type => Boolean, :default => 0
   field :publishing_status, :default => 'false' # modes: published, draft, false (ie: downloaded from strava)
 
-  attr_accessible :activity_id,:title,:date,:bicycle_ride,:activity,:description,:meeting_point,:event_date,:is_private,:polyline,:strava_activity_id, :publishing_status, :altitude,:address
+  attr_accessible :activity_id,:title,:date,:bicycle_ride,:activity,:description,:meeting_point,:event_date,:is_private,:strava_activity_id, :publishing_status,:address
 
   # example: index({ loc: "2d" }, { min: -200, max: 200 }).
   # chose 2dsphere over 2d because it has more features and 2d is largely a legacy index
@@ -80,9 +73,9 @@ class Event
 
   ACTIVITY = ['Bicycle Ride',1]
 
-  def coordinates
-    meeting_point
-  end
+  ##
+  # Class Methods
+  ############################################
 
   def self.private_only(lnglat,distance)
     Event.where(is_private: "1").desc.geo_near(lnglat).max_distance(distance).spherical
@@ -128,24 +121,8 @@ class Event
     end
   end
 
-  def self.update_time(event,year,month,day,hour,minute)
-    event.event_date = Time.utc(year,month,day,hour,minute)
-    event.save
-    event
-  end
-
-  ## 
-  # is_private -> true/false
-  def self.update_is_private(event,is_private)
-    event.is_private = is_private
-    event.save
-    event
-  end
-
-  def self.update_publishing_status(event,publishing_status)
-    event.publishing_status = publishing_status
-    event.save
-    event
+  def self.geocoder_search(ip_latlng_address)
+    address = Geocoder.search(ip_latlng_address)
   end
 
   def self.create_custom(user,params)
@@ -180,12 +157,12 @@ class Event
                 title:params['name'],
                 event_date:params['start_date'],
                 meeting_point:[polyline['data'][0][1].to_f,polyline['data'][0][0].to_f],
-                polyline:polyline['data'],
-                altitude:altitude['data'],
                 bicycle_ride:
                   {
+                    polyline:polyline['data'],
+                    altitude:altitude['data'],
                     distance:(params['distance']/5280).floor,
-                    elevation_gain:params['total_elevation_gain']
+                    total_elevation_gain:params['total_elevation_gain']
                   }
               )
   end
@@ -211,4 +188,51 @@ class Event
     end
     event
   end
+
+  ##
+  # Instance Methods
+  ############################################
+
+  def coordinates
+    meeting_point
+  end
+
+  def update_time(year,month,day,hour,minute)
+    self.event_date = Time.utc(year,month,day,hour,minute)
+    self.save
+    self
+  end
+
+  ## 
+  # is_private -> true/false
+  def update_privacy(privacy)
+    self.is_private = privacy
+    self.save
+    self
+  end
+
+  def update_publishing_status(publishing_status)
+    self.publishing_status = publishing_status
+    self.save
+    self
+  end
+
+  def update_title(title)
+    self.title = title
+    self.save
+    self
+  end
+
+  def update_bicycle_ride(bicycle_ride)
+    self.bicycle_ride = bicycle_ride
+    self.save
+    self
+  end
+
+  def update_description(description)
+    self.description = description
+    self.save
+    self
+  end
+  
 end

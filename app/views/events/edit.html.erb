@@ -3,7 +3,7 @@
 		var editable = true;
 		var map = init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>,editable);
 		put_address_flow(map);
-		var polyline = <%= @event.polyline %>;
+		var polyline = <%= @event.bicycle_ride.polyline %>;
 		if (polyline[0][0] != 0 && polyline[0][1] != 0) {
 			draw_streams(polyline,map);
 		    map.fitLatLngBounds(convert_coords_to_bounds_obj(polyline));

@@ -1,12 +1,12 @@
 <h3>Rides Near Me</h3>
 <%= paginate @event_data %>
 <% @event_data.each do |data|%>
-<div class='cell'>
-<p><%= data[:event][:title] %></p>
-<p><span class="<%= data[:event][:_id] %>">Loading..</span></p>
-<p><%= data[:bicycle_ride][:distance] %> miles</p>
-<script>
-	$('.<%= data[:event][:_id] %>').sparkline(<%= data[:event][:altitude] %>, {height: '100',width:'800'});
-</script>
-</div><br>
+	<div class='cell'>
+	<p><%= data[:event][:title] %></p>
+	<p><span class="<%= data[:event][:_id] %>">Loading..</span></p>
+	<p><%= data[:bicycle_ride][:distance] %> miles</p>
+	<script>
+		$('.<%= data[:event][:_id] %>').sparkline(<%= data[:bicycle_ride][:altitude] %>, {height: '100',width:'800'});
+	</script>
+	</div><br>
 <% end %>

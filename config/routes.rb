@@ -36,8 +36,10 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'home'
       get 'landing'
       post 'save_geolocation'
+      post 'geolocation_search'
       resources :eventpost do
-        get 'edit_details'
+        get 'details'
+        put 'update_details'
       end
       resources :eventsearch, only: [:create, :new, :show, :index]
     end

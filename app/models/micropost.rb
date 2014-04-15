@@ -13,7 +13,4 @@ class Micropost
   	@micropost
   end
 
-  def self.delete(user,micropost)
-  	user.micropost.delete(micropost)
-  end
 end

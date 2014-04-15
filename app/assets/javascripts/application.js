@@ -17,4 +17,5 @@
 //= require angular
 //= require angular-animate
 //= require angular-resource
+//= require alertify
 //= require_tree .

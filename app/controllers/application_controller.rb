@@ -17,4 +17,12 @@ class ApplicationController < ActionController::Base
   def no_results
   	->(obj){ if obj == 0 || obj == nil then return true end }
   end
+
+  def mongo_save(object)
+    if object.changed?
+      object.save
+    end
+    object
+  end
+
 end

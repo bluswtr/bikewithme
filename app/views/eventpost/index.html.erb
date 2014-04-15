@@ -1,15 +1,14 @@
 <ul class="nav nav-tabs">
-<li class="active"><%= link_to "Post Previous Ride", eventpost_index_path %></li>
-<li><%= link_to "Add Custom Ride", new_event_path %></li>
+	<li class="active"><%= link_to "Post Previous Ride", eventpost_index_path %></li>
+	<li><%= link_to "Add Custom Ride", new_event_path %></li>
 </ul>
 <br><br>
 
+<%= paginate @events %>
 <table class='table table-hover'>
-<% current_user.events.each do |event| %>
-	<% if event.publishing_status == false || event.publishing_status == 'none' %>
-		<tr><td>
-			<h4 class='title-inline'><%= link_to event.title, edit_eventpost_path(event.id) %></h4>
-		</td></tr>
-	<% end %>
+<% @events.each do |event| %>
+	<tr><td>
+		<h4 class='title-inline'><%= link_to event.title, edit_eventpost_path(event.id) %></h4>
+	</td></tr>
 <% end %>
 </table>
