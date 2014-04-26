@@ -1,9 +1,16 @@
 var div_id = $('#content');
-var content = "<h4>Joined</h4>";
+var content = "<br><h4>Joined</h4>";
 
 <% if @user.joinees_count_by_type("event") != 0 %>
 	<% @user.joinees_by_type("event").each do |join| %>
 		content += "<%=escape_javascript link_to join.title, event_path(join.id) %>" + "<br>";
 	<% end%>
 <% end%>
+
+["profile","followers","following","watched","joined"].forEach(
+	function(divid){
+		$('#' + divid).removeClass("active");
+	});
+$('#joined').addClass("active");
+
 div_id.html(content);

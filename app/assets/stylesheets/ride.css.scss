@@ -19,6 +19,12 @@ body {
 	height:100%;
 }
 
+.glyphicon-bicycle {
+	background-image: url("/images/glyphicons_306_bicycle.png");
+	width: 24px;
+	height: 15px;
+}
+
 #main:not(.events-home-container) {
 	@extend .pad-page-container;
 	min-height:100%;
@@ -77,6 +83,12 @@ body {
 .td_bar {
 	text-align: center;
 	vertical-align: middle;
+}
+
+// inactive glyphicons
+.inactive a:link, .inactive a:visited, .inactive a:hover, .inactive a:active
+{
+	color: #333;
 }
 
 // .invited_button {

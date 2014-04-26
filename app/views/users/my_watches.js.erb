@@ -1,10 +1,16 @@
 var div_id = $('#content');
-var content = "<h4>Watching</h4>";
+var content = "<br><h4>Watching</h4>";
 
 <% if @user.followees_count_by_type("event") != 0 %>
 	<% @user.followees_by_type("event").each do |watch| %>
 		content += "<%= escape_javascript link_to watch.title, event_path(watch.id) %>" + "<br>";
-	<% end%>
-<% end%>
+	<% end %>
+<% end %>
+
+["profile","followers","following","watched","joined"].forEach(
+	function(divid){
+		$('#' + divid).removeClass("active");
+	});
+$('#watched').addClass("active");
 
 div_id.html(content);

@@ -1,5 +1,5 @@
 var div_id = $('#content');
-var content = "<h4>Followers</h4>";
+var content = "<br><h4>Followers</h4>";
 
 <% if @user.followers_count_by_type("user") != 0 %>
 	<% @user.followers_by_type("user").each do |follower| %>
@@ -8,4 +8,9 @@ var content = "<h4>Followers</h4>";
 	<% end%>
 <% end%>
 
+["profile","followers","following","watched","joined"].forEach(
+	function(divid){
+		$('#' + divid).removeClass("active");
+	});
+$('#followers').addClass("active");
 div_id.html(content);

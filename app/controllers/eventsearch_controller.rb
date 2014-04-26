@@ -1,4 +1,6 @@
-
+##
+# all users can do a search but you have to be logged in to know if you are watching... 
+# 
 class EventsearchController < ApplicationController
 	def show
 	end
@@ -7,7 +9,7 @@ class EventsearchController < ApplicationController
 	    nearest_events = Array.new
 	    options = Array.new
 	    rows_to_display = Event.count
-		nearest_event_data = Event.nearest("public",lnglat,nil)
+		nearest_event_data = Event.published.nearest("public",lnglat,nil)
 		i = 0
 
 		unless no_results.call(nearest_event_data)
@@ -15,7 +17,17 @@ class EventsearchController < ApplicationController
 
 				temp = Array.new
 				temp = User.find(event.user_id)
-				nearest_events[i] = {user:{name:temp.name,userid:temp._id},event:event,bicycle_ride:event.bicycle_ride}
+				watched = false
+				joined = false
+
+				if(user_signed_in? && current_user.follower_of?(event))
+					watched = true
+				end
+				if(user_signed_in? && current_user.joiner_of?(event))
+					joined = true
+				end
+				
+				nearest_events[i] = {user:{name:temp.name,userid:temp._id},event:event,bicycle_ride:event.bicycle_ride,watched:watched,joined:joined}
 				i+=1
 				if i == rows_to_display
 					break
@@ -23,6 +35,6 @@ class EventsearchController < ApplicationController
 			end
 		end
 		@event_data = Kaminari.paginate_array(nearest_events).page(params[:page]).per(10)
-		@options = Descriptor.get_options
+		@descriptors = Descriptor.get_options
 	end
 end

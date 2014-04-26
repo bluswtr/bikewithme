@@ -19,6 +19,7 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'my_joins'
       get 'find_friends'
       get 'status_feed'
+      get 'my_activity'
       resources :follow, only: [:destroy, :create]
       resources :microposts, only: [:create, :destroy, :show]
       collection do
@@ -37,6 +38,10 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'landing'
       post 'save_geolocation'
       post 'geolocation_search'
+      get 'past_rides'
+      get 'active_rides'
+      get 'drafts'
+      get 'watchlist'
       resources :eventpost do
         get 'details'
         put 'update_details'
@@ -51,8 +56,10 @@ Rails3MongoidDevise::Application.routes.draw do
         get 'invitation/:contact_id', to: 'invite#invitation'
       end
     end
-    resources :watch, only: [:destroy, :create]
-    resources :join, only: [:destroy, :create]
+    resources :watch, only: [:create]
+    resources :unwatch, only: [:create]
+    resources :join, only: [:create]
+    resources :unjoin, only: [:create]
   end
 
 

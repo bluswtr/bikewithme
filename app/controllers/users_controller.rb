@@ -50,12 +50,14 @@ class UsersController < ApplicationController
 	end
 
 	##
-	# Show activity of users current_user follows
+	# Show activity current_user's follow list
 	def status_feed
 		# get following list
 		@user = User.find(current_user.id)
 		following_ids = []
-		if @user.followees_count_by_type("user") != 0
+		@microposts = nil
+		count = @user.followees_count_by_type("user")
+		if count > 0
 			following_list = @user.followees_by_type("user")
 			following_list.each do |following|
      			following_ids.push(following._id)
@@ -68,6 +70,10 @@ class UsersController < ApplicationController
 			# end
 		end
 		render 'users/feed'
+	end
+
+	def my_activity
+		@microposts = Micropost.where(:user => current_user).order_by(:created_at.desc)
 	end
 end
 

@@ -8,7 +8,24 @@ class EventsController < ApplicationController
 
 	def index
 		# lists events owned by current_user
-		@events = current_user.events.in(:publishing_status => 'published').union.in(:publishing_status => 'draft').order_by(:updated_at.desc).page params[:page]
+		@events = current_user.events.published.future_events.order_by(:updated_at.desc).page params[:page]
+	end
+
+	def past_rides
+		# display rides, beginning with the rides that occurred before this moment
+		@events = current_user.events.published.past_events.page params[:page]
+	end
+
+	def active_rides
+		@events = current_user.events.published.where(:event_date.gt => Time.now).page params[:page]
+	end
+
+	def drafts
+		@events = current_user.events.drafts.page params[:page]
+	end
+
+	def watchlist
+		@events = current_user.events.drafts.page params[:page]
 	end
 
 	def edit
@@ -40,6 +57,15 @@ class EventsController < ApplicationController
 
 	def show
 		@event = Event.find(params[:id])
+		@watched = false
+		@joined = false
+
+		if(user_signed_in? && current_user.follower_of?(@event))
+			@watched = true
+		end
+		if(user_signed_in? && current_user.joiner_of?(@event))
+			@joined = true
+		end
 		@descriptors = Descriptor.format_for_option_tag(1)
 	end
 

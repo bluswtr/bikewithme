@@ -1,9 +1,11 @@
 <script>
 	geolocate();
 </script>
+<h3>Choose a Strava Ride or Create One From Scratch</h3>
+Use a previous ride from your Strava profile as a starting point or create a new ride from scratch.<br><br>
 <ul class="nav nav-tabs">
-<li><%= link_to "Post Previous Ride", eventpost_index_path %></li>
-<li class="active"><%= link_to "Add Custom Event", new_event_path %></li>
+	<li><%= link_to "Use a Strava Ride", eventpost_index_path %></li>
+	<li class="active"><%= link_to "Create a Custom Ride", new_event_path %></li>
 </ul>
 <br><br>
 <div id="map" class="map_half"></div><br>

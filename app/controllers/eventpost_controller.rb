@@ -3,13 +3,22 @@ class EventpostController < ApplicationController
 	before_filter :authenticate_user!
 
 	def index
-		# lists events owned by current_user
-		@events = current_user.events.where(:publishing_status => 'false').order_by(:updated_at.desc).page params[:page]
+		# list strava rides, if empty redirect to add custom ride
+		# @events = current_user.events.where(:publishing_status => 'false').order_by(:updated_at.desc).page params[:page]
+		# if @events == 'false'
+		@events = current_user.events.from_strava.order_by(:updated_at.desc)
+		if @events == nil
+			redirect_to new_event_path(), notice: "Looks like there weren\'t any rides in the past. Let\'s create one from scratch!"
+		else
+			@events = current_user.events.from_strava.order_by(:updated_at.desc).page params[:page]
+		end
+		p @events
 	end
 
 	def edit
 		temp = Event.find(params[:id])
 		event_copy = temp.clone
+		
 		event_copy.unset(:strava_activity_id)
 		event_copy.update_publishing_status('draft')
 		event_copy.save
@@ -24,8 +33,6 @@ class EventpostController < ApplicationController
 			event.meeting_point = [params[:longitude].to_f,params[:latitude].to_f]
 			event.address = params[:address]
 			event.activity_id = params[:activity_id]
-			event.bicycle_ride.polyline = params[:polyline]
-			event.bicycle_ride.altitude = params[:altitude]
 			event = mongo_save(event)
 		 	redirect_to eventpost_details_path(event.id)
 		end

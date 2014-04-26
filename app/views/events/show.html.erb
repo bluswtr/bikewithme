@@ -9,11 +9,34 @@
 		}
 	});
 </script>
-<span><h4 style="display:inline"><%= @event.title %></h4> 
-	<% if @event.user == current_user %>
+<span>
+	<h4 style="display:inline"><%= @event.title %>
+		<% if @event.user == current_user %>
 		<%= link_to raw('<span class="glyphicon glyphicon-edit"></span>'),edit_event_path(@event.id) %>
-	<% end %>
+		<% end %>
+		<%= link_to raw('Watch <span class="glyphicon glyphicon-eye-open"></span>'),event_watch_index_path(@event.id), rel: 'nofollow', class: "btn btn-primary btn-sm", method: 'post', remote: 'true'  %>
+		<%= link_to raw('Watching <span class="glyphicon glyphicon-eye-open"></span>'),event_unwatch_index_path(@event.id), rel: 'nofollow', class: "btn btn-primary btn-sm", style: 'display:none', method: 'post', remote: 'true'  %>
+
+		<%= link_to raw('Join <span class="glyphicon glyphicon-bicycle"></span>'),event_join_index_path(@event.id), rel: 'nofollow', class: "btn btn-primary btn-sm", method: 'post', remote: 'true'  %>
+		<%= link_to raw('Joined <span class="glyphicon glyphicon-bicycle"></span>'),event_unjoin_index_path(@event.id), rel: 'nofollow', class: "btn btn-primary btn-sm", style: 'display:none', method: 'post', remote: 'true'  %>
+	</h4>
+
 </span><br><br>
+
+<script>
+		<!-- if watching, hide watch button and vice versa -->
+		<% if @watched == true %>
+			$("a[href='/events/<%=@event.id%>/watch']").hide();
+			$("a[href='/events/<%=@event.id%>/unwatch']").show();
+		<% end %>
+
+		<!-- if joined, hide join button and vice versa -->
+		<% if @joined == true %>
+			$("a[href='/events/<%=@event.id%>/join']").hide();
+			$("a[href='/events/<%=@event.id%>/unjoin']").show();
+		<% end %>	
+</script>
+
 <div id="map" class="map_half"></div><br>
 <div>
 	<ul class="list-group">

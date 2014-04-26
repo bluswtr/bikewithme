@@ -1,12 +1,50 @@
 <h3>Rides Near Me</h3>
 <%= paginate @event_data %>
 <% @event_data.each do |data|%>
+
 	<div class='cell'>
-	<p><%= data[:event][:title] %></p>
-	<p><span class="<%= data[:event][:_id] %>">Loading..</span></p>
-	<p><%= data[:bicycle_ride][:distance] %> miles</p>
+	<h4>
+		<%= link_to data[:event][:title], event_url(data[:event][:_id]) %>&nbsp;&nbsp;
+		<%= link_to raw('Watch <span class="glyphicon glyphicon-eye-open"></span>'),event_watch_index_path(data[:event][:_id]), rel: 'nofollow', class: "btn btn-primary btn-sm", method: 'post', remote: 'true'  %>
+		<%= link_to raw('Watching <span class="glyphicon glyphicon-eye-open"></span>'),event_unwatch_index_path(data[:event][:_id]), rel: 'nofollow', class: "btn btn-primary btn-sm", style: 'display:none', method: 'post', remote: 'true' %>
+
+		<%= link_to raw('Join <span class="glyphicon glyphicon-bicycle"></span>'),event_join_index_path(data[:event][:_id]), rel: 'nofollow', class: "btn btn-primary btn-sm", method: 'post', remote: 'true'  %>
+		<%= link_to raw('Joined <span class="glyphicon glyphicon-bicycle"></span>'),event_unjoin_index_path(data[:event][:_id]), rel: 'nofollow', class: "btn btn-primary btn-sm", style: 'display:none', method: 'post', remote: 'true'  %>	
+	</h4>
+
+
+	<% if data[:bicycle_ride][:altitude] %>
+		<div><span class="<%= data[:event][:_id] %>">Loading..</span></div><br>
+	<% end %>
+	<% if data[:bicycle_ride][:distance] %>
+		<div style='display:inline'><b>Distance:</b> <%=data[:bicycle_ride][:distance] %> miles | </div>
+	<% end %>
+	<% if data[:bicycle_ride][:road_type] %>
+		<div style='display:inline'><b>Road Type:</b> <%= @descriptors["road_type"][data[:bicycle_ride][:road_type]] %> | </div>
+	<% end %>
+	<% if data[:bicycle_ride][:pace] %>
+		<div style='display:inline'><b>Pace:</b> <%= @descriptors["pace"][data[:bicycle_ride][:pace]] %> | </div>
+	<% end %>
+	<% if data[:bicycle_ride][:terrain] %>
+		<div style='display:inline'><b>Terrain:</b> <%= @descriptors["terrain"][data[:bicycle_ride][:terrain]] %></div>
+	<% end %>
+
 	<script>
-		$('.<%= data[:event][:_id] %>').sparkline(<%= data[:bicycle_ride][:altitude] %>, {height: '100',width:'800'});
+		<% if data[:bicycle_ride][:altitude] %>
+			$('.<%= data[:event][:_id] %>').sparkline(<%= data[:bicycle_ride][:altitude] %>, {height:'50',width:'400'});
+		<% end %>
+
+		<!-- if watching, hide watch button and vice versa -->
+		<% if data[:watched] == true %>
+			$("a[href='/events/<%=data[:event][:_id]%>/watch']").hide();
+			$("a[href='/events/<%=data[:event][:_id]%>/unwatch']").show();
+		<% end %>
+
+		<!-- if joined, hide join button and vice versa -->
+		<% if data[:joined] == true %>
+			$("a[href='/events/<%=data[:event][:_id]%>/join']").hide();
+			$("a[href='/events/<%=data[:event][:_id]%>/unjoin']").show();
+		<% end %>		
 	</script>
 	</div><br>
 <% end %>

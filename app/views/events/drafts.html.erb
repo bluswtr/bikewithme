@@ -1,14 +1,19 @@
 <h3>My Rides</h3>
-Edit rides that are active (those that are posted or in draft mode). Create new rides using past rides.<br><br>
+Edit rides that are active (those that are published or in draft mode). Create new rides using past rides.<br><br>
 <ul class="nav nav-tabs">
-<li class="active"><%= link_to "Active Rides", events_path %></li>
+<li><%= link_to "Active Rides", events_path %></li>
 <li><%= link_to "Past Rides", past_rides_events_path %></li>
-<li><%= link_to "Drafts", drafts_events_path %></li>
+<li class="active"><%= link_to "Drafts", drafts_events_path %></li>
 </ul>
 <br><br>
 
 <%= paginate @events %>
 <table class='table table-hover'>
+<!-- 
+	1 - test if can put table rows between divs
+	2 - give id to each div
+	3 - remove them by manipulating dom
+ -->
 <% @events.each do |event| %>
 	<tr id = 'tr-<%= event.id %>'><td>
 		<h4 class='title-inline'><%= link_to event.title, event_path(event.id) %> 
@@ -17,11 +22,11 @@ Edit rides that are active (those that are posted or in draft mode). Create new 
 		<% else %>
 			</h4>
 		<% end %>
-		<b>Event Starts On</b> <%= event.event_date.strftime("%A %B %d %Y %H:%M%p") %>
+		<i><b><%= event.publishing_status %></b></i> Last Modified: <%= event.updated_at.strftime("%A %B %d %Y %H:%M%p") %>
 	</td><td class='td_bar warning'>
 		<%= link_to raw('<span class="glyphicon glyphicon-edit"></span>'),edit_event_path(event.id), :class => 'icon-lg' %>
 	</td><td class='td_bar danger'>
-		<a href='#!' class='icon-lg' id = '<%= 'delete-' + event.id %>'><span class="glyphicon glyphicon-remove"></span></a>
+		<a href='#!' class='icon-lg' id = 'delete-<%= event.id %>'><span class="glyphicon glyphicon-remove"></span></a>
 		<script>
 			$('<%= '#delete-' + event.id %>').click(
 				function (event){
@@ -30,7 +35,7 @@ Edit rides that are active (those that are posted or in draft mode). Create new 
 						    if (event) { // redirect to delete page
 						        $.ajax({
 						        	url: '<%= event_path(event.id) %>',
-						        	type: 'DELETE',
+						        	type: 'DELETE'
 						        }).done(function(){
 						        		$('#tr-<%= event.id %>').fadeOut("slow",
 						        			function(){console.log("animation done");}
