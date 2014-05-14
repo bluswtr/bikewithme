@@ -1,27 +1,14 @@
 <script>
 	$(document).ready(function(){
-		var editable = true;
-		var map = init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>,editable);
-		put_address_flow(map);
+		var map = new Map(<%= @event[:meeting_point][1] %>,<%= @event[:meeting_point][0] %>,true);
 		var polyline = <%= @event.bicycle_ride.polyline %>;
-		if (polyline[0][0] != 0 && polyline[0][1] != 0) {
-			draw_streams(polyline,map);
-		    map.fitLatLngBounds(convert_coords_to_bounds_obj(polyline));
-		}
+		drawPolyline(polyline,map);
+		subscribeToChanges(map);
 	});
 </script>
 
 <h2 style="display:inline">Step 1/2 Modify Ride<br><br><%= @event.title %></h2><br><br>
 <div id="map" class="map_half"></div>
-
-<!-- type address here -->
-<!-- <form class='form-group' role='form' id='geocoding_form'>
-	<div class='form-group'>
-		<label>Use a different location</label>
-		<input type='textfield' id='address' class='form-control'>
-		<input type='submit'>
-	</div>
-</form><br> -->
 
 <%= form_for @event, :role => 'form', url: {action: "update"} do |event| %>
 
@@ -31,14 +18,30 @@
 	<input type='hidden' name='polyline' value='<%= @event.bicycle_ride.polyline %>'>
 
 	<br>
-	<div class='form-group'>
-	  	<b>Meeting Point Address</b>
-	  	<%= event.text_field :address, :class => 'form-control' %>
-	</div>
+	<%= event.label :meeting_point, 'Meeting Point:' %><br />
+	<div class="form-group">
+		<div class="input-group">
+			<%= event.text_field :address, :class => 'form-control',:style => 'border-right:none', :id => 'event_address' %>
+			<span id="clear_text" class="blah input-group-addon glyphicon glyphicon-remove" style="background-color:#fff;border-left:0px;"></span>
+			<span id="search_for_address" class="btn-primary input-group-addon glyphicon glyphicon-search" style="background-color:#428bca;color:#fff;"></span>
+		</div>
+	</div><br>
 
 	<%= event.hidden_field :activity_id, :value => 1 %>
 
 	<div><%= event.submit 'Next', :class => 'btn btn-primary btn-lg' %> <%= event.submit 'Cancel', :class => 'btn btn-default btn-lg', :name => 'cancel'%></div>
 <% end %>
+
+<script>
+	$('#clear_text').click(function(event){
+		$('#event_address').val('');
+	});
+
+	$('#search_for_address').click(function(event){
+		var temp = $('#event_address').val();
+		if(!isBlank(temp) && !isEmpty(temp))
+			geocodeAddress(temp);
+	});
+</script>
 
 

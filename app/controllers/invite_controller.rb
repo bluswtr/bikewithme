@@ -43,6 +43,7 @@ class InviteController < ApplicationController
 		# current_user.followee_of?(@group)
 		invited = is_invited(params[:contact_id],@event)
 		#puts "is_invited? #{invited}"
+		@session = latlng
 		if !invited
 			redirect_to root_url(), notice: "We are so sorry but that invitation doesn't exist. Want to join a public ride instead?"
 		end

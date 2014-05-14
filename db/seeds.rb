@@ -12,6 +12,7 @@ Follow.delete_all
 User.delete_all
 Contact.delete_all
 Micropost.delete_all
+Invit.delete_all
 
 user = User.create! :name => ENV['ADMIN_NAME'].dup, :email => ENV['ADMIN_EMAIL'].dup, :password => ENV['ADMIN_PASSWORD'].dup, :password_confirmation => ENV['ADMIN_PASSWORD'].dup
 puts 'user: ' << user.name
@@ -42,7 +43,7 @@ end
 Event.delete_all
 open("db/events.txt") do |some_events|
 	some_events.read.each_line() do |an_event|
-		title,latitude,longitude,description,activity_id,pace,terrain,distance,road_type = an_event.chomp.split("@")
+		title,latitude,longitude,description,activity_id,pace,terrain,distance,road_type,publish = an_event.chomp.split("@")
 		user.events.create(  title:title,
 									  description:description,
 									  activity_id:activity_id,
@@ -51,7 +52,8 @@ open("db/events.txt") do |some_events|
 									  bicycle_ride:{pace:pace,
 									  				terrain:terrain,
 									  				distance:distance,
-									  				road_type:road_type}
+									  				road_type:road_type},
+									  publishing_status: publish
 								)
 
 	end

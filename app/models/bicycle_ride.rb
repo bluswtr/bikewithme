@@ -7,10 +7,10 @@ class BicycleRide
   embedded_in :event
   #field :destination, :type => Point #longitude, latitude
   #field :loop
-  field :pace, :type => Integer #1234, mellow, brisk, fast, throwdown
-  field :terrain, :type => Integer #1234, flat, rollers, hilly, steep (overall)
+  field :pace, :type => Integer, :default => 0 #1234, mellow, brisk, fast, throwdown
+  field :terrain, :type => Integer, :default => 0 #1234, flat, rollers, hilly, steep (overall)
   field :distance, :type => Integer, :default => 0 #in miles
-  field :road_type, :type => Integer #pavement, dirt-trail
+  field :road_type, :type => Integer, :default => 0 #pavement, dirt-trail
   field :total_elevation_gain, :type => Float
  
   ##

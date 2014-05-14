@@ -1,0 +1,31 @@
+<%= fields_for :bicycle_ride do |bicycle_ride_form| %>
+	<% if selected %>
+		<% distance = @event.bicycle_ride.distance %>
+		<% pace_num = @event.bicycle_ride.pace %>
+		<% terrain_num = @event.bicycle_ride.terrain %>
+		<% road_type_num = @event.bicycle_ride.road_type %>
+	<% else %>
+		<% distance,pace_num,terrain_num,road_type_num = '','','','' %>
+	<% end %>
+
+	<div class="form-group">
+  		<%= bicycle_ride_form.label :distance %> (in miles)
+		<%= bicycle_ride_form.text_field :distance, :class => 'form-control', :value => distance %>
+	</div><br>
+
+	<div class="form-group">
+	<%= bicycle_ride_form.label :pace %>
+	<%= select_tag "pace", options_for_select(@descriptors["pace"],pace_num), :include_blank => true, :class => 'form-control', :name => 'bicycle_ride[pace]',:id => 'bicycle_ride_pace' %>
+	</div><br>
+
+	<div class="form-group">
+	<%= bicycle_ride_form.label :terrain %>
+	<%= select_tag "terrain", options_for_select(@descriptors["terrain"],terrain_num), :include_blank => true, :class => 'form-control', :name => 'bicycle_ride[terrain]',:id => 'bicycle_ride_terrain' %>
+	</div><br>
+
+	<div class="form-group">
+		<%= bicycle_ride_form.label :road_type %>
+		<%= select_tag "road_type", options_for_select(@descriptors["road_type"],road_type_num), :include_blank => true, :class => 'form-control', :name => 'bicycle_ride[road_type]',:id => 'bicycle_ride_road_type' %>
+	</div>
+
+<% end %>

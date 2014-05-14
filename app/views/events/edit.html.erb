@@ -1,27 +1,14 @@
 <script>
 	$(document).ready(function(){
-		var editable = true;
-		var map = init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>,editable);
-		put_address_flow(map);
+		var map = new Map(<%= @event[:meeting_point][1] %>,<%= @event[:meeting_point][0] %>,true);
 		var polyline = <%= @event.bicycle_ride.polyline %>;
-		if (polyline[0][0] != 0 && polyline[0][1] != 0) {
-			draw_streams(polyline,map);
-		    map.fitLatLngBounds(convert_coords_to_bounds_obj(polyline));
-		}
+		drawPolyline(polyline,map);
+		subscribeToChanges(map);
 	});
 </script>
 
 <h2 style="display:inline"><%= @event.title %></h2><br><br>
 <div id="map" class="map_half"></div><br>
-
-<!-- type address here -->
-<!-- <form class='form-group' role='form' id='geocoding_form'>
-	<div class="form-group">
-		<label>Use a different location</label>
-		<input type='textfield' id='address' class='form-control'>
-		<input type='submit'>
-	</div>
-</form><br> -->
 
 <%= form_for @event, :role => 'form', url: {action: "update"} do |event| %>
 
@@ -30,55 +17,57 @@
 		<%= event.text_field :title, :class => 'form-control' %>
 	</div><br>
 
+	<%= event.label :meeting_point, 'Meeting Point:' %><br />
 	<div class="form-group">
-	  	<%= event.label :meeting_point %>
-		<%= event.text_field :meeting_point, :class => 'form-control' %>
+		<div class="input-group">
+			<%= event.text_field :address, :class => 'form-control',:style => 'border-right:none', :id => 'event_address' %>
+			<span id="clear_text" class="blah input-group-addon glyphicon glyphicon-remove" style="background-color:#fff;border-left:0px;"></span>
+			<span id="search_for_address" class="btn-primary input-group-addon glyphicon glyphicon-search" style="background-color:#428bca;color:#fff;"></span>
+		</div>
 	</div><br>
 
+	<% if @event.event_date %>
 	<div class="form-group">
 		<%= event.label :event_date, 'Date & Time' %><br>
 		<%= select_datetime @event.event_date, { prefix: :event_date, ampm: true, start_year: @event.event_date.year, end_year: Time.now.year + 1, order: [:day, :month, :year]} , {:class => 'form-control'} %>
 	</div><br>
+	<% end %>
 	
 	<div class="form-group">
 		<%= event.label :description %>
 		<%= event.text_area :description, :class => 'form-control', :rows => '3', :placeholder => 'A fun ride. Come one, come all.' %>
 	</div><br>
 
-	<%= event.hidden_field :activity_id, :value =>1 %>
-	<input type=hidden name=longitude id=longitude>
-	<input type=hidden name=latitude id=latitude>
-	<%= fields_for :bicycle_ride do |bicycle_ride_form| %>
+	<%= event.hidden_field :activity_id, :value => 1 %>
+	<input type='hidden' name='longitude' id='longitude' value='<%= @event[:meeting_point][0] %>'>
+	<input type='hidden' name='latitude' id='latitude' value='<%= @event[:meeting_point][1] %>'>
+
+
+<%= render partial: "bicycle_ride_form", locals: { descriptors:@descriptors, event:@event, :selected => true } %>
+
+		<p><%= event.check_box :is_private, {checked: @event.is_private} %> <b>This event is private.</b></p><br>
 
 		<div class="form-group">
-	  		<%= bicycle_ride_form.label :distance %> (in miles)
-			<%= bicycle_ride_form.text_field :distance, :class => 'form-control', :value => @event.bicycle_ride.distance %>
-		</div><br>
-
-		<% if defined? @event.bicycle_ride.pace %>
-		<div class="form-group">
-		<%= bicycle_ride_form.label :pace %>
-		<%= bicycle_ride_form.select :pace, @descriptors["pace"], {}, { :class => 'form-control', :selected => @descriptors["pace"][@event.bicycle_ride.pace] }%>
-		</div><br>
-		<% end %>
-
-		<% if defined? @event.bicycle_ride.terrain %>
-		<div class="form-group">
-			<%= bicycle_ride_form.label :terrain %>
-			<%= bicycle_ride_form.select :terrain, @descriptors["terrain"], {}, { :class => 'form-control', :selected => @descriptors["terrain"][@event.bicycle_ride.terrain]} %></div><br>
-		<% end %>
-
-		<% if defined? @event.bicycle_ride.road_type %>
-		<div class="form-group">
-			<%= bicycle_ride_form.label :road_type %>
-			<%= bicycle_ride_form.select :road_type, @descriptors["road_type"], {}, { :class => 'form-control', :selected => @descriptors["road_type"][@event.bicycle_ride.road_type]} %>
+			<%= event.label :publishing_status %>
+			<%= event.select :publishing_status, [['Publish',"published"],['Draft',"draft"]], {}, :class => 'form-control', :selected => @event.publishing_status, :id => 'publishing_status', :name => 'publishing_status' %>
 		</div>
-		<% end %>
 
-	<% end %>
-	<p><%= event.check_box :is_private %> <b>This event is private.</b></p><br>
-	<div><%= event.submit "Update Event", :class => "btn btn-warning btn-lg" %>
-	<%= link_to raw('Delete <span class="glyphicon glyphicon-remove"></span>'),edit_event_path(@event.id), :class => "btn btn-danger btn-lg" %></div><br>
+	<div>
+		<%= event.submit "Update Event", :class => "btn btn-warning btn-lg" %>
+		<%= link_to raw('Delete <span class="glyphicon glyphicon-remove"></span>'),edit_event_path(@event._id), :class => "btn btn-danger btn-lg" %>
+		<%= event.submit 'Cancel', :class => 'btn btn-default btn-lg', :name => 'cancel'%>
+	</div>
 <% end %>
 
+<script>
+	$('#clear_text').click(function(event){
+		$('#event_address').val('');
+	});
+
+	$('#search_for_address').click(function(event){
+		var temp = $('#event_address').val();
+		if(!isBlank(temp) && !isEmpty(temp))
+			geocodeAddress(temp);
+	});
+</script>
 

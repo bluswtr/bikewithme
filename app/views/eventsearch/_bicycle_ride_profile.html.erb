@@ -1,0 +1,23 @@
+<% if profile[:altitude] %>
+	<div><span class="<%= id %>">Loading..</span></div><br>
+<% end %>
+<% if profile[:distance] %>
+	<div style='display:inline'><b>Distance:</b> <%=profile[:distance] %> miles | </div>
+<% end %>
+<% if profile[:road_type] %>
+	<div style='display:inline'><b>Road Type:</b> <%= @descriptors["road_type"][profile[:road_type]] %> | </div>
+<% end %>
+<% if profile[:pace] %>
+	<div style='display:inline'><b>Pace:</b> <%= @descriptors["pace"][profile[:pace]] %> | </div>
+<% end %>
+<% if profile[:terrain] %>
+	<div style='display:inline'><b>Terrain:</b> <%= @descriptors["terrain"][profile[:terrain]] %></div>
+<% end %>
+
+<script>
+	<% if profile[:altitude] %>
+		var width = $('#map').width() - 30;
+		var height = 50;
+		$('.<%= id %>').sparkline(<%= profile[:altitude] %>, {height:height,width:width});
+	<% end %>
+</script>

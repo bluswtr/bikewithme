@@ -1,85 +1,34 @@
 <script>
 	$(document).ready(function(){
-		var editable = false;
-		var map = init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>,editable);
-		var polyline = <%= @event.bicycle_ride.polyline %>;
-		if (polyline[0][0] != 0 && polyline[0][1] != 0) {
-			draw_streams(polyline,map);
-		    map.fitLatLngBounds(convert_coords_to_bounds_obj(polyline));
-		}
+		var map = new Map(<%= @event[:meeting_point][1] %>,<%= @event[:meeting_point][0] %>,false);
+		var polyline = <%= @event.bicycle_ride.polyline %>; 
+		drawPolyline(polyline,map)
 	});
 </script>
-<span>
-	<h4 style="display:inline"><%= @event.title %>
-		<% if @event.user == current_user %>
-		<%= link_to raw('<span class="glyphicon glyphicon-edit"></span>'),edit_event_path(@event.id) %>
-		<% end %>
-		<%= link_to raw('Watch <span class="glyphicon glyphicon-eye-open"></span>'),event_watch_index_path(@event.id), rel: 'nofollow', class: "btn btn-primary btn-sm", method: 'post', remote: 'true'  %>
-		<%= link_to raw('Watching <span class="glyphicon glyphicon-eye-open"></span>'),event_unwatch_index_path(@event.id), rel: 'nofollow', class: "btn btn-primary btn-sm", style: 'display:none', method: 'post', remote: 'true'  %>
-
-		<%= link_to raw('Join <span class="glyphicon glyphicon-bicycle"></span>'),event_join_index_path(@event.id), rel: 'nofollow', class: "btn btn-primary btn-sm", method: 'post', remote: 'true'  %>
-		<%= link_to raw('Joined <span class="glyphicon glyphicon-bicycle"></span>'),event_unjoin_index_path(@event.id), rel: 'nofollow', class: "btn btn-primary btn-sm", style: 'display:none', method: 'post', remote: 'true'  %>
-	</h4>
-
-</span><br><br>
-
-<script>
-		<!-- if watching, hide watch button and vice versa -->
-		<% if @watched == true %>
-			$("a[href='/events/<%=@event.id%>/watch']").hide();
-			$("a[href='/events/<%=@event.id%>/unwatch']").show();
-		<% end %>
-
-		<!-- if joined, hide join button and vice versa -->
-		<% if @joined == true %>
-			$("a[href='/events/<%=@event.id%>/join']").hide();
-			$("a[href='/events/<%=@event.id%>/unjoin']").show();
-		<% end %>	
-</script>
+	<%= render partial: "eventsearch/buttons_join_watch", locals: { title:@event.title, id:@event.id, user:@event.user, watched:@watched, joined:@joined} %>
 
 <div id="map" class="map_half"></div><br>
 <div>
 	<ul class="list-group">
+		<li class="list-group-item">
+		<p><b>Joined:</b>
 		<% if @event.user == current_user && @event.joiners_count_by_type("user") != 0 %>
-			<li class="list-group-item">
-				<p><b>Joined:</b> <% @event.all_joiners.each do |joiner| %>
+			 <% @event.all_joiners.each do |joiner| %>
 					<%= joiner.name %> 
-					<% end %> </p>
+			<% end %> 
+		<% else %>
+			No riders yet </p>
 			</li>
 		<% end %>
-		<li class="list-group-item">
-			<p><b>When:</b> <%= @event.event_date %></p>
-		</li>
-		<li class="list-group-item">
-			<p><b>Description:</b> <%= @event.description %></p>
-		</li>
-		<% if @event.bicycle_ride.distance %>
-		<li class="list-group-item">
-			<p><b>Distance:</b> <%= @event.bicycle_ride.distance %> miles</p>
-		</li>
-		<%end%>
-		<% if @event.bicycle_ride.pace %>
-			<li class="list-group-item">
-			<p><b>Pace:</b> 
-				<%=@descriptors["pace"][@event.bicycle_ride.pace][0]%></p>
-			</li>
-		<%end%>
-		<% if @event.bicycle_ride.terrain %>
-			<li class="list-group-item">
-			<p><b>Terrain:</b> <%= @descriptors["terrain"][@event.bicycle_ride.terrain][0] %></p>
-			</li>
-		<%end%>
-		<% if @event.bicycle_ride.terrain %>
-			<li class="list-group-item">
-			<p><b>Road Type:</b> <%= @descriptors["road_type"][@event.bicycle_ride.road_type][0] %></p>
-			</li>
-		<%end%>
 
-		<% if @event.bicycle_ride.total_elevation_gain %>
+		<% pairs = [['When',@event.event_date],['Meeting Point',@event.address],['Description',@event.description],['Distance',@event.bicycle_ride.distance],['Pace',@descriptors["pace"][@event.bicycle_ride.pace][0]],['Terrain',@descriptors["terrain"][@event.bicycle_ride.terrain][0]],['Road Type',@descriptors["road_type"][@event.bicycle_ride.road_type][0]],['Total Elevation Gain',@event.bicycle_ride.total_elevation_gain],['Publishing Status',@event.publishing_status]] %>
+
+		<% pairs.each do |title,value| %>
 			<li class="list-group-item">
-			<p><b>Total Elevation Gain:</b> <%= @event.bicycle_ride.total_elevation_gain %> ft</p>
+			<p><b><%= title %>:</b> <%= value %></p>
 			</li>
-		<%end%>
+		<% end %>
+
 		<li class="list-group-item">
 			<p><b>Privacy:</b> This Event is 
 			<% if @event.is_private %>
@@ -89,7 +38,7 @@
 			<% end %></p>
 		</li>
 	</ul>
-		<% if @event.user == current_user && @event.user == current_user %>
-			<br><%= link_to raw('Edit <span class="glyphicon glyphicon-edit"></span>'),edit_event_path(@event.id), :class => "btn btn-primary btn-lg" %>
-		<% end %>
+	<% if @event.user == current_user && @event.user == current_user %>
+		<%= link_to raw('Edit <span class="glyphicon glyphicon-edit"></span>'),edit_event_path(@event.id), :class => "btn btn-primary btn-lg" %>
+	<% end %>
 </div>

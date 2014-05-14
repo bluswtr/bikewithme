@@ -6,7 +6,7 @@
 </ul>
 <br><br>
 
-<% if @microposts.count > 0 %>
+<% if @count > 0 %>
 	<% @microposts.each do |post|%>
 	<p><%= post.content.html_safe %></p>
 	<% end %>

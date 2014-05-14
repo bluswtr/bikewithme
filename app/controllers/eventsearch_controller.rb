@@ -36,5 +36,6 @@ class EventsearchController < ApplicationController
 		end
 		@event_data = Kaminari.paginate_array(nearest_events).page(params[:page]).per(10)
 		@descriptors = Descriptor.get_options
+		@session = lnglat
 	end
 end

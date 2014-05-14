@@ -1,6 +1,6 @@
 <script>
 	$(document).ready(function(){
-		init_map(<%= @event.meeting_point[1] %>,<%= @event.meeting_point[0] %>,0);
+		var map = new Map(<%= @session[1] %>,<%= @session[0] %>,false);
 	});
 </script>
 <span><h4 style="display:inline">You're Invited to <%= @event.title %></h4> 

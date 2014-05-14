@@ -4,6 +4,7 @@ class EventsController < ApplicationController
 	def new
 		@event = Event.new
 		@descriptors = Descriptor.format_for_option_tag(1)
+		@session = lnglat
 	end
 
 	def index
@@ -31,11 +32,20 @@ class EventsController < ApplicationController
 	def edit
 		@event = Event.find(params[:id])
 		@descriptors = Descriptor.format_for_option_tag(1)
+		puts "@@@@@@@@@@"
+		p @descriptors
+		p @event
+		p params
+		@session = lnglat
 	end
 
-	def update	
-		event = Event.update_default(params)
-		redirect_to event_url(event), notice: "Event Updated"
+	def update
+		if params[:cancel]
+		 	redirect_to events_path
+		else
+			event = Event.update_default(params)
+			redirect_to event_url(event), notice: "Event Updated"
+		end
 	end
 
 	def create
@@ -59,6 +69,7 @@ class EventsController < ApplicationController
 		@event = Event.find(params[:id])
 		@watched = false
 		@joined = false
+		@session = lnglat
 
 		if(user_signed_in? && current_user.follower_of?(@event))
 			@watched = true
@@ -70,6 +81,7 @@ class EventsController < ApplicationController
 	end
 
 	def home
+		@ip = request.remote_ip
 	end
 
 	def more_info
@@ -198,7 +210,10 @@ class EventsController < ApplicationController
 	def geolocation_search
 		Event.find
 		address = Event.geocoder_search(params[:ip_latlng_address])
-		# return formatted_address
-		render :json => address[0].formatted_address.to_json
+		unless no_results.call(address)
+			render :json => address[0].formatted_address.to_json
+		else
+			render nothing: true
+		end
 	end
 end

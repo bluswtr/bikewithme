@@ -65,7 +65,8 @@ class Event
 
   # example: index({ loc: "2d" }, { min: -200, max: 200 }).
   # chose 2dsphere over 2d because it has more features and 2d is largely a legacy index
-  index({ meeting_point: '2dsphere' }, { unique: true, background: true })
+  # compound index because it is possible to clone events such that the meeting point is the same
+  index({ meeting_point: '2dsphere', event_date: 1 }, { sparse: true, unique: true, background: true })
 
   # Other Fields to Consider
   # has_many :tags #commute, training, fun, recovering
@@ -78,7 +79,7 @@ class Event
   # Scopes
   ############################################
   scope :published, -> { where(:publishing_status => 'published') }
-  scope :drafts, -> { where(:publishing_status => 'draft') }
+  scope :drafts, -> { where(:publishing_status => 'draft').order_by(:updated_at.desc) }
   # scope :published_and_drafts, -> { where(:publishing_status => 'published').union.in(:publishing_status => 'draft')}
   scope :future_events, -> { where(:event_date.gte => Time.now) }
   scope :past_events, -> { where(:event_date.lt => Time.now) }
@@ -144,21 +145,31 @@ class Event
     longitude = params["longitude"].to_f
     latitude = params["latitude"].to_f 
     date = Time.utc(params["event_date"]["year"],params["event_date"]["month"],params["event_date"]["day"],params["event_date"]["hour"],params["event_date"]["minute"])
+
+    publishing_status = ''
+    if params[:publish]
+      publishing_status = 'published'
+    elsif params[:draft]
+      publishing_status = 'draft'
+    end
+
     @event =  user.events.create( 
                 title:params["event"]["title"],
                 meeting_point:[longitude,latitude],
+                address:params["address"],
                 event_date:date,
                 is_private:params["event"]["is_private"],
                 description:params["event"]["description"],
                 activity_id:params["event"]["activity_id"],
+                publishing_status:publishing_status,
                 bicycle_ride:
-                  {
-                    pace:params["bicycle_ride"]["pace"],
-                    terrain:params["bicycle_ride"]["terrain"],
-                    distance:params["bicycle_ride"]["distance"],
-                    road_type:params["bicycle_ride"]["road_type"]
-                  }
-              )
+                    {
+                        pace:params["bicycle_ride"]["pace"],
+                        terrain:params["bicycle_ride"]["terrain"],
+                        distance:params["bicycle_ride"]["distance"],
+                        road_type:params["bicycle_ride"]["road_type"]
+                    }
+            )
   end
 
   # strava stream hash
@@ -181,19 +192,22 @@ class Event
 
   def self.update_default(params)
     event = Event.find(params[:id])
-    longitude = params["longitude"].to_f
-    latitude = params["latitude"].to_f
+    longitude = params[:longitude].to_f
+    latitude = params[:latitude].to_f
+
     date = Time.utc(params["event_date"]["year"],params["event_date"]["month"],params["event_date"]["day"],params["event_date"]["hour"],params["event_date"]["minute"])
     
     event.title = params[:event][:title]
     event.description = params[:event][:description]
     event.meeting_point = [longitude,latitude]
     event.event_date = date
+    event.address = params[:address]
     event.is_private = params[:event][:is_private]
     event.bicycle_ride.distance = params[:bicycle_ride][:distance]
     event.bicycle_ride.pace = params[:bicycle_ride][:pace]
     event.bicycle_ride.terrain = params[:bicycle_ride][:terrain]
     event.bicycle_ride.road_type = params[:bicycle_ride][:road_type]
+    event.publishing_status = params[:publishing_status]
 
     if event.changed?
       event.save
@@ -246,5 +260,26 @@ class Event
     self.save
     self
   end
-  
+
+  def create_from_object(user)
+    longitude = self.meeting_point[0]
+    latitude = self.meeting_point[1]
+    @event_mod_obj = user.events.create(
+                title:self.title,
+                meeting_point:[longitude,latitude],
+                address:self.address,
+                event_date:self.event_date,
+                is_private:self.is_private,
+                description:self.description,
+                activity_id:self.activity_id,
+                publishing_status:self.publishing_status,
+                bicycle_ride:
+                    {
+                        pace:self.bicycle_ride.pace,
+                        terrain:self.bicycle_ride.terrain,
+                        distance:self.bicycle_ride.distance,
+                        road_type:self.bicycle_ride.road_type
+                    }
+            )
+  end
 end

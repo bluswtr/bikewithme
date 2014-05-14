@@ -85,6 +85,13 @@ body {
 	vertical-align: middle;
 }
 
+// map media query
+@media all and (max-width:768px) {
+	.map_full {
+		height: 300px;
+	}
+}
+
 // inactive glyphicons
 .inactive a:link, .inactive a:visited, .inactive a:hover, .inactive a:active
 {

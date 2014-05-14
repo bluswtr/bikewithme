@@ -16,13 +16,21 @@ class EventpostController < ApplicationController
 	end
 
 	def edit
-		temp = Event.find(params[:id])
-		event_copy = temp.clone
-		
-		event_copy.unset(:strava_activity_id)
-		event_copy.update_publishing_status('draft')
-		event_copy.save
-		@event = Event.find(event_copy._id)
+		event = Event.find(params[:id])
+		date = Time.now
+		event.unset(:strava_activity_id)
+		event.update_publishing_status('draft')
+		event.event_date = Time.utc(date.year,date.month,date.day,date.hour,date.min)
+		@event = event.create_from_object(current_user)
+		#@event = Event.find(@temp._id)
+		@session = lnglat
+
+		puts "@@@@@@@@@@@@@@"
+		p params[:id]
+		p event._id
+		puts "event: #{@event}"
+		p @event
+		puts "@@@@@@@@@@@@@@"
 	end
 
 	def update

@@ -56,8 +56,8 @@ class UsersController < ApplicationController
 		@user = User.find(current_user.id)
 		following_ids = []
 		@microposts = nil
-		count = @user.followees_count_by_type("user")
-		if count > 0
+		@count = @user.followees_count_by_type("user")
+		if @count > 0
 			following_list = @user.followees_by_type("user")
 			following_list.each do |following|
      			following_ids.push(following._id)
