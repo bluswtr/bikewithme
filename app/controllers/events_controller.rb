@@ -18,7 +18,7 @@ class EventsController < ApplicationController
 	end
 
 	def active_rides
-		@events = current_user.events.published.where(:event_date.gt => Time.now).page params[:page]
+		@events = current_user.events.published.future_events.page params[:page]
 	end
 
 	def drafts
@@ -32,10 +32,6 @@ class EventsController < ApplicationController
 	def edit
 		@event = Event.find(params[:id])
 		@descriptors = Descriptor.format_for_option_tag(1)
-		puts "@@@@@@@@@@"
-		p @descriptors
-		p @event
-		p params
 		@session = lnglat
 	end
 
@@ -55,10 +51,8 @@ class EventsController < ApplicationController
 
 	def destroy
 		event = Event.find(params[:id])
-		temp = event.clone
-		title = temp.title
 		event.delete
-		redirect_to action: 'index', notice: "Event #{title} removed", status: 303
+		redirect_to action: 'index', status: 303
 	end
 
 	def landing
@@ -107,7 +101,6 @@ class EventsController < ApplicationController
 	end
 
 	def next_seven_days
-		#time = Time.current.utc
 		time = Date.today
 		seven_days = time + 7
 		nearest_events = Hash.new
@@ -197,6 +190,7 @@ class EventsController < ApplicationController
 		save_latlng(params["lat"],params["lng"])
 		render nothing:true
 	end
+
 
 	# def save_geolocation_to_object
 	# 	event = Event.find(params[:id])

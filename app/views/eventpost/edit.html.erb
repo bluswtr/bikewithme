@@ -13,8 +13,8 @@
 <%= form_for @event, :role => 'form', url: {action: "update"} do |event| %>
 
 	<input type='hidden' name='clone_id' value='<%= @event.id %>'>
-	<input type='hidden' name='longitude' id='longitude'>
-	<input type='hidden' name='latitude' id='latitude'>
+	<input type='hidden' name='longitude' id='longitude' value='<%= @event.meeting_point[0] %>'>
+	<input type='hidden' name='latitude' id='latitude' value='<%= @event.meeting_point[1] %>'>
 	<input type='hidden' name='polyline' value='<%= @event.bicycle_ride.polyline %>'>
 
 	<br>

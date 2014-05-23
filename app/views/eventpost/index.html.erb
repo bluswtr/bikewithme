@@ -4,14 +4,17 @@ Use a previous ride from your Strava profile as a starting point or create a new
 	<li class="active"><%= link_to "Use a Strava Ride", eventpost_index_path %></li>
 	<li><%= link_to "Create a Custom Ride", new_event_path %></li>
 </ul>
-<%= paginate @events %>
+
 <table class='table table-hover'>
+<tr><td style='border-top: 0px;'><%= paginate @events %></td></tr>
 <% @events.each do |event| %>
-	<tr><td>
+	<tr><td id="edit-bar-<%= event.id %>">
 		<h4 class='title-inline'><%= link_to event.title, edit_eventpost_path(event.id) %></h4>
 		<div style='display:inline' id='distance-<%= event.id %>'></div> <div style='display:inline' id='sparkline-<%= event.id %>'></div>
 	</td></tr>
 	<script>
+		$('#edit-bar-<%= event.id %>').click(function(){
+		window.location = '<%= edit_event_path(event.id) %>';});
 		<% if event.bicycle_ride.altitude %>
 			$('#sparkline-<%= event.id %>').sparkline(<%= event.bicycle_ride.altitude %>, {height: '20',width:'100'});
 			$('#sparkline-<%= event.id %>').before(' | ');
@@ -22,5 +25,6 @@ Use a previous ride from your Strava profile as a starting point or create a new
 		<% end %>
 	</script>
 <% end %>
+<tr><td style='border-top: 0px;'><%= paginate @events %></td></tr>
 </table>
 

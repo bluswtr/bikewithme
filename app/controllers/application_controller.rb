@@ -10,9 +10,9 @@ class ApplicationController < ActionController::Base
     session[:lng] = lng.to_f
   end
 
-  def to_utc(params)
-  	return Time.utc(params["event_date"]["year"],params["event_date"]["month"],params["event_date"]["day"],params["event_date"]["hour"],params["event_date"]["minute"])
-  end
+  # def to_utc(params)
+  # 	return Time.utc(params["event_date"]["year"],params["event_date"]["month"],params["event_date"]["day"],params["event_date"]["hour"],params["event_date"]["minute"])
+  # end
   
   def no_results
   	->(obj){ if obj == 0 || obj == nil then return true end }
@@ -24,5 +24,11 @@ class ApplicationController < ActionController::Base
     end
     object
   end
+
+  def bikewithme_log(string)
+    puts "@@@@@@@@@@@@@@@@@@ #{string}"
+  end
+
+
 
 end

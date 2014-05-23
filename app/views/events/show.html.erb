@@ -21,7 +21,7 @@
 			</li>
 		<% end %>
 
-		<% pairs = [['When',@event.event_date],['Meeting Point',@event.address],['Description',@event.description],['Distance',@event.bicycle_ride.distance],['Pace',@descriptors["pace"][@event.bicycle_ride.pace][0]],['Terrain',@descriptors["terrain"][@event.bicycle_ride.terrain][0]],['Road Type',@descriptors["road_type"][@event.bicycle_ride.road_type][0]],['Total Elevation Gain',@event.bicycle_ride.total_elevation_gain],['Publishing Status',@event.publishing_status]] %>
+		<% pairs = [['When',@event.event_date.asctime],['Meeting Point',@event.address],['Description',@event.description],['Distance',@event.bicycle_ride.distance],['Pace',@descriptors["pace"][@event.bicycle_ride.pace][0]],['Terrain',@descriptors["terrain"][@event.bicycle_ride.terrain][0]],['Road Type',@descriptors["road_type"][@event.bicycle_ride.road_type][0]],['Total Elevation Gain',@event.bicycle_ride.total_elevation_gain],['Publishing Status',@event.publishing_status]] %>
 
 		<% pairs.each do |title,value| %>
 			<li class="list-group-item">

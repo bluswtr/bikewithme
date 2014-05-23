@@ -90,12 +90,21 @@ body {
 	.map_full {
 		height: 300px;
 	}
+
+	body {
+		font-size: 12px;
+	}
 }
 
 // inactive glyphicons
 .inactive a:link, .inactive a:visited, .inactive a:hover, .inactive a:active
 {
 	color: #333;
+}
+
+// navbar button hover
+.navbar-inverse .navbar-nav>li>a:hover,click {
+	background-color:#333;
 }
 
 // .invited_button {

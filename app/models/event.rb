@@ -144,8 +144,8 @@ class Event
     # values, convert the first into longitude and the next into latitude.
     longitude = params["longitude"].to_f
     latitude = params["latitude"].to_f 
-    date = Time.utc(params["event_date"]["year"],params["event_date"]["month"],params["event_date"]["day"],params["event_date"]["hour"],params["event_date"]["minute"])
 
+    date = DateTime.new(params[:event_date][:year].to_i,params[:event_date][:month].to_i,params[:event_date][:day].to_i,params[:event_date][:hour].to_i,params[:event_date][:minute].to_i,0)
     publishing_status = ''
     if params[:publish]
       publishing_status = 'published'
@@ -195,7 +195,7 @@ class Event
     longitude = params[:longitude].to_f
     latitude = params[:latitude].to_f
 
-    date = Time.utc(params["event_date"]["year"],params["event_date"]["month"],params["event_date"]["day"],params["event_date"]["hour"],params["event_date"]["minute"])
+    date = DateTime.new(params[:event_date][:year].to_i,params[:event_date][:month].to_i,params[:event_date][:day].to_i,params[:event_date][:hour].to_i,params[:event_date][:minute].to_i,0)
     
     event.title = params[:event][:title]
     event.description = params[:event][:description]
@@ -224,7 +224,7 @@ class Event
   end
 
   def update_time(year,month,day,hour,minute)
-    self.event_date = Time.utc(year,month,day,hour,minute)
+    self.event_date = DateTime.new(year.to_i,month.to_i,day.to_i,hour.to_i,minute.to_i,0)
     self.save
     self
   end
@@ -262,11 +262,9 @@ class Event
   end
 
   def create_from_object(user)
-    longitude = self.meeting_point[0]
-    latitude = self.meeting_point[1]
     @event_mod_obj = user.events.create(
                 title:self.title,
-                meeting_point:[longitude,latitude],
+                meeting_point:self.meeting_point,
                 address:self.address,
                 event_date:self.event_date,
                 is_private:self.is_private,

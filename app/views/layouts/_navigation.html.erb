@@ -7,20 +7,24 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <%= link_to "Bike With Me", root_path, :class => 'navbar-brand' %>
+        <%= link_to "Bike With Me", root_path, :class => 'navbar-brand', :id => 'bikewithme_brand' %>
+        <script>
+          enquire.register("screen and (max-width:768px)", {
+            match:function() {
+              $('#bikewithme_brand').html('<span class="glyphicon glyphicon-bicycle"></span>'); },
+            unmatch:function() {
+              $('#bikewithme_brand').html('Bike With Me');}});
+        </script>
         <% if user_signed_in? %>
           <p class="navbar-text pull-right">
           <%= link_to raw('<span class="glyphicon glyphicon-plus-sign inactive"></span>'),new_event_path %> &nbsp;
-          <%= link_to current_user.name, user_status_feed_path(current_user.id) %> &nbsp;
+          <%= link_to current_user.name, user_path(current_user.id) %> &nbsp;
           </p>
         <% end %>
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav">
         <% if user_signed_in? %>
-            <li>
-            <%= link_to 'My Profile', user_path(current_user.id) %>
-            </li>
             <li>
             <%= link_to 'My Rides', events_path %>
             </li>

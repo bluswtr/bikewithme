@@ -9,6 +9,9 @@ function isBlank(str) {
 var BIKEWITHME_DEBUG_ON = true;
 
 function bikewithme_log(string,obj){
-	if(BIKEWITHME_DEBUG_ON)
-		console.log(string,obj);
+	if(BIKEWITHME_DEBUG_ON && !obj) {
+		console.log(string);
+	} else if (BIKEWITHME_DEBUG_ON && obj) {
+		console.log(string + " :: Object -> ",obj);
+	}
 }

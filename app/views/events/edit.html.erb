@@ -12,11 +12,6 @@
 
 <%= form_for @event, :role => 'form', url: {action: "update"} do |event| %>
 
-	<div class="form-group">
-		<%= event.label :title %>
-		<%= event.text_field :title, :class => 'form-control' %>
-	</div><br>
-
 	<%= event.label :meeting_point, 'Meeting Point:' %><br />
 	<div class="form-group">
 		<div class="input-group">
@@ -24,6 +19,11 @@
 			<span id="clear_text" class="blah input-group-addon glyphicon glyphicon-remove" style="background-color:#fff;border-left:0px;"></span>
 			<span id="search_for_address" class="btn-primary input-group-addon glyphicon glyphicon-search" style="background-color:#428bca;color:#fff;"></span>
 		</div>
+	</div><br>
+
+	<div class="form-group">
+		<%= event.label :title %>
+		<%= event.text_field :title, :class => 'form-control' %>
 	</div><br>
 
 	<% if @event.event_date %>
@@ -45,20 +45,21 @@
 
 <%= render partial: "bicycle_ride_form", locals: { descriptors:@descriptors, event:@event, :selected => true } %>
 
-		<p><%= event.check_box :is_private, {checked: @event.is_private} %> <b>This event is private.</b></p><br>
+	<p><%= event.check_box :is_private, {checked: @event.is_private} %> <b>This event is private.</b></p><br>
 
-		<div class="form-group">
-			<%= event.label :publishing_status %>
-			<%= event.select :publishing_status, [['Publish',"published"],['Draft',"draft"]], {}, :class => 'form-control', :selected => @event.publishing_status, :id => 'publishing_status', :name => 'publishing_status' %>
-		</div>
+	<div class="form-group">
+		<%= event.label :publishing_status %>
+		<%= event.select :publishing_status, [['Publish',"published"],['Draft',"draft"]], {}, :class => 'form-control', :selected => @event.publishing_status, :id => 'publishing_status', :name => 'publishing_status' %>
+	</div>
 
 	<div>
 		<%= event.submit "Update Event", :class => "btn btn-warning btn-lg" %>
-		<%= link_to raw('Delete <span class="glyphicon glyphicon-remove"></span>'),edit_event_path(@event._id), :class => "btn btn-danger btn-lg" %>
+		<a href='#!' class='btn btn-danger btn-lg' id = '<%= 'delete-' + 
+		@event.id %>'>Delete <span class="glyphicon glyphicon-remove"></span></a>
 		<%= event.submit 'Cancel', :class => 'btn btn-default btn-lg', :name => 'cancel'%>
 	</div>
 <% end %>
-
+<%= render partial: "event_delete", locals: { event:@event, redirect:drafts_events_url() } %>
 <script>
 	$('#clear_text').click(function(event){
 		$('#event_address').val('');

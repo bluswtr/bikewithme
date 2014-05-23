@@ -16,28 +16,23 @@ class EventpostController < ApplicationController
 	end
 
 	def edit
+		bikewithme_log("EventsController#edit #{params}")
 		event = Event.find(params[:id])
-		date = Time.now
-		event.unset(:strava_activity_id)
-		event.update_publishing_status('draft')
-		event.event_date = Time.utc(date.year,date.month,date.day,date.hour,date.min)
-		@event = event.create_from_object(current_user)
-		#@event = Event.find(@temp._id)
+		temp = event.clone
+		temp.unset(:strava_activity_id)
+		temp.update_publishing_status('draft')
+		temp.event_date = Time.now
+		@event = temp.create_from_object(current_user)
 		@session = lnglat
-
-		puts "@@@@@@@@@@@@@@"
-		p params[:id]
-		p event._id
-		puts "event: #{@event}"
-		p @event
-		puts "@@@@@@@@@@@@@@"
 	end
 
 	def update
+		bikewithme_log("EventsController#update")
+		event = Event.find(params[:clone_id])
 		if params[:cancel]
+			event.delete
 		 	redirect_to eventpost_index_path
 		else
-			event = Event.find(params[:clone_id])
 			event.meeting_point = [params[:longitude].to_f,params[:latitude].to_f]
 			event.address = params[:address]
 			event.activity_id = params[:activity_id]

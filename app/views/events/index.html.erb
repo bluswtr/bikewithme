@@ -7,42 +7,24 @@ Edit rides that are active (those that are posted or in draft mode). Create new 
 </ul>
 <br><br>
 
-<%= paginate @events %>
 <table class='table table-hover'>
+<tr><td style='border-top: 0px;'><%= paginate @events %></td></tr>
 <% @events.each do |event| %>
-	<tr id = 'tr-<%= event.id %>'><td>
-		<h4 class='title-inline'><%= link_to event.title, event_path(event.id) %> 
-		<% if !event.is_private %>
-			<span class="glyphicon glyphicon-globe"></span></h4>
-		<% else %>
-			</h4>
-		<% end %>
-		<b>Event Starts On</b> <%= event.event_date.strftime("%A %B %d %Y %H:%M%p") %>
-	</td><td class='td_bar warning'>
-		<%= link_to raw('<span class="glyphicon glyphicon-edit"></span>'),edit_event_path(event.id), :class => 'icon-lg' %>
-	</td><td class='td_bar danger'>
-		<a href='#!' class='icon-lg' id = '<%= 'delete-' + event.id %>'><span class="glyphicon glyphicon-remove"></span></a>
-		<script>
-			$('<%= '#delete-' + event.id %>').click(
-				function (event){
-					alertify.confirm("Remove Ride <i><%= event.title %></i>?", 
-						function (event) {
-						    if (event) { // redirect to delete page
-						        $.ajax({
-						        	url: '<%= event_path(event.id) %>',
-						        	type: 'DELETE',
-						        }).done(function(){
-						        		$('#tr-<%= event.id %>').fadeOut("slow",
-						        			function(){console.log("animation done");}
-						        		);
-						        	}
-						        );
-						    }
-						}
-					);
-				}
-			);
-		</script>
-	</td></tr>
+	<tr id='tr-<%= event.id %>'>
+		<td id='edit-bar-<%= event.id %>'>
+			<h4 class='title-inline'><%= link_to event.title, event_path(event.id) %> 
+			<% if !event.is_private %>
+				<span class="glyphicon glyphicon-globe"></span></h4>
+			<% else %>
+				</h4>
+			<% end %>
+			<b>Event Starts On:</b> <i><%= readable_time(event.event_date) %></i>
+		</td>
+		<td class='td_bar danger'>
+			<a href='#!' class='icon-lg' id = '<%= 'delete-' + event.id %>'><span class="glyphicon glyphicon-remove"></span></a>
+			<%= render partial: "event_delete_fade", locals: { event:event } %>
+		</td>
+	</tr>
 <% end %>
+<tr><td style='border-top: 0px;'><%= paginate @events %></td></tr>
 </table>

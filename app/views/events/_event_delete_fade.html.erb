@@ -1,0 +1,23 @@
+<script>
+	$('#edit-bar-<%= event.id %>').click(function(){
+		window.location = '<%= edit_event_path(event.id) %>';});
+	$('#delete-<%= event.id %>').click(
+		function (event){
+			alertify.confirm("Remove Ride <i><%= event.title %></i>?", 
+				function (event) {
+				    if (event) { // redirect to delete page
+				        $.ajax({
+				        	url: '<%= event_path(event.id) %>',
+				        	type: 'DELETE'
+				        }).done(function(){
+				        		$('#tr-<%= event.id %>').fadeOut("slow",
+				        			function(){bikewithme_log("animation done");}
+				        		);
+				        	}
+				        );
+				    }
+				}
+			);
+		}
+	);
+</script>
