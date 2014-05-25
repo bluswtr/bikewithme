@@ -187,7 +187,11 @@ class EventsController < ApplicationController
 	end
 
 	def save_geolocation
-		save_latlng(params["lat"],params["lng"])
+		if(params["lat"] == false && params["lng"] == false)
+			save_latlng(false,false)
+		else
+			save_latlng(params["lat"],params["lng"])
+		end
 		render nothing:true
 	end
 

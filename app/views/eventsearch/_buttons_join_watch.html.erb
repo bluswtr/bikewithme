@@ -1,5 +1,5 @@
 <span>
-	<h4 style="display:inline"><%= link_to title, event_url(id) %>
+	<h4 class="eventsearch-index-h4"><%= link_to title, event_url(id) %>
 		<% if user == current_user %>
 		<%= link_to raw('<span class="glyphicon glyphicon-edit"></span>'),edit_event_path(id) %>
 		<% end %>

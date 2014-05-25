@@ -36,8 +36,10 @@ function getGeolocationFromIP(message){
 addressFound = function(results,status) {
 			var lat = results[0].geometry.location.lat();
 			var lng = results[0].geometry.location.lng();
-			bikewithme_log("address_found triggered: ",results[0].formatted_address);
 			$(document).trigger("address_found",[status,results[0].formatted_address,lat,lng]);
+			$(document).trigger("city_state_found",[status,results[0].address_components[2].long_name,results[0].address_components[4].short_name]);			
+			bikewithme_log("address_found triggered: ",results[0].formatted_address);
+			bikewithme_log("city_state_found triggered: ",results[0].address_components[2].long_name + ", " + results[0].address_components[4].short_name);
 		}
 
 latlngFound = function(results,status) {
@@ -47,7 +49,6 @@ latlngFound = function(results,status) {
 			bikewithme_log('latlng_found triggered');
 		}
 
-// would need to evaluate a regular expression in UI to determine if Latlng or address
 function geocodeLatlng(lat,lng){
 	bikewithme_log("geocodeLatlng");
 	GMaps.geocode({
@@ -63,14 +64,4 @@ function geocodeAddress(string) {
 		address: string.trim(),
 		callback: latlngFound
 	});
-}
-
-
-// if for some reason session is empty
-// get geolocation from browser or ip
-
-// maybe can skip this. can get latlng from controller without invoking jscript
-function getGeolocationFromSession(){
-
-	return latlng;
 }

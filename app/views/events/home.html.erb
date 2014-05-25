@@ -9,8 +9,10 @@ $(document).ready(function(){
 	$(document).on("geolocation_ready",function(event,geolocation){
 		if(geolocation && save_geolocation_url != ''){
 			setGeolocation(save_geolocation_url,geolocation.coords.latitude,geolocation.coords.longitude);
+		} else {
+			setGeolocation(save_geolocation_url,false,false);
 		}
-	});
+	 });
 });
 </script>
 

@@ -1,0 +1,20 @@
+<%= event.label :meeting_point, 'Meeting Point:' %><br />
+<div class="form-group">
+	<div class="input-group">
+		<%= event.text_field :address, :class => 'form-control',:style => 'border-right:none', :id => 'event_address' %>
+		<span id="clear_text" class="input-group-addon glyphicon glyphicon-remove" style="background-color:#fff;border-left:0px;"></span>
+		<span id="search_for_address" class="btn-primary input-group-addon glyphicon glyphicon-search" style="background-color:#428bca;color:#fff;"></span>
+	</div>
+</div><br>
+
+<script>
+	$('#clear_text').click(function(event){
+		$('#event_address').val('');
+	});
+
+	$('#search_for_address').click(function(event){
+		var temp = $('#event_address').val();
+		if(!isBlank(temp) && !isEmpty(temp))
+			geocodeAddress(temp);
+	});
+</script>

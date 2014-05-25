@@ -6,8 +6,8 @@
 	});
 </script>
 
-<h3>Choose a Strava Ride or Create One From Scratch</h3>
-Use a previous ride from your Strava profile as a starting point or create a new ride from scratch.<br><br>
+<h3 style="display:inline;">Choose a Strava Ride or Create One From Scratch</h3>
+<div style="padding-top:5px; padding-bottom:20px;">Use a previous ride from your Strava profile as a starting point or create a new ride from scratch.</div>
 <ul class="nav nav-tabs">
 	<li><%= link_to "Use a Strava Ride", eventpost_index_path %></li>
 	<li class="active"><%= link_to "Create a Custom Ride", new_event_path %></li>
@@ -17,17 +17,10 @@ Use a previous ride from your Strava profile as a starting point or create a new
 
 <!-- backend request to our db -->
 <%= form_for @event, url: {action: "create"}, html: {role: "form"} do |event| %>
+	<%= render partial: "meeting_point_parts", locals: {event:event} %>
+
 	<div class="form-group"><%= event.label :title %><br />
 	<%= event.text_field :title, :placeholder => "SF=>Marin, Headlands Loop", :class => 'form-control'%></div><br>
-
-	<%= event.label :meeting_point %><br />
-	<div class="form-group">
-		<div class="input-group">
-			<%= event.text_field :address, :class => 'form-control',:style => 'border-right:none', :id => 'event_address' %>
-			<span id="clear_text" class="blah input-group-addon glyphicon glyphicon-remove" style="background-color:#fff;border-left:0px;"></span>
-			<span id="search_for_address" class="btn-primary input-group-addon glyphicon glyphicon-search" style="background-color:#428bca;color:#fff;"></span>
-		</div>
-	</div><br>
 
 	<div class="form-group"><%= event.label 'Meeting Date & Time' %><br /><%= select_datetime Time.now, {prefix: :event_date, ampm: true, start_year: Time.now.year, end_year: Time.now.year + 1, order: [:day, :month, :year] }, {:class => 'form-control'}%></div><br>
 	
@@ -46,16 +39,4 @@ Use a previous ride from your Strava profile as a starting point or create a new
 		<%= event.submit "Save For Later", :class => "btn btn-default btn-lg",:name => 'draft' %>
 	</div><br>
 <% end %>
-
-<script>
-	$('#clear_text').click(function(event){
-		$('#event_address').val('');
-	});
-
-	$('#search_for_address').click(function(event){
-		var temp = $('#event_address').val();
-		if(!isBlank(temp) && !isEmpty(temp))
-			geocodeAddress(temp);
-	});
-</script>
 

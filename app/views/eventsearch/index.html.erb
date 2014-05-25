@@ -1,12 +1,50 @@
-<div class="container-fluid">
-	<h3>Rides Near Me</h3>
+	<span><h3 style="display:inline;" id="title">Rides Near </h3> <a href=#! id="change_location">Edit</a></span>
+	<div class="form-group">
+		<div class="input-group" id="address_form" style="padding-top:5px;">
+			<input type="textfield" id="address" placeholder="Enter an address or just the city you want to search in" class="form-control">
+			<span id="search_for_address" class="btn-primary input-group-addon glyphicon glyphicon-search"></span>
+		</div>
+	</div>
 	<%= paginate @event_data %>
 	<div class="row">
 		<div class="col-sm-4">
 			<div id="map" class="map_full"></div><br><br>
 		</div>
 		<script>
-			var map = new Map(false,false,false);
+			var lat = <%= @session_lng_lat[1] %>;
+			var lng = <%= @session_lng_lat[0] %>;
+
+			bikewithme_log("latlng from rails: " + lat + ", " + lng);
+
+			if (lat != 0 && lng != 0) {
+				$('#address_form').hide();
+				$('#change_location').click(function(){
+					$('#address_form').toggle('slow');
+				});
+
+				var map = new Map(lat,lng,false);
+				geocodeLatlng(lat,lng);
+				$(document).on("city_state_found",function(event,status,city,state){
+					if(status=='OK') {
+						$('#title').html("Rides Near " + city + ", " + state);
+					}
+				});
+			} else {
+				$('#title').html("Search Nearby");
+			}
+
+			$('#search_for_address').click(function(event){
+				bikewithme_log("searching for address");
+				var temp = $('#address').val();
+				if(!isBlank(temp) && !isEmpty(temp))
+					geocodeAddress(temp);
+			});
+			$(document).on("latlng_found",function(event,status,lat,lng){
+				var url = '<%= save_geolocation_events_url() %>';
+				$.post(url,{lat:lat,lng:lng},function(){
+					document.location.reload();
+				});
+			});
 		</script>
 		<div class="col-sm-8">
 			<% @event_data.each do |data|%>
@@ -28,9 +66,10 @@
 					</script>
 				</div><br>
 			<% end %>
-			<script>
-				map.fitBounds();
-			</script>
+
+				<% if @count > 0 %>
+					<script> map.fitBounds(); </script>
+				<% end %> 
+
 		</div><!-- end of cells -->
 	</div>
-</div><!-- end of container -->

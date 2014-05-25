@@ -1,6 +1,6 @@
 
 <header class="nav navbar-inverse navbar-fixed-top bs-docs-nav" role=navigation>
-  <div class="container">
+  <div class="container" style="margin-left:0px; padding:0px;">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
           <span class="icon-bar"></span>
@@ -13,7 +13,8 @@
             match:function() {
               $('#bikewithme_brand').html('<span class="glyphicon glyphicon-bicycle"></span>'); },
             unmatch:function() {
-              $('#bikewithme_brand').html('Bike With Me');}});
+              $('#bikewithme_brand').html('Bike With Me');}
+          });
         </script>
         <% if user_signed_in? %>
           <p class="navbar-text pull-right">
@@ -23,7 +24,7 @@
         <% end %>
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav" style="padding-left:15px; margin-top:0px; margin-bottom:0px;">
         <% if user_signed_in? %>
             <li>
             <%= link_to 'My Rides', events_path %>

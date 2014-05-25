@@ -123,7 +123,7 @@ class Event
   end
 
   def self.nearest(event_filter,lnglat,current_user)
-    vicinity = 50 # miles
+    vicinity = 0.2 # miles
     query_limit = 10
     distance = vicinity.fdiv(111.12) # convert from degree to miles
 

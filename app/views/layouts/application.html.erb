@@ -12,10 +12,10 @@
     <%= yield(:head) %>
   </head>
   <body>
-    <div class='content'>
+    <div class="content">
       <%= render 'layouts/navigation' %>
       <%= render 'layouts/messages' %>
-      <div id='main' class="<%= controller_name %>-<%= action_name %>-container" role="main">
+      <div id='main' class="<%= controller_name %>-<%= action_name %>-container container-fluid" style="padding:15px;" role="main">
         <%= yield %>
       </div>
       <%= render 'layouts/footer' %>

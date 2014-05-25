@@ -74,13 +74,16 @@ Map.prototype.init_map = function(editable){
 	});
 
 	if(this.lat != false && this.lng != false) {
-		this.gmap.addMarker({
+		var temp_marker = this.gmap.addMarker({
 	        lat: this.lat,
 	        lng: this.lng,
-	    	infoWindow: {
-				content: "Meeting Point"
-			}
+	        animation: google.maps.Animation.DROP,
+	        infoWindow: {
+	        	content:"Meeting Point"
+	        }
 		});
+		// temp_marker.infoWindow.open(this.gmap,temp_marker);
+		this.markers.push(temp_marker);
 	}
 	return this.gmap;
 }

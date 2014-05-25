@@ -30,12 +30,14 @@ body {
 	min-height:100%;
 }
 
+/*
 .pad-page-container {
 	padding-top:20px;
 	padding-left:30px;
 	padding-right:30px;
 	padding-bottom:20px;
 }
+*/
 
 .footer {
 	color:#d8d8d6;
@@ -85,7 +87,7 @@ body {
 	vertical-align: middle;
 }
 
-// map media query
+// styles to accomodate mobile version
 @media all and (max-width:768px) {
 	.map_full {
 		height: 300px;
@@ -93,6 +95,19 @@ body {
 
 	body {
 		font-size: 12px;
+	}
+
+	.navbar-brand {
+		padding-left:30px;
+	}
+
+	.container>.navbar-header, .container-fluid>.navbar-header, .container>.navbar-collapse, .container-fluid>.navbar-collapse {
+		margin-right:0px;
+	}
+
+	.eventsearch-index-h4{
+		display:inline;
+		font-size:14px;
 	}
 }
 
@@ -105,6 +120,10 @@ body {
 // navbar button hover
 .navbar-inverse .navbar-nav>li>a:hover,click {
 	background-color:#333;
+}
+
+.eventsearch-index-h4{
+	display:inline;
 }
 
 // .invited_button {

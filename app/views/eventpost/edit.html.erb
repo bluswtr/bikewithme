@@ -18,30 +18,11 @@
 	<input type='hidden' name='polyline' value='<%= @event.bicycle_ride.polyline %>'>
 
 	<br>
-	<%= event.label :meeting_point, 'Meeting Point:' %><br />
-	<div class="form-group">
-		<div class="input-group">
-			<%= event.text_field :address, :class => 'form-control',:style => 'border-right:none', :id => 'event_address' %>
-			<span id="clear_text" class="blah input-group-addon glyphicon glyphicon-remove" style="background-color:#fff;border-left:0px;"></span>
-			<span id="search_for_address" class="btn-primary input-group-addon glyphicon glyphicon-search" style="background-color:#428bca;color:#fff;"></span>
-		</div>
-	</div><br>
+
+	<%= render partial: "events/meeting_point_parts", locals: {event:event} %>
 
 	<%= event.hidden_field :activity_id, :value => 1 %>
 
 	<div><%= event.submit 'Next', :class => 'btn btn-primary btn-lg' %> <%= event.submit 'Cancel', :class => 'btn btn-default btn-lg', :name => 'cancel'%></div>
 <% end %>
-
-<script>
-	$('#clear_text').click(function(event){
-		$('#event_address').val('');
-	});
-
-	$('#search_for_address').click(function(event){
-		var temp = $('#event_address').val();
-		if(!isBlank(temp) && !isEmpty(temp))
-			geocodeAddress(temp);
-	});
-</script>
-
 
