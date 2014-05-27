@@ -5,7 +5,7 @@
 			<span id="search_for_address" class="btn-primary input-group-addon glyphicon glyphicon-search"></span>
 		</div>
 	</div>
-	<%= paginate @event_data %>
+	<%= render partial: "events/paginate_events", locals: { event_data:@event_data } %>
 	<div class="row">
 		<div class="col-sm-4">
 			<div id="map" class="map_full"></div><br><br>

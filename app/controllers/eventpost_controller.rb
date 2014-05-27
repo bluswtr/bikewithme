@@ -12,7 +12,6 @@ class EventpostController < ApplicationController
 		else
 			@events = current_user.events.from_strava.order_by(:updated_at.desc).page params[:page]
 		end
-		p @events
 	end
 
 	def edit

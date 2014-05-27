@@ -39,6 +39,6 @@ class EventsearchController < ApplicationController
 			@descriptors = Descriptor.get_options
 		end
 
-p @session_lng_lat
+	puts "session_location: #{@session_lng_lat}"
 	end
 end

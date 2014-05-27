@@ -8,7 +8,8 @@
 <br><br>
 
 <table class='table table-hover'>
-<tr><td style='border-top: 0px;'><%= paginate @events %></td></tr>
+<tr><td style='border-top: 0px;'>	
+<%= render partial: "events/paginate_events", locals: { event_data:@events } %></td></tr>
 <% @events.each do |event| %>
 	<tr id = 'tr-<%= event.id %>'>
 		<td id="edit-bar-<%= event.id %>">
@@ -27,5 +28,6 @@
 		</td>
 	</tr>
 <% end %>
-<tr><td style='border-top: 0px;'><%= paginate @events %></td></tr>
+<tr><td style='border-top: 0px;'>	
+<%= render partial: "events/paginate_events", locals: { event_data:@events } %></td></tr>
 </table>
