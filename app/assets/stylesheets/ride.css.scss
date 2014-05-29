@@ -26,18 +26,8 @@ body {
 }
 
 #main:not(.events-home-container) {
-	@extend .pad-page-container;
 	min-height:100%;
 }
-
-/*
-.pad-page-container {
-	padding-top:20px;
-	padding-left:30px;
-	padding-right:30px;
-	padding-bottom:20px;
-}
-*/
 
 .footer {
 	color:#d8d8d6;
@@ -117,17 +107,31 @@ body {
 	color: #333;
 }
 
+// layouts/navigation
 // navbar button hover
 .navbar-inverse .navbar-nav>li>a:hover,click {
 	background-color:#333;
+}
+
+// eventsearch#index
+@media all and (min-width:768px) {
+
+	#map-container.sticky-top {
+	     position: fixed;
+	     top: 65px;
+	}
+
+	#map-container.sticky-bottom {
+	     position: fixed;
+	     bottom: 100px;
+	}
+
+	#hidden-container.hide-me {
+		display:none;
+	}
 }
 
 .eventsearch-index-h4{
 	display:inline;
 }
 
-// .invited_button {
-//	border:1px solid #ccc; 
-//	border-radius:4px; 
-//	padding: 10px;
-// }

@@ -7,9 +7,10 @@
 	</div>
 	<%= render partial: "events/paginate_events", locals: { event_data:@event_data } %>
 	<div class="row">
-		<div class="col-sm-4">
+		<div class="col-sm-4" id="map-container">
 			<div id="map" class="map_full"></div><br><br>
 		</div>
+		<div class="col-sm-4 hide-me" id="hidden-container"></div>
 		<script>
 			var lat = <%= @session_lng_lat[1] %>;
 			var lng = <%= @session_lng_lat[0] %>;
@@ -45,6 +46,19 @@
 					document.location.reload();
 				});
 			});
+
+			// make map sticky
+			var $window = $(window),
+	       	$stickyEl = $('#map-container'),
+	       	elTop = $stickyEl.offset().top,
+	       	$hidden_container = $('#hidden-container');
+
+		    $window.scroll(function() {
+	        	$stickyEl.toggleClass('sticky-top', ($window.scrollTop() > elTop) && !($window.scrollTop() + $window.height() + 200 > document.body.scrollHeight));
+	        	$hidden_container.toggleClass('hide-me', $window.scrollTop() < elTop);
+	        	$stickyEl.toggleClass('sticky-bottom', $window.scrollTop() + $window.height() + 200 > document.body.scrollHeight);
+	    	});
+
 		</script>
 		<div class="col-sm-8">
 			<% @event_data.each do |data|%>

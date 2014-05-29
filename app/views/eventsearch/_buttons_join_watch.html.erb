@@ -4,10 +4,10 @@
 		<%= link_to raw('<span class="glyphicon glyphicon-edit"></span>'),edit_event_path(id) %>
 		<% end %>
 		<%= link_to raw('Watch <span class="glyphicon glyphicon-eye-open"></span>'),event_watch_index_path(id), rel: 'nofollow', class: "btn btn-primary btn-sm", method: 'post', remote: 'true'  %>
-		<%= link_to raw('Watching <span class="glyphicon glyphicon-eye-open"></span>'),event_unwatch_index_path(id), rel: 'nofollow', class: "btn btn-primary btn-sm", style: 'display:none', method: 'post', remote: 'true'  %>
+		<%= link_to raw('Watching <span class="glyphicon glyphicon-eye-open"></span>'),event_unwatch_index_path(id), rel: 'nofollow', class: "btn btn-success btn-sm", style: 'display:none', method: 'post', remote: 'true'  %>
 
 		<%= link_to raw('Join <span class="glyphicon glyphicon-bicycle"></span>'),event_join_index_path(id), rel: 'nofollow', class: "btn btn-primary btn-sm", method: 'post', remote: 'true'  %>
-		<%= link_to raw('Joined <span class="glyphicon glyphicon-bicycle"></span>'),event_unjoin_index_path(id), rel: 'nofollow', class: "btn btn-primary btn-sm", style: 'display:none', method: 'post', remote: 'true'  %>
+		<%= link_to raw('Joined <span class="glyphicon glyphicon-bicycle"></span>'),event_unjoin_index_path(id), rel: 'nofollow', class: "btn btn-success btn-sm", style: 'display:none', method: 'post', remote: 'true'  %>
 	</h4>
 </span><br><br>
 
@@ -16,6 +16,7 @@
 		<% if watched == true %>
 			$("a[href='/events/<%=id%>/watch']").hide();
 			$("a[href='/events/<%=id%>/unwatch']").show();
+
 		<% end %>
 
 		<!-- if joined, hide join button and vice versa -->
