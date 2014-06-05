@@ -16,13 +16,8 @@
 	<input type='hidden' name='longitude' id='longitude' value='<%= @event.meeting_point[0] %>'>
 	<input type='hidden' name='latitude' id='latitude' value='<%= @event.meeting_point[1] %>'>
 	<input type='hidden' name='polyline' value='<%= @event.bicycle_ride.polyline %>'>
-
-	<br>
-
+	<input type='hidden' name='activity_id' id='activity_id' value=<%= Event::BICYCLE_RIDE %>><br>
 	<%= render partial: "events/meeting_point_parts", locals: {event:event} %>
-
-	<%= event.hidden_field :activity_id, :value => 1 %>
-
 	<div><%= event.submit 'Next', :class => 'btn btn-primary btn-lg' %> <%= event.submit 'Cancel', :class => 'btn btn-default btn-lg', :name => 'cancel'%></div>
 <% end %>
 

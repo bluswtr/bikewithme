@@ -8,8 +8,23 @@ class Event
 
   include Geocoder::Model::Mongoid
 
-  # TODO: error check if we hit Google's geocoding limit
-  reverse_geocoded_by :coordinates, :skip_index =>true, :coordinates => :meeting_point
+  ##
+  # Validations
+  #
+  validates :title, presence: true
+  validates :strava_activity_id, presence: false, allow_blank: true
+  validates :event_date, format: { with: /[0-9]{4}([-][0-9]{2}){2}[\s]([0-9]{2}[:]){2}[0-9]{2}(\sUTC)/ }
+  validates :meeting_point, length: { maximum: 2 }
+  validates :address, length: { maximum: 100 }
+  validates :state, length: { maximum: 2 }
+  validates :city, length: { maximum: 50 }
+  validates :activity_id, presence: true
+  validates :description, length: { maximum: 1000 }, allow_nil:true
+  validates :is_private, presence: false, allow_blank: true
+  validates :publishing_status, presence: true, inclusion: { in: %w(false published draft), message: "%{value} is not a valid status" }
+
+
+  reverse_geocoded_by :coordinates, :skip_index => true, :coordinates => :meeting_point
   after_validation :reverse_geocode#, if: ->(obj){ obj.address.present? and obj.address_changed? }  # auto-fetch address
   
   ##
@@ -17,29 +32,29 @@ class Event
   # An event is defined by any activity at a 
   # certain location and time. Time is a differentiator.
   # Currently, we are focusing on deploying with cyclists as our
-  # clientbase, so the default activity is bicycle_ride
+  # clientbase, so the default activity is bicycle_ride (1)
   #
 
   ##
-  # Is followed by users but
+  # Events are followed by users but
   # Events don't follow anything
 
   field :title
   field :strava_activity_id, :type => Integer
-  field :event_date, :type => Time
+  field :event_date, :type => Time, :default => Time.now
 
   ##
   # Geospatial 2dsphere 
   # Mongodb expects an array with two floats in it. 
   # Like so: [longitude,latitude]
   # Example: [37.71618004133281,-122.44663953781128]
-  #field :coordinates, :type => Array
-  field :meeting_point, :type => Array
-  field :address
+  #
+  field :meeting_point, :type => Array 
+  field :address #validate string, restrict size?
 
-  field :city
+  field :city #validate string
 
-  field :state
+  field :state #validate two letters, capitalized
 
   ##
   # To embed other types of activities add:
@@ -52,7 +67,7 @@ class Event
   #
 
   field :description
-  field :activity_id, :type => Integer
+  field :activity_id, :type => Integer, :default => 1
 
   ##
   # When creating a new document, a field from bicycle_ride model needs to be filled
@@ -72,7 +87,8 @@ class Event
   # has_many :tags #commute, training, fun, recovering
   # has_many :activities #eat, bike, swim #has pointer to activity-related details
 
-  ACTIVITY = ['Bicycle Ride',1]
+  # ACTIVITY = ['Bicycle_Ride',1]
+  BICYCLE_RIDE = 1
 
 
   ##
@@ -138,40 +154,6 @@ class Event
     address = Geocoder.search(ip_latlng_address)
   end
 
-  def self.create_custom(user,params)
-    ##
-    # About mongodb geospatial insertions: mongodb will take an array with two 
-    # values, convert the first into longitude and the next into latitude.
-    longitude = params["longitude"].to_f
-    latitude = params["latitude"].to_f 
-
-    date = DateTime.new(params[:event_date][:year].to_i,params[:event_date][:month].to_i,params[:event_date][:day].to_i,params[:event_date][:hour].to_i,params[:event_date][:minute].to_i,0)
-    publishing_status = ''
-    if params[:publish]
-      publishing_status = 'published'
-    elsif params[:draft]
-      publishing_status = 'draft'
-    end
-
-    @event =  user.events.create( 
-                title:params["event"]["title"],
-                meeting_point:[longitude,latitude],
-                address:params["address"],
-                event_date:date,
-                is_private:params["event"]["is_private"],
-                description:params["event"]["description"],
-                activity_id:params["event"]["activity_id"],
-                publishing_status:publishing_status,
-                bicycle_ride:
-                    {
-                        pace:params["bicycle_ride"]["pace"],
-                        terrain:params["bicycle_ride"]["terrain"],
-                        distance:params["bicycle_ride"]["distance"],
-                        road_type:params["bicycle_ride"]["road_type"]
-                    }
-            )
-  end
-
   # strava stream hash
   # creating: name,activity_id,distance,elevation_gain
   def self.create_stream(params,user,polyline,altitude)
@@ -180,6 +162,7 @@ class Event
                 title:params['name'],
                 event_date:params['start_date'],
                 meeting_point:[polyline['data'][0][1].to_f,polyline['data'][0][0].to_f],
+                activity_id:1,
                 bicycle_ride:
                   {
                     polyline:polyline['data'],
@@ -195,6 +178,15 @@ class Event
     longitude = params[:longitude].to_f
     latitude = params[:latitude].to_f
 
+    publishing_status = ''
+    if params[:publish]
+      publishing_status = 'published'
+    elsif params[:draft]
+      publishing_status = 'draft'
+    elsif params[:publishing_status]
+      publishing_status = params[:publishing_status]
+    end
+
     date = DateTime.new(params[:event_date][:year].to_i,params[:event_date][:month].to_i,params[:event_date][:day].to_i,params[:event_date][:hour].to_i,params[:event_date][:minute].to_i,0)
     
     event.title = params[:event][:title]
@@ -203,14 +195,15 @@ class Event
     event.event_date = date
     event.address = params[:address]
     event.is_private = params[:event][:is_private]
+    event.activity_id = params[:activity_id]
     event.bicycle_ride.distance = params[:bicycle_ride][:distance]
     event.bicycle_ride.pace = params[:bicycle_ride][:pace]
     event.bicycle_ride.terrain = params[:bicycle_ride][:terrain]
     event.bicycle_ride.road_type = params[:bicycle_ride][:road_type]
-    event.publishing_status = params[:publishing_status]
+    event.publishing_status = publishing_status
 
     if event.changed?
-      event.save
+        event.save
     end
     event
   end
@@ -261,23 +254,34 @@ class Event
     self
   end
 
-  def create_from_object(user)
-    @event_mod_obj = user.events.create(
+  def clone(user)
+    event = user.events.create!(
                 title:self.title,
                 meeting_point:self.meeting_point,
                 address:self.address,
-                event_date:self.event_date,
+                state:self.state,
+                city:self.city,
+                event_date:Time.now,
                 is_private:self.is_private,
                 description:self.description,
                 activity_id:self.activity_id,
-                publishing_status:self.publishing_status,
+                publishing_status:"draft",
                 bicycle_ride:
                     {
                         pace:self.bicycle_ride.pace,
                         terrain:self.bicycle_ride.terrain,
                         distance:self.bicycle_ride.distance,
-                        road_type:self.bicycle_ride.road_type
+                        road_type:self.bicycle_ride.road_type,
+                        polyline: self.bicycle_ride.polyline,
+                        altitude: self.bicycle_ride.altitude
                     }
             )
+    if !event.valid?
+        bikewithme_log("#{event.id} #{event.errors.messages}")
+        render "public/404", :formats => [:html], status: :not_found
+    else
+        event
+    end
   end
-end
+
+end # end of class

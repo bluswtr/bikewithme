@@ -16,7 +16,7 @@
 <div id="map" class="map_half"></div><br>
 
 <!-- backend request to our db -->
-<%= form_for @event, url: {action: "create"}, html: {role: "form"} do |event| %>
+<%= form_for @event, html: {role: "form"} do |event| %>
 	<%= render partial: "meeting_point_parts", locals: {event:event} %>
 
 	<div class="form-group"><%= event.label :title %><br />
@@ -27,9 +27,10 @@
 	<div class="form-group"><%= event.label :description %><br />
 	<%= event.text_area :description, :placeholder => 'A fun ride. Come one, come all.', :class => 'form-control',:rows=>5 %></div><br>
 
-	<%= event.hidden_field :activity_id, :value =>1 %>
+	<input type='hidden' name='activity_id', value=<%= Event::BICYCLE_RIDE %>>
 	<input type=hidden name=longitude id=longitude>
 	<input type=hidden name=latitude id=latitude>
+	<input type=hidden name="id" value="<%= @event.id %>">
 
 	<%= render partial: "bicycle_ride_form", locals: { descriptors: @descriptors, event:@event, :selected => false} %>
 
@@ -37,6 +38,7 @@
 	<div>
 		<%= event.submit "Publish Now", :class => "btn btn-primary btn-lg",:name => 'publish' %>
 		<%= event.submit "Save For Later", :class => "btn btn-default btn-lg",:name => 'draft' %>
+		<%= event.submit 'Cancel', :class => 'btn btn-default btn-lg', :name => 'destroy'%>
 	</div><br>
 <% end %>
 

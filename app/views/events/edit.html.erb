@@ -31,10 +31,9 @@
 		<%= event.text_area :description, :class => 'form-control', :rows => '3', :placeholder => 'A fun ride. Come one, come all.' %>
 	</div><br>
 
-	<%= event.hidden_field :activity_id, :value => 1 %>
+	<input type='hidden' name='activity_id', value=<%= Event::BICYCLE_RIDE %>>
 	<input type='hidden' name='longitude' id='longitude' value='<%= @event[:meeting_point][0] %>'>
 	<input type='hidden' name='latitude' id='latitude' value='<%= @event[:meeting_point][1] %>'>
-
 
 <%= render partial: "bicycle_ride_form", locals: { descriptors:@descriptors, event:@event, :selected => true } %>
 

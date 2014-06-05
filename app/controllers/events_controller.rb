@@ -2,9 +2,13 @@
 class EventsController < ApplicationController
 	before_filter :authenticate_user!, :only => [:new,:create,:watch,:join,:more_info,:index,:delete,:edit,:update]
 	def new
-		@event = Event.new
+		event = Event.new(title:"Untitled #{Time.now}",publishing_status:"draft")
+    	event.bicycle_ride = BicycleRide.new
 		@descriptors = Descriptor.format_for_option_tag(1)
 		@session = lnglat
+		event.save!
+		current_user.events << event
+		@event = event
 	end
 
 	def index
@@ -37,17 +41,32 @@ class EventsController < ApplicationController
 
 	def update
 		if params[:cancel]
-		 	redirect_to events_path
+			redirect_to events_path
+		elsif params[:destroy]
+			event = Event.find(params[:id])
+			event.delete
+			redirect_to action: 'index', status: 303
 		else
 			event = Event.update_default(params)
-			redirect_to event_url(event), notice: "Event Updated"
+			if !event.valid?
+				bikewithme_log("EventsController#update #{event.errors.messages}")
+				bikewithme_log("#{event.errors.messages}")
+				render "public/404", :formats => [:html], status: :not_found
+	    	else
+				redirect_to event_url(event.id), notice: "Event Updated"
+			end
 		end
 	end
 
-	def create
-		@event = Event.create_custom(current_user,params)
-		redirect_to new_event_invite_url(@event.id), notice: "Event Saved"
-	end
+	# def create
+	# 	@event = Event.create_custom(current_user,params)
+	#     if !@event.valid?
+	#     	p @event.errors.messages
+	# 		render "public/404", :formats => [:html], status: :not_found
+	#     else
+	# 		redirect_to new_event_invite_url(@event.id), notice: "Event Saved"
+	#     end
+	# end
 
 	def destroy
 		event = Event.find(params[:id])

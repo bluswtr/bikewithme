@@ -2,16 +2,26 @@ class BicycleRide
   ##
   # A Bicycle Ride is one of many activities
   # 
-  #
   include Mongoid::Document
+
   embedded_in :event
-  #field :destination, :type => Point #longitude, latitude
-  #field :loop
-  field :pace, :type => Integer, :default => 0 #1234, mellow, brisk, fast, throwdown
-  field :terrain, :type => Integer, :default => 0 #1234, flat, rollers, hilly, steep (overall)
-  field :distance, :type => Integer, :default => 0 #in miles
-  field :road_type, :type => Integer, :default => 0 #pavement, dirt-trail
-  field :total_elevation_gain, :type => Float
+
+  ##
+  # Validations
+  #
+  validates :distance, presence: false, allow_blank: true, numericality: {only_integer:true}
+  validates :pace, presence: false, allow_blank: true, numericality: {only_integer:true, greater_than_or_equal_to:0, less_than_or_equal_to:4}
+  validates :terrain, presence: false, allow_blank: true, numericality: {only_integer:true, greater_than_or_equal_to:0, less_than_or_equal_to:4}
+  validates :road_type, presence: false, allow_blank: true, numericality: {only_integer:true, greater_than_or_equal_to:0, less_than_or_equal_to:4}
+  validates :total_elevation_gain, presence: false, allow_blank: true, numericality: true
+  validates :polyline, presence: false, allow_blank: true
+  validates :altitude, presence: false, allow_blank: true
+
+  field :pace, :type => Integer, default: 0 #1234, mellow, brisk, fast, throwdown
+  field :terrain, :type => Integer, default: 0 #1234, flat, rollers, hilly, steep (overall)
+  field :distance, :type => Integer, default: 0 #in miles
+  field :road_type, :type => Integer, default: 0 #pavement, dirt-trail
+  field :total_elevation_gain, :type => Float, default: 0.0
  
   ##
   # Polyline, Array of geo coordinates

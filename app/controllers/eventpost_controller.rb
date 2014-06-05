@@ -15,18 +15,14 @@ class EventpostController < ApplicationController
 	end
 
 	def edit
-		bikewithme_log("EventsController#edit #{params}")
+		bikewithme_log("EventpostController#edit #{params}")
 		event = Event.find(params[:id])
-		temp = event.clone
-		temp.unset(:strava_activity_id)
-		temp.update_publishing_status('draft')
-		temp.event_date = Time.now
-		@event = temp.create_from_object(current_user)
+		@event = event.clone(current_user)
 		@session = lnglat
 	end
 
 	def update
-		bikewithme_log("EventsController#update")
+		bikewithme_log("EventpostController#update")
 		event = Event.find(params[:clone_id])
 		if params[:cancel]
 			event.delete
@@ -36,7 +32,13 @@ class EventpostController < ApplicationController
 			event.address = params[:address]
 			event.activity_id = params[:activity_id]
 			event = mongo_save(event)
-		 	redirect_to eventpost_details_path(event.id)
+
+			if !event.valid?
+				bikewithme_log("#{event.id} #{event.errors.messages}")
+				render "public/404", :formats => [:html], status: :not_found
+	    	else
+			 	redirect_to eventpost_details_path(event.id)
+			end
 		end
 	end
 
@@ -45,11 +47,8 @@ class EventpostController < ApplicationController
 		@descriptors = Descriptor.format_for_option_tag(1)
 	end
 
-	def show
-		#@event = Event.find(params[:id])
-	end
-
 	def update_details
+		bikewithme_log("EventpostController#update_details #{params}")
 		event = Event.find(params[:eventpost_id])
 		event.title = params[:event][:title]
 		event.description = params[:event][:description]
@@ -78,8 +77,12 @@ class EventpostController < ApplicationController
 		end
 		event.is_private = privacy
 		event = mongo_save(event)
-		redirect_to event_url(event.id), notice: flash_text
+
+		if !event.valid?
+			bikewithme_log("#{event.id} #{event.errors.messages}")
+			render "public/404", :formats => [:html], status: :not_found
+	    else
+			redirect_to event_url(event.id), notice: flash_text
+	    end
 	end
-
-
 end
