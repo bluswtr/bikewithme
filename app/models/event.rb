@@ -18,7 +18,7 @@ class Event
   validates :address, length: { maximum: 100 }
   validates :state, length: { maximum: 2 }
   validates :city, length: { maximum: 50 }
-  validates :activity_id, presence: true
+  validates :activity_id, presence: false
   validates :description, length: { maximum: 1000 }, allow_nil:true
   validates :is_private, presence: false, allow_blank: true
   validates :publishing_status, presence: true, inclusion: { in: %w(false published draft), message: "%{value} is not a valid status" }

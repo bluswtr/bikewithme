@@ -1,10 +1,8 @@
 <%= form_for @event, :role => 'form', url: eventpost_update_details_path(@event.id), method: :put do |event| %> 
 	<%= link_to "< Back", edit_eventpost_path(@event.id) %><br>
 	Step 2/2 Time and Ride Details
-	<div class="form-group">
-		<%= event.label :title %>
-		<%= event.text_field :title, :class => 'form-control', :value => @event.title %>
-	</div><br>
+
+	<%= render partial: "events/event_title", locals: { event:@event, form: event} %>
 
 	<div class="form-group">
 		<%= event.label :description %>

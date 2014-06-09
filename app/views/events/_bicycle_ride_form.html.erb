@@ -10,7 +10,7 @@
 
 	<div class="form-group">
   		<%= bicycle_ride_form.label :distance %> (in miles)
-		<%= bicycle_ride_form.text_field :distance, :class => 'form-control', :value => distance %>
+		<%= bicycle_ride_form.text_field :distance, :class => 'form-control', :value => distance,"data-parsley-type"=>"digits","data-parsley-trigger"=>"keyup","data-parsley-maxlength"=>"5" %>
 	</div><br>
 
 	<div class="form-group">

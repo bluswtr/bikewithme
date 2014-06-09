@@ -1,14 +1,19 @@
 
 class EventsController < ApplicationController
-	before_filter :authenticate_user!, :only => [:new,:create,:watch,:join,:more_info,:index,:delete,:edit,:update]
+	before_filter :authenticate_user!,:only => [:new,:create,:watch,:join,:more_info,:index,:delete,:edit,:update]
 	def new
 		event = Event.new(title:"Untitled #{Time.now}",publishing_status:"draft")
-    	event.bicycle_ride = BicycleRide.new
-		@descriptors = Descriptor.format_for_option_tag(1)
-		@session = lnglat
-		event.save!
-		current_user.events << event
-		@event = event
+		if !event.valid?
+			bikewithme_log("EventsController#new #{event.errors.messages}")
+			render "public/404", :formats => [:html], status: :not_found
+		else
+	    	event.bicycle_ride = BicycleRide.new
+			@descriptors = Descriptor.format_for_option_tag(1)
+			@session = lnglat
+			event.save!
+			current_user.events << event
+			@event = event
+		end
 	end
 
 	def index
@@ -49,7 +54,7 @@ class EventsController < ApplicationController
 		else
 			event = Event.update_default(params)
 			if !event.valid?
-				bikewithme_log("EventsController#update #{event.errors.messages}")
+				bikewithme_log("EventsController#update")
 				bikewithme_log("#{event.errors.messages}")
 				render "public/404", :formats => [:html], status: :not_found
 	    	else

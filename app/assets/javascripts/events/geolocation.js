@@ -11,25 +11,28 @@ function setGeolocation(url,lat,lng) {
 function getGeolocationFromBrowser() {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(function(geolocation){
+			bikewithme_log("geolocation ready");
 			$(document).trigger("geolocation_ready",[geolocation]);
 		},function(error){
-			getGeolocationFromIP("To get more accurate results, enable your location settings, then hit refresh.");
+			bikewithme_log("geolocation disabled");
+			handleGeolocationError("Enable your location settings to get more accurate results, then hit refresh.");
 		});
 	} else {
-		getGeolocationFromIP("Looks like your browser does not support geolocation.");
+		bikewithme_log("geolocation not supported");
+		handleGeolocationError("Sorry, looks like geolocation is not supported in your browser. Your results won't be as accurate, but we can continue without it.");
 	}
 	return 0;
 }
 
-function getGeolocationFromIP(message){
+function handleGeolocationError(message){
 	alertify.set({ labels: {
-	    ok     : "Continue Anyway",
+	    ok     : "OK",
 	    cancel : "Cancel"
 	} });
 
 	alertify.confirm(message,function(e){
 		if(e)
-			getGeolocationFromIP();
+			setGeolocation("events/save_geolocation",false,false);
 	});
 }
 

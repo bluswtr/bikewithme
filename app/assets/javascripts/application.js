@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require jquery.sparkline.min
 //= require bootstrap.min
+//= require parsley.min.js
 //= require angular
 //= require angular-animate
 //= require angular-resource

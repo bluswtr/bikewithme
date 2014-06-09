@@ -1,8 +1,10 @@
 <script>
 	$(document).ready(function(){
 		var map = new Map(<%= @session[1] %>,<%= @session[0] %>,true);
-		subscribeToChanges(map)
-		geocodeLatlng(map.lat,map.lng);
+		<% if @session[1] != 0 && @session[0] != 0 %>
+			subscribeToChanges(map)
+			geocodeLatlng(map.lat,map.lng);
+		<% end %>
 	});
 </script>
 
@@ -16,16 +18,15 @@
 <div id="map" class="map_half"></div><br>
 
 <!-- backend request to our db -->
-<%= form_for @event, html: {role: "form"} do |event| %>
+<%= form_for @event, html: {role: "form", "data-parsley-validate" => ""} do |event| %>
 	<%= render partial: "meeting_point_parts", locals: {event:event} %>
 
-	<div class="form-group"><%= event.label :title %><br />
-	<%= event.text_field :title, :placeholder => "SF=>Marin, Headlands Loop", :class => 'form-control'%></div><br>
+	<%= render partial: "events/event_title", locals: { event:@event, form: event} %>
 
-	<div class="form-group"><%= event.label 'Meeting Date & Time' %><br /><%= select_datetime Time.now, {prefix: :event_date, ampm: true, start_year: Time.now.year, end_year: Time.now.year + 1, order: [:day, :month, :year] }, {:class => 'form-control'}%></div><br>
+	<div class="form-group"><%= event.label 'Meeting Date & Time *' %><br /><%= select_datetime Time.now, {prefix: :event_date, ampm: true, start_year: Time.now.year, end_year: Time.now.year + 1, order: [:day, :month, :year] }, {:class => 'form-control'}%></div><br>
 	
 	<div class="form-group"><%= event.label :description %><br />
-	<%= event.text_area :description, :placeholder => 'A fun ride. Come one, come all.', :class => 'form-control',:rows=>5 %></div><br>
+	<%= event.text_area :description, :placeholder => 'A fun ride. Come one, come all.', :class => 'form-control',:rows=>5, "data-parsley-length"=>"[0, 100]", "data-parsley-trigger"=>"keyup" %></div><br>
 
 	<input type='hidden' name='activity_id', value=<%= Event::BICYCLE_RIDE %>>
 	<input type=hidden name=longitude id=longitude>
@@ -38,7 +39,12 @@
 	<div>
 		<%= event.submit "Publish Now", :class => "btn btn-primary btn-lg",:name => 'publish' %>
 		<%= event.submit "Save For Later", :class => "btn btn-default btn-lg",:name => 'draft' %>
-		<%= event.submit 'Cancel', :class => 'btn btn-default btn-lg', :name => 'destroy'%>
-	</div><br>
+		<%=form_for @event do |cancel| %>
+			<%= cancel.submit 'Cancel', :class => 'btn btn-default btn-lg', :name => 'destroy'%>
+		<% end %>
+	</div>
+
+
 <% end %>
+
 
