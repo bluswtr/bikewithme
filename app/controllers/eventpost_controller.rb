@@ -67,9 +67,7 @@ class EventpostController < ApplicationController
 			event.publishing_status = 'draft'
 		end
 
-		year,month,day = params['date'].chomp.split('-')
-		hour,minute = params['time'].chomp.split(':')
-		event.update_time(year,month,day,hour,minute)
+		event.update_time(params['date'],params['time'])
 
 		privacy = 'false'
 		if params[:event][:is_private] == '1'

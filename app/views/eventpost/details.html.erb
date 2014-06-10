@@ -11,9 +11,8 @@
 
 	<%= render partial: "events/bicycle_ride_form", locals: { descriptors:@descriptors, event:@event, :selected => true } %>
 
-	Date & Time:
-	<input type="date" name='date' />
-	<input type="time" name='time' />
+	<%= render partial: "event_date_time" %>
+	
 	<p><%= event.check_box :is_private %> <b>Only my friends can see this ride.</b></p><br>
 	<div>
 		<%= event.submit "Publish Now", :class => "btn btn-primary btn-lg",:name => 'publish' %>

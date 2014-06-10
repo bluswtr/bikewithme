@@ -1,0 +1,29 @@
+<div class="form-group">
+<b>Meeting Date & Time *</b><br>
+<input type="date" name='date' required/>
+
+<% time_selectors = [] %>
+<% (0..23).each {|hour| %>
+	<% string_hour = hour %>
+	<% if hour < 12 %>
+		<% meridian = "AM"%>
+	<% else %>
+		<% meridian = "PM"%>
+		<% string_hour -= 12 %>
+	<% end %>
+	<% if hour == 0 %>
+		<% string_hour = 12 %>
+	<% end %>
+	<% time_string_hour = "#{string_hour}:00 #{meridian}" %>
+	<% time_string_half = "#{string_hour}:30 #{meridian}" %>
+	<% time_selectors.push([time_string_hour,hour*100]) %>
+	<% time_selectors.push([time_string_half,hour*100+30])%>
+<% } %>
+
+<%= select_tag "time", options_for_select(time_selectors), :class => 'form-control', :name => 'time',:id => 'time', :required => "" %>
+</div><br>
+
+<script>
+	date = new Date();
+	$('#time').val(date.getHours()*100);
+</script>

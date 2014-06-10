@@ -23,7 +23,7 @@
 
 	<%= render partial: "events/event_title", locals: { event:@event, form: event} %>
 
-	<div class="form-group"><%= event.label 'Meeting Date & Time *' %><br /><%= select_datetime Time.now, {prefix: :event_date, ampm: true, start_year: Time.now.year, end_year: Time.now.year + 1, order: [:day, :month, :year] }, {:class => 'form-control'}%></div><br>
+	<%= render partial: "event_date_time" %>
 	
 	<div class="form-group"><%= event.label :description %><br />
 	<%= event.text_area :description, :placeholder => 'A fun ride. Come one, come all.', :class => 'form-control',:rows=>5, "data-parsley-length"=>"[0, 100]", "data-parsley-trigger"=>"keyup" %></div><br>
@@ -43,8 +43,6 @@
 			<%= cancel.submit 'Cancel', :class => 'btn btn-default btn-lg', :name => 'destroy'%>
 		<% end %>
 	</div>
-
-
 <% end %>
 
 

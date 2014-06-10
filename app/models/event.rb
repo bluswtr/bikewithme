@@ -49,7 +49,7 @@ class Event
   # Like so: [longitude,latitude]
   # Example: [37.71618004133281,-122.44663953781128]
   #
-  field :meeting_point, :type => Array 
+  field :meeting_point, :type => Array, :default => [0,0]
   field :address #validate string, restrict size?
 
   field :city #validate string
@@ -187,12 +187,10 @@ class Event
       publishing_status = params[:publishing_status]
     end
 
-    date = DateTime.new(params[:event_date][:year].to_i,params[:event_date][:month].to_i,params[:event_date][:day].to_i,params[:event_date][:hour].to_i,params[:event_date][:minute].to_i,0)
-    
+    event.update_time(params[:date],params[:time])
     event.title = params[:event][:title]
     event.description = params[:event][:description]
     event.meeting_point = [longitude,latitude]
-    event.event_date = date
     event.address = params[:address]
     event.is_private = params[:event][:is_private]
     event.activity_id = params[:activity_id]
@@ -216,8 +214,14 @@ class Event
     meeting_point
   end
 
-  def update_time(year,month,day,hour,minute)
-    self.event_date = DateTime.new(year.to_i,month.to_i,day.to_i,hour.to_i,minute.to_i,0)
+  def update_time(date,time)
+    year,month,day = date.chomp.split('-')
+    if time == 0
+      hour = 0
+    else
+      hour = (time.to_i/100).floor.to_i
+    end
+    self.event_date = DateTime.new(year.to_i,month.to_i,day.to_i,hour.to_i,0,0)
     self.save
     self
   end

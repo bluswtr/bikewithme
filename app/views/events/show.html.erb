@@ -39,7 +39,7 @@
 			<% road_type_val = @descriptors["road_type"][@event.bicycle_ride.road_type][0] %>
 		<% end %>
 
-		<% pairs = [['When',@event.event_date.asctime],['Meeting Point',@event.address],['Description',@event.description],['Distance',@event.bicycle_ride.distance],['Pace',pace_val],['Terrain',terrain_val],['Road Type',road_type_val],['Total Elevation Gain',@event.bicycle_ride.total_elevation_gain],['Publishing Status',@event.publishing_status]] %>
+		<% pairs = [['When',@event.event_date.strftime("%A %B %d %Y, %l:%M%p")],['Meeting Point',@event.address],['Description',@event.description],['Distance',@event.bicycle_ride.distance],['Pace',pace_val],['Terrain',terrain_val],['Road Type',road_type_val],['Total Elevation Gain',@event.bicycle_ride.total_elevation_gain],['Publishing Status',@event.publishing_status]] %>
 
 		<% pairs.each do |title,value| %>
 			<li class="list-group-item">
