@@ -29,9 +29,9 @@
 	<%= event.text_area :description, :placeholder => 'A fun ride. Come one, come all.', :class => 'form-control',:rows=>5, "data-parsley-length"=>"[0, 100]", "data-parsley-trigger"=>"keyup" %></div><br>
 
 	<input type='hidden' name='activity_id', value=<%= Event::BICYCLE_RIDE %>>
-	<input type=hidden name=longitude id=longitude>
-	<input type=hidden name=latitude id=latitude>
-	<input type=hidden name="id" value="<%= @event.id %>">
+	<input type='hidden' name='longitude' id='longitude'>
+	<input type='hidden' name='latitude' id='latitude'>
+	<input type='hidden' name="id" value="<%= @event.id %>">
 
 	<%= render partial: "bicycle_ride_form", locals: { descriptors: @descriptors, event:@event, :selected => false} %>
 

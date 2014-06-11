@@ -48,15 +48,21 @@
 			});
 
 			// make map sticky
+			// scrollheight = height of scrollable page
+			// height of window (smaller than page)
+			// scrolltop = scroller's offset from top of page
 			var $window = $(window),
 	       	$stickyEl = $('#map-container'),
-	       	elTop = $stickyEl.offset().top,
+	       	top_offset = $stickyEl.offset().top,
 	       	$hidden_container = $('#hidden-container');
 
 		    $window.scroll(function() {
-	        	$stickyEl.toggleClass('sticky-top', ($window.scrollTop() > elTop) && !($window.scrollTop() + $window.height() + 200 > document.body.scrollHeight));
-	        	$hidden_container.toggleClass('hide-me', $window.scrollTop() < elTop);
-	        	$stickyEl.toggleClass('sticky-bottom', $window.scrollTop() + $window.height() + 200 > document.body.scrollHeight);
+		    	var atBottomOfPage = $window.scrollTop() + $window.height() > document.body.scrollHeight - $(".footer").height();
+		    	var atTopOfPage = $window.scrollTop() > top_offset;
+
+	        	$stickyEl.toggleClass('sticky-top', atTopOfPage && !atBottomOfPage);
+	        	$hidden_container.toggleClass('hide-me', !atTopOfPage && !atBottomOfPage);
+	        	$stickyEl.toggleClass('sticky-bottom',atBottomOfPage);
 	    	});
 
 		</script>

@@ -10,21 +10,13 @@
 <h2 style="display:inline"><%= @event.title %></h2><br><br>
 <div id="map" class="map_half"></div><br>
 
-<%= form_for @event, :role => 'form', url: {action: "update"} do |event| %>
+<%= form_for @event,html: {role: "form","data-parsley-validate" => ""},url: {action: "update"} do |event| %>
 
 	<%= render partial: "meeting_point_parts", locals: {event:event} %>
 
-	<div class="form-group">
-		<%= event.label :title %>
-		<%= event.text_field :title, :class => 'form-control' %>
-	</div><br>
+	<%= render partial: "events/event_title", locals: {event:@event,form:event} %>
 
-	<% if @event.event_date %>
-	<div class="form-group">
-		<%= event.label :event_date, 'Date & Time' %><br>
-		<%= select_datetime @event.event_date, { prefix: :event_date, ampm: true, start_year: @event.event_date.year, end_year: Time.now.year + 1, order: [:day, :month, :year]} , {:class => 'form-control'} %>
-	</div><br>
-	<% end %>
+	<%= render partial: "event_date_time", locals: {date:@event.event_date.strftime("%Y-%m-%d")} %>
 	
 	<div class="form-group">
 		<%= event.label :description %>
@@ -35,7 +27,7 @@
 	<input type='hidden' name='longitude' id='longitude' value='<%= @event[:meeting_point][0] %>'>
 	<input type='hidden' name='latitude' id='latitude' value='<%= @event[:meeting_point][1] %>'>
 
-<%= render partial: "bicycle_ride_form", locals: { descriptors:@descriptors, event:@event, :selected => true } %>
+	<%= render partial: "bicycle_ride_form", locals: { descriptors:@descriptors, event:@event, :selected => true } %>
 
 	<p><%= event.check_box :is_private, {checked: @event.is_private} %> <b>This event is private.</b></p><br>
 

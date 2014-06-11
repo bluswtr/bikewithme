@@ -1,6 +1,12 @@
 <div class="form-group">
 <b>Meeting Date & Time *</b><br>
-<input type="date" name='date' required/>
+<span>
+<% if defined? date %>
+	<% val = date %>
+<% else %>
+	<% val = Time.now.strftime("%Y-%m-%d") %>
+<% end %>
+<input type="date" name='date' class='form-control' value='<%= val %>' required/>
 
 <% time_selectors = [] %>
 <% (0..23).each {|hour| %>
@@ -21,6 +27,7 @@
 <% } %>
 
 <%= select_tag "time", options_for_select(time_selectors), :class => 'form-control', :name => 'time',:id => 'time', :required => "" %>
+</span>
 </div><br>
 
 <script>
