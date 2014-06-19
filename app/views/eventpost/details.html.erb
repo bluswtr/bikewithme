@@ -11,7 +11,7 @@
 
 	<%= render partial: "events/bicycle_ride_form", locals: { descriptors:@descriptors, event:@event, :selected => true } %>
 
-	<%= render partial: "event_date_time" %>
+	<%= render partial: "events/event_date_time" %>
 	
 	<p><%= event.check_box :is_private %> <b>Only my friends can see this ride.</b></p><br>
 	<div>

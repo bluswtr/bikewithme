@@ -80,7 +80,11 @@ body {
 // styles to accomodate mobile version
 @media all and (max-width:768px) {
 	.map_full {
-		height: 300px;
+		height: 200px;
+	}
+
+	.map_half {
+		height: 200px;
 	}
 
 	body {
@@ -136,3 +140,6 @@ body {
 	display:inline;
 }
 
+.eventsearch-index-cell:hover {
+	background-color: #eee;
+}

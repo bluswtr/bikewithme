@@ -5,7 +5,14 @@
 		drawPolyline(polyline,map)
 	});
 </script>
-	<%= render partial: "eventsearch/buttons_join_watch", locals: { title:@event.title, id:@event.id, user:@event.user, watched:@watched, joined:@joined} %>
+
+<span>
+	<h4 class="eventsearch-index-h4"><%= link_to @event.title, event_url(@event.id) %>
+		<% if @event.user == current_user %>
+			<%= link_to raw('<span class="glyphicon glyphicon-edit"></span>'),edit_event_path(@event.id) %>
+		<% end %>
+	</h4>
+</span><br><br>
 
 <div id="map" class="map_half"></div><br>
 <div>
@@ -56,7 +63,8 @@
 			<% end %></p>
 		</li>
 	</ul>
-	<% if @event.user == current_user && @event.user == current_user %>
+	<%= render partial: "eventsearch/buttons_join_watch", locals: {id:@event.id, watched:@watched, joined:@joined} %>
+	<% if @event.user == current_user %>
 		<%= link_to raw('Edit <span class="glyphicon glyphicon-edit"></span>'),edit_event_path(@event.id), :class => "btn btn-primary btn-lg" %>
 	<% end %>
 </div>

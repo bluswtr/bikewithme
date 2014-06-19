@@ -25,7 +25,7 @@ class User
   field :uid
 
   # Strava
-  field :strava_uid
+  field :strava_uid, :default => ""
 
   ## Database authenticatable
   field :email,              :type => String, :default => ""

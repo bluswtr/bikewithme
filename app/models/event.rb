@@ -81,7 +81,7 @@ class Event
   # example: index({ loc: "2d" }, { min: -200, max: 200 }).
   # chose 2dsphere over 2d because it has more features and 2d is largely a legacy index
   # compound index because it is possible to clone events such that the meeting point is the same
-  index({ meeting_point: '2dsphere', event_date: 1 }, { sparse: true, unique: true, background: true })
+  index({ meeting_point: '2dsphere', created_at: 1, user: 1 }, { sparse: true, unique: true, background: true })
 
   # Other Fields to Consider
   # has_many :tags #commute, training, fun, recovering
@@ -175,6 +175,7 @@ class Event
 
   def self.update_default(params)
     event = Event.find(params[:id])
+    p event
     longitude = params[:longitude].to_f
     latitude = params[:latitude].to_f
 
@@ -199,9 +200,14 @@ class Event
     event.bicycle_ride.terrain = params[:bicycle_ride][:terrain]
     event.bicycle_ride.road_type = params[:bicycle_ride][:road_type]
     event.publishing_status = publishing_status
-
     if event.changed?
+        puts "before save"
+        p event
+        puts ("Event#update_default changed")
         event.save
+        puts "save then pull from db, errors? #{event.errors.messages}"
+        event = Event.find(params[:id])
+        p event
     end
     event
   end

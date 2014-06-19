@@ -1,95 +1,97 @@
-	<span><h3 style="display:inline;" id="title">Rides Near </h3> <a href=#! id="change_location">Edit</a></span>
-	<div class="form-group">
-		<div class="input-group" id="address_form" style="padding-top:5px;">
-			<input type="textfield" id="address" placeholder="Enter an address or just the city you want to search in" class="form-control">
-			<span id="search_for_address" class="btn-primary input-group-addon glyphicon glyphicon-search"></span>
-		</div>
+<span><h3 style="display:inline;" id="title">Rides Near </h3> <a href=#! id="change_location">Edit</a></span>
+<div class="form-group">
+	<div class="input-group" id="address_form" style="padding-top:5px;">
+		<input type="textfield" id="address" placeholder="Enter an address or just the city you want to search in" class="form-control">
+		<span id="search_for_address" class="btn-primary input-group-addon glyphicon glyphicon-search"></span>
 	</div>
-	<%= render partial: "events/paginate_events", locals: { event_data:@event_data } %>
-	<div class="row">
-		<div class="col-sm-4" id="map-container">
-			<div id="map" class="map_full"></div><br><br>
-		</div>
-		<div class="col-sm-4 hide-me" id="hidden-container"></div>
-		<script>
-			var lat = <%= @session_lng_lat[1] %>;
-			var lng = <%= @session_lng_lat[0] %>;
+</div>
+<%= render partial: "events/paginate_events", locals: { event_data:@event_data } %>
+<div class="row">
+	<div class="col-sm-4" id="map-container">
+		<div id="map" class="map_full"></div><br><br>
+	</div>
+	<div class="col-sm-4 hide-me" id="hidden-container"></div>
+	<script>
+		var lat = <%= @session_lng_lat[1] %>;
+		var lng = <%= @session_lng_lat[0] %>;
 
-			bikewithme_log("latlng from rails: " + lat + ", " + lng);
+		bikewithme_log("latlng from rails: " + lat + ", " + lng);
 
-			if (lat != 0 && lng != 0) {
-				$('#address_form').hide();
-				$('#change_location').click(function(){
-					$('#address_form').toggle('slow');
-				});
-
-				var map = new Map(lat,lng,false);
-				geocodeLatlng(lat,lng);
-				$(document).on("city_state_found",function(event,status,city,state){
-					if(status=='OK') {
-						$('#title').html("Rides Near " + city + ", " + state);
-					}
-				});
-			} else {
-				$('#title').html("Search Nearby");
-			}
-
-			$('#search_for_address').click(function(event){
-				bikewithme_log("searching for address");
-				var temp = $('#address').val();
-				if(!isBlank(temp) && !isEmpty(temp))
-					geocodeAddress(temp);
-			});
-			$(document).on("latlng_found",function(event,status,lat,lng){
-				var url = '<%= save_geolocation_events_url() %>';
-				$.post(url,{lat:lat,lng:lng},function(){
-					document.location.reload();
-				});
+		if (lat != 0 && lng != 0) {
+			$('#address_form').hide();
+			$('#change_location').click(function(){
+				$('#address_form').toggle('slow');
 			});
 
-			// make map sticky
-			// scrollheight = height of scrollable page
-			// height of window (smaller than page)
-			// scrolltop = scroller's offset from top of page
-			var $window = $(window),
-	       	$stickyEl = $('#map-container'),
-	       	top_offset = $stickyEl.offset().top,
-	       	$hidden_container = $('#hidden-container');
+			var map = new Map(lat,lng,false);
+			geocodeLatlng(lat,lng);
+			$(document).on("city_state_found",function(event,status,city,state){
+				if(status=='OK') {
+					$('#title').html("Rides Near " + city + ", " + state);
+				}
+			});
+		} else {
+			$('#title').html("Search Nearby");
+		}
 
-		    $window.scroll(function() {
-		    	var atBottomOfPage = $window.scrollTop() + $window.height() > document.body.scrollHeight - $(".footer").height();
-		    	var atTopOfPage = $window.scrollTop() > top_offset;
+		$('#search_for_address').click(function(event){
+			bikewithme_log("searching for address");
+			var temp = $('#address').val();
+			if(!isBlank(temp) && !isEmpty(temp))
+				geocodeAddress(temp);
+		});
+		$(document).on("latlng_found",function(event,status,lat,lng){
+			var url = '<%= save_geolocation_events_url() %>';
+			$.post(url,{lat:lat,lng:lng},function(){
+				document.location.reload();
+			});
+		});
 
-	        	$stickyEl.toggleClass('sticky-top', atTopOfPage && !atBottomOfPage);
-	        	$hidden_container.toggleClass('hide-me', !atTopOfPage && !atBottomOfPage);
-	        	$stickyEl.toggleClass('sticky-bottom',atBottomOfPage);
-	    	});
+		// make map sticky
+		// scrollheight = height of scrollable page
+		// height of window (smaller than page)
+		// scrolltop = scroller's offset from top of page
+		var $window = $(window),
+       	$stickyEl = $('#map-container'),
+       	top_offset = $stickyEl.offset().top,
+       	$hidden_container = $('#hidden-container');
 
-		</script>
-		<div class="col-sm-8">
-			<% @event_data.each do |data|%>
-				<div class="cell" id="cell-<%= data[:event][:_id] %>">
-					<%= render partial: "eventsearch/buttons_join_watch", locals: { title:data[:event][:title], id:data[:event][:_id], user:data[:event][:user], watched:data[:watched], joined:data[:joined]} %>
-					<%= render partial: "eventsearch/bicycle_ride_profile", locals: { profile:data[:bicycle_ride], descriptors:@descriptors, id: data[:event][:_id]} %>
-					<script>
-						var content = "<a href='<%= event_path(data[:event][:_id]) %>'><%= data[:event][:title] %></a>";
-						var marker_index = map.append(<%= data[:event][:meeting_point][1] %>,<%= data[:event][:meeting_point][0] %>,content);
-						$('#cell-<%= data[:event][:_id] %>').mouseenter({index:marker_index},function(event){
-							var index = event.data.index;
-							map.markers[index].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-						});
+	    $window.scroll(function() {
+	    	var atBottomOfPage = $window.scrollTop() + $window.height() > document.body.scrollHeight - $(".footer").height();
+	    	var atTopOfPage = $window.scrollTop() > top_offset;
 
-						$('#cell-<%= data[:event][:_id] %>').mouseleave({index:marker_index},function(event){
-							var index = event.data.index;
-							map.markers[index].setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
-						});
-					</script>
-				</div><br>
-			<% end %>
+        	$stickyEl.toggleClass('sticky-top', atTopOfPage && !atBottomOfPage);
+        	$hidden_container.toggleClass('hide-me', !atTopOfPage && !atBottomOfPage);
+        	$stickyEl.toggleClass('sticky-bottom',atBottomOfPage);
+    	});
 
-				<% if @count > 0 %>
-					<script> map.fitBounds(); </script>
-				<% end %> 
+	</script>
+	<div class="col-sm-8">
+		<% @event_data.each do |data|%>
+			<div class="cell eventsearch-index-cell" id="cell-<%= data[:event][:_id] %>">
+				<span><h4 class="eventsearch-index-h4"><%= link_to data[:event][:title], event_url(data[:event][:_id]) %>
+				<%= render partial: "eventsearch/buttons_join_watch", locals: { title:data[:event][:title], id:data[:event][:_id], user:data[:event][:user], watched:data[:watched], joined:data[:joined]} %>
+					</h4></span><br><br>
+				<%= render partial: "eventsearch/bicycle_ride_profile", locals: { profile:data[:bicycle_ride], descriptors:@descriptors, id: data[:event][:_id]} %>
+				<script>
+					var content = "<a href='<%= event_path(data[:event][:_id]) %>'><%= data[:event][:title] %></a>";
+					var marker_index = map.append(<%= data[:event][:meeting_point][1] %>,<%= data[:event][:meeting_point][0] %>,content);
+					$('#cell-<%= data[:event][:_id] %>').mouseenter({index:marker_index},function(event){
+						var index = event.data.index;
+						map.markers[index].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+					});
+					$('#cell-<%= data[:event][:_id] %>').mouseleave({index:marker_index},function(event){
+						var index = event.data.index;
+						map.markers[index].setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+					});
+					$('#cell-<%= data[:event][:_id] %>').click(function(){window.location.href="<%=event_url(data[:event][:_id]) %>";});
+				</script>
+			</div><br>
+		<% end %>
 
-		</div><!-- end of cells -->
-	</div>
+			<% if @count > 0 %>
+				<script> map.fitBounds(); </script>
+			<% end %> 
+
+	</div><!-- end of cells -->
+</div>

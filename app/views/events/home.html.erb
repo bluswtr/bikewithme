@@ -3,6 +3,7 @@ $(document).ready(function(){
 	// if a position was obtained, save it
 	// otherwise, ignore; ask user for city and state at the next opportunity: eventsearch#index
 	var save_geolocation_url = '<%= save_geolocation_events_url() %>';
+	saveTimeZoneOffset('<%= save_timezone_offset_events_url() %>');
 	getGeolocationFromBrowser();
 	$(document).on("geolocation_ready",function(event,geolocation){
 		if(geolocation && save_geolocation_url != ''){
@@ -18,5 +19,9 @@ $(document).ready(function(){
 	<div style='display: table-cell; vertical-align: middle;'>
 	<div style='width:300px; margin-left:auto; margin-right:auto;'>
 	<%=link_to 'Find Ride', eventsearch_index_path, :class => 'btn btn-default btn-lg btn-block' %>
+	<% if (defined? current_user.strava_uid) && !current_user.strava_uid.blank? %>
 	<%=link_to 'Post Ride', eventpost_index_path, :class => 'btn btn-default btn-lg btn-block' %>
+	<% else %>
+	<%=link_to 'Post Ride', new_event_path, :class => 'btn btn-default btn-lg btn-block' %>
+	<% end %>
 </div></div></div>

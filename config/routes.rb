@@ -37,6 +37,7 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'home'
       get 'landing'
       post 'save_geolocation'
+      post 'save_timezone_offset'
       post 'geolocation_search'
       get 'past_rides'
       get 'active_rides'

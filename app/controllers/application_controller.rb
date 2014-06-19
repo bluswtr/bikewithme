@@ -29,6 +29,13 @@ class ApplicationController < ActionController::Base
     puts "@@@@@@@@@@@@@@@@@@ #{string}"
   end
 
+  def save_utc_offset(offset)
+    session[:timezone_offset_in_minutes] = offset.to_i * -1
+    bikewithme_log(session[:timezone_offset_in_minutes])
+  end
 
+  def local_time
+    return Time.now.utc + (session[:timezone_offset_in_minutes].to_i * 60)
+  end
 
 end

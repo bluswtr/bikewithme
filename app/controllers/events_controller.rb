@@ -2,9 +2,9 @@
 class EventsController < ApplicationController
 	before_filter :authenticate_user!,:only => [:new,:create,:watch,:join,:more_info,:index,:delete,:edit,:update]
 	def new
-		event = Event.new(title:"Untitled #{Time.now}",publishing_status:"draft")
+		event = Event.new(title:"Untitled #{local_time.strftime("%Y-%m-%d %l:%M %p")}",publishing_status:"draft")
+		bikewithme_log("EventsController#new #{event.errors.messages}")
 		if !event.valid?
-			bikewithme_log("EventsController#new #{event.errors.messages}")
 			render "public/404", :formats => [:html], status: :not_found
 		else
 	    	event.bicycle_ride = BicycleRide.new
@@ -53,12 +53,12 @@ class EventsController < ApplicationController
 			redirect_to action: 'index', status: 303
 		else
 			event = Event.update_default(params)
+			bikewithme_log("EventsController#update #{event.errors.messages}")
 			if !event.valid?
-				bikewithme_log("EventsController#update")
-				bikewithme_log("#{event.errors.messages}")
 				render "public/404", :formats => [:html], status: :not_found
 	    	else
-				redirect_to event_url(event.id), notice: "Event Updated"
+				# redirect_to event_url(event.id), notice: "Event Updated"
+				redirect_to new_event_invite_url(event.id), notice: "Event Saved"
 			end
 		end
 	end
@@ -219,6 +219,10 @@ class EventsController < ApplicationController
 		render nothing:true
 	end
 
+	def save_timezone_offset
+		save_utc_offset(params[:offset])
+		render nothing:true
+	end
 
 	# def save_geolocation_to_object
 	# 	event = Event.find(params[:id])
