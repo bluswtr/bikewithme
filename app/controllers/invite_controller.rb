@@ -1,64 +1,50 @@
 
 
 class InviteController < ApplicationController
-	before_filter :authenticate_user!, :except => [:invitation]
+	before_filter :authenticate_user!, :except => [:invitation_to_bwm]
 
-	def create
-		event = Event.find(params[:event_id])
-		@contact = Contact.find(params[:contact_id])
-		event.invit(@contact) # create invite for contact
-		render nothing: true
+	def guestlist_all
+		bikewithme_log("InviteController#guestlist_all #{current_user.contacts}")
+		render :json => current_user.contacts.to_json
 	end
 
-	def new
-		@event = Event.find(params[:event_id])
-		render "events/compose_invite"
-	end
-
-	def invited
-		# verify login and is owner
-		@event = Event.find(params[:event_id])
-		@invited = @event.all_invitees
-		render :json => @invited.to_json
-	end
-
-	def not_yet_invited
-		friend_ids = current_user.contact_ids
-		
-		@event = Event.find(params[:event_id])
-		invited_ids = []
-		@event.all_invitees.each do |invitee|
-			invited_ids.push(invitee.id)
-		end
-		not_yet_invited = []
-		not_yet_invited = friend_ids.select { |friend_id| !invited_ids.include?(friend_id) }
-
-		@not_yet_invited = current_user.contacts.exists(fb_uid:true).find(not_yet_invited)
-		render :json => @not_yet_invited.to_json
-	end
-
-	def invitation
-		@event = Event.find(params[:event_id])
-		@descriptors = Descriptor.format_for_option_tag(1)
-		# current_user.followee_of?(@group)
-		invited = is_invited(params[:contact_id],@event)
-		#puts "is_invited? #{invited}"
-		@session = latlng
-		if !invited
-			redirect_to root_url(), notice: "We are so sorry but that invitation doesn't exist. Want to join a public ride instead?"
-		end
-	end
-
-	def is_invited(contact_id,event_obj)
-		is_invited = false
-		if contact_id != nil
-			contact = Contact.find(contact_id)
-			if contact != nil
-				is_invited = contact.invitee_of?(event_obj)
+	def guestlist_bwm
+		@contacts = Array.new
+		current_user.contacts.each do |contact|
+			if contact.is_user
+				@contacts << contact
 			end
-		else
-			flash.now[:notice] = "We are so sorry but that invitation doesn't exist. Want to join a public ride instead?"
 		end
-		is_invited
+		bikewithme_log("InviteController#guestlist_bwm #{@contacts}")
+		render :json => @contacts.to_json
 	end
+
+	def guestlist_outsiders
+		@contacts = Array.new
+		current_user.contacts.each do |contact|
+			if !contact.is_user
+				@contacts << contact
+			end
+		end
+		bikewithme_log("InviteController#guestlist_outsiders #{@contacts}")
+		render :json => @contacts.to_json
+	end
+
+	def to_app
+		@session = "invite_to_app"
+		render "invite/compose_invite"
+	end
+
+    def to_event
+    	@session = "invite_to_event"
+    	@event = Event.find(params[:event_id])
+		render "invite/compose_invite"
+    end
+    
+    def outsider_to_event
+    	@session = "invite_outsider_to_event"
+    	@event = Event.find(params[:event_id])
+		render "invite/compose_invite"
+    end
+
 end

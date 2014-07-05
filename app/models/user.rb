@@ -7,6 +7,8 @@ class User
   include Mongo::Followable::Follower
   include Mongo::Joinable::Joined
   include Mongo::Joinable::Joiner
+  include Mongo::Invitable::Invited
+  include Mongo::Invitable::Inviter
 
   ##
   # A user can follow another user or an event

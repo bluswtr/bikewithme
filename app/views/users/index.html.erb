@@ -1,22 +1,23 @@
-
-
-<h3>Users</h3>
+<%= render partial: "invite/index_invite_tabs", locals: {header:"Friends",title:"Follow Other Cyclists on Bike With Me",find_friends:"",friends:"class=active",find_friends_url:to_app_invite_index_url(:event_id => 0),friends_url:users_url} %>
+	
 <ul class="users">
-  <% @users.each do |user| %>
-  	<div>
-        <% if user.id != current_user.id %>
-        	<%= link_to user.name, user %> signed up <%= user.created_at.to_date %>
-	        <%= link_to "Follow",user_follow_index_path(user.id), rel: 'nofollow', class: "btn btn-primary", method: 'post', remote: 'true' %>
-	        <%= link_to "Unfollow",user_follow_path(user.id,current_user), rel: 'nofollow', class: "btn btn-warning", style: 'display:none', method: 'delete', remote: 'true' %>
-        <% end %>
-    </div>
-  <% end %>
+	<% unless @users.blank? %>
+		<% @users.each do |user| %>
+			<div>
+		    	<%= link_to user.name, user_path(user.id) %> signed up <%= user.created_at.to_date %>
+		        <%= link_to "Follow",user_follow_index_path(user.id), rel: 'nofollow', class: "btn btn-primary", method: 'post', remote: 'true' %>
+		        <%= link_to "Unfollow",user_follow_path(user.id,current_user), rel: 'nofollow', class: "btn btn-warning", style: 'display:none', method: 'delete', remote: 'true' %>
+			</div>
+		<% end %>
+	<% end %>
 </ul>
 
 <script>
-	<!-- if following, hide follow button and vice versa -->
-	<% @following.each do |following| %>
-	$("a[href='/users/<%=following.id%>/follow']").hide();
-	$("a[href='/users/<%=following.id%>/follow/<%=current_user.id%>']").show();
+	<% unless @following.blank? %>
+		<!-- if following, hide follow button and vice versa -->
+		<% @following.each do |following| %>
+			$("a[href='/users/<%=following.id%>/follow']").hide();
+			$("a[href='/users/<%=following.id%>/follow/<%=current_user.id%>']").show();
+		<% end %>
 	<% end %>
 </script>

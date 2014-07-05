@@ -49,22 +49,22 @@ Rails3MongoidDevise::Application.routes.draw do
       end
       resources :eventsearch, only: [:create, :new, :show, :index]
     end
-
-    resources :invite, only: [:create, :new] do
-      collection do
-        get 'not_yet_invited'
-        get 'invited'
-        get 'invitation/:contact_id', to: 'invite#invitation'
-      end
-    end
     resources :watch, only: [:create]
     resources :unwatch, only: [:create]
     resources :join, only: [:create]
     resources :unjoin, only: [:create]
   end
 
-
-
+    resources :invite, only: [:create, :new] do
+      collection do
+        get 'guestlist_all'
+        get 'guestlist_bwm'
+        get 'guestlist_outsiders'
+        get 'to_app'
+        get 'to_event'
+        get 'outsider_to_event'
+      end
+    end
   mount Sidekiq::Web, at: '/sidekiq'
 
 end

@@ -11,10 +11,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if @user.persisted?
       sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
       set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
-
-      ##
+      # indicate to users who know this new user by flagging the new user's contact records
+      Contact.update_new_user_contact(auth.uid.to_s,"",user_url(@user.id))      ##
       # if the user is NEW or a Facebook Realtime Update was initiated
-      # 'update_fb_friends' in the user object will be set to true
+      # 'update_fb_friends' (in the user object) will be set to true
+      # create new Contact for new User
       if @user.update_fb_friends
         FacebookWorker.perform_async(auth.credentials.token,auth.uid.to_s,@user.id.to_s)
       end
@@ -26,10 +27,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def strava
     auth = request.env["omniauth.auth"]
-    @user = User.find_for_strava_oauth(auth, current_user)
+    @user = User.find_for_strava_oauth(auth,current_user)
     if @user.persisted?
       sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
       set_flash_message(:notice, :success, :kind => "Strava") if is_navigational_format?
+      Contact.update_new_user_contact("",auth.strava_uid,user_url(@user.id))
       if @user.update_strava_objects
           StravaWorker.perform_async(auth.credentials.token,@user.id.to_s)
       end

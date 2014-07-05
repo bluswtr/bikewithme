@@ -30,10 +30,10 @@
             <%= link_to 'My Rides', events_path %>
             </li>
             <li>
-            <%= link_to 'Find Friends', user_find_friends_path(current_user.id) %>
+            <%= link_to 'Friends', users_path %>
             </li>
             <li>
-            <%= link_to 'Status Feed', user_status_feed_path(current_user.id) %>
+            <%= link_to 'Feed', user_status_feed_path(current_user.id) %>
             </li>
             <li>
             <%= link_to 'Logout', destroy_user_session_path, :method=>'delete' %>

@@ -76,11 +76,11 @@ class EventpostController < ApplicationController
 		event.is_private = privacy
 		event = mongo_save(event)
 
-		if !event.valid?
+		if event.valid?
+			redirect_to event_url(event.id), notice: flash_text
+	    else
 			bikewithme_log("#{event.id} #{event.errors.messages}")
 			render "public/404", :formats => [:html], status: :not_found
-	    else
-			redirect_to event_url(event.id), notice: flash_text
 	    end
 	end
 end

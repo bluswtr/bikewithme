@@ -12,16 +12,12 @@
 	<li id = "joined"><%= link_to "Rides Joined (#{@user.joinees_count_by_type("event")})", user_my_joins_path(@user.id), :remote => true %> </li>
 </ul>
 
-<div id="content"></div>
-
-<script>
-var content = "<br>";
-<% if @user.image %>
-	content += "<%= image_tag(@user.image, size: '50x50', alt: @user.name) %><br>";
-<% end %>
-	content += "<p><b>Name:</b> <%= @user.name %></p>";
-	content += "<p><b>Email:</b> <%= @user.email if @user.email %> (private)</p>";
-	content += "<p><b>Bio:</b> <%= @user.bio if @user.bio %></p>";
-	content += '<%= link_to 'Edit', edit_user_registration_path %>';
-	$('#content').html(content);
-</script>
+<div id="content">
+	<% if !@user.image.blank? %>
+		<%= image_tag(@user.image) %><br>
+	<% end %>
+	<p><b>Name:</b> <%= @user.name %></p>
+	<p><b>Email:</b> <%= @user.email if @user.email %> (private)</p>
+	<p><b>Bio:</b> <%= @user.bio if @user.bio %></p>
+	<%= link_to 'Edit', edit_user_registration_path %>
+</div>

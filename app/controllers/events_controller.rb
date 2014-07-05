@@ -58,20 +58,10 @@ class EventsController < ApplicationController
 				render "public/404", :formats => [:html], status: :not_found
 	    	else
 				# redirect_to event_url(event.id), notice: "Event Updated"
-				redirect_to new_event_invite_url(event.id), notice: "Event Saved"
+				redirect_to to_event_invite_index_url(:event_id => event.id), notice: "Event Saved"
 			end
 		end
 	end
-
-	# def create
-	# 	@event = Event.create_custom(current_user,params)
-	#     if !@event.valid?
-	#     	p @event.errors.messages
-	# 		render "public/404", :formats => [:html], status: :not_found
-	#     else
-	# 		redirect_to new_event_invite_url(@event.id), notice: "Event Saved"
-	#     end
-	# end
 
 	def destroy
 		event = Event.find(params[:id])
@@ -156,15 +146,10 @@ class EventsController < ApplicationController
 		puts "all"
 		render nothing: true
 	end
-	
-	# def compose_invite
-	# 	respond_to do |format|
-	# 		format.html
-	# 	end
-	# end
 
 	def invite
 		UserMailer.invite(params,current_user).deliver
+		bikewithme_log("EventsController#invite: #{params}")
 		render nothing: true
 	end
 
@@ -223,15 +208,6 @@ class EventsController < ApplicationController
 		save_utc_offset(params[:offset])
 		render nothing:true
 	end
-
-	# def save_geolocation_to_object
-	# 	event = Event.find(params[:id])
-	# 	Event.update_coordinates(event,params[:lat],params[:lng])
-	# end
-
-	# def save_address_to_object
-	# 	Event.update_address(params[:id],params["address"])
-	# end
 
 	def geolocation_search
 		Event.find

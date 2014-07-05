@@ -1,14 +1,9 @@
-<h3 style="display:inline">Status Feed</h3><br><br>
-<ul class="nav nav-tabs">
-<li class="active"><%= link_to "Friend Feed", user_status_feed_path(current_user) %></li>
-<li><%= link_to "My Activity", user_my_activity_path(current_user) %></li>
-</ul>
-<br><br>
-
-<% if @count > 0 %>
+<%#= render partial: "users/feed_header", locals: { my_activity:"",friend_feed:"class=active" } %>
+<h3 style="display:inline">Feed</h3><br><br>
+<% if @count > -1 %>
 	<% @microposts.each do |post|%>
 	<p><%= post.content.html_safe %></p>
 	<% end %>
 <% else %>
-	No updates yet. <%= link_to "Find your friends", user_find_friends_path(current_user.id) %>
+	No updates from friends yet. <%= link_to "Find friends to follow.", users_url %>
 <% end %>

@@ -2,8 +2,27 @@ class UsersController < ApplicationController
 	before_filter :authenticate_user!
 
 	def index
-		@users = User.all
-		@following = current_user.followees_by_type("user")
+		# find friends on bwm and find out if already following by returning @user objects
+		@contacts = current_user.contacts.where(is_user:true)
+
+		@users = Array.new
+		@following = Array.new
+		unless @contacts.blank?
+			@contacts.each do |contact|
+				if !contact.fb_uid.blank?
+					@user = User.find_by(uid:contact.fb_uid)
+				elsif !contact.strava_uid.blank?
+					@user = User.find_by(strava_uid:contact.strava_uid)
+				end
+
+				unless @user.blank?
+					@users << @user
+					if current_user.follower_of?(@user)
+						@following << @user
+					end
+				end
+			end
+		end
 	end
 
 	def show
@@ -44,11 +63,6 @@ class UsersController < ApplicationController
 		render :json => @friends.to_json
 	end
 
-	def find_friends
-		puts "find_friends"
-		render nothing:true
-	end
-
 	##
 	# Show activity current_user's follow list
 	def status_feed
@@ -57,23 +71,21 @@ class UsersController < ApplicationController
 		following_ids = []
 		@microposts = nil
 		@count = @user.followees_count_by_type("user")
-		if @count > 0
+
+		if @count > -1
 			following_list = @user.followees_by_type("user")
 			following_list.each do |following|
      			following_ids.push(following._id)
      		end
-     		# want: Micropost.desc.find(user:following_ids)
-			@microposts = Micropost.in(user:following_ids).limit(30)
-			# p following_ids
-			# @microposts.each do |post|
-			# 	puts post.content
-			# end
+     		# business logic: add current_user's history as well
+     		puts "@@@@@@@@@@@@@@@@@ following_ids"
+     		p following_ids
+     		puts "current_user.id"
+     		p current_user
+     		following_ids << current_user._id
+			@microposts = Micropost.in(user:following_ids).limit(30).order_by(:created_at.desc)
 		end
 		render 'users/feed'
-	end
-
-	def my_activity
-		@microposts = Micropost.where(:user => current_user).order_by(:created_at.desc)
 	end
 end
 

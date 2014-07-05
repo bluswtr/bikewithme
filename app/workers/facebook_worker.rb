@@ -11,7 +11,6 @@ class FacebookWorker
 		friendlist_hash = JSON.parse response
 		user = User.find(db_uid)
 		# email = ""
-		
 		friendlist_hash["friends"]["data"].each do |contact|
 			Contact.create_fb_contact(contact,user)
 		end
