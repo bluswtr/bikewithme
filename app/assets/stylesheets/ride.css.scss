@@ -1,6 +1,6 @@
 // Place all the styles related to the Pages controller here.
 // They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+// You can use Sass (SCSS) here: http://sass-lang.com/		
 
 html {
 	height:100%;
@@ -14,19 +14,23 @@ body {
 	height:100%;
 }
 
-.events-home-container {
-	background-image: url("/images/home.jpg"); 
-	height:100%;
+.pad-top {
+	padding-top:15px;
+	padding-left:15px;
 }
 
 .glyphicon-bicycle {
-	background-image: url("/images/glyphicons_306_bicycle.png");
+	background-image:url("/images/glyphicons_306_bicycle.png");
 	width: 24px;
 	height: 15px;
 }
 
-#main:not(.events-home-container) {
+#main:not(.events-home-container)  {
 	min-height:100%;
+}
+
+.events-home-container {
+       height:100%;
 }
 
 .footer {
@@ -43,6 +47,7 @@ body {
 	background-image: -webkit-linear-gradient(bottom, #293446 0%, #383C5C 100%);
 	background-image: -ms-linear-gradient(bottom, #293446 0%, #383C5C 100%);
 	background-image: linear-gradient(to bottom, #293446 0%, #383C5C 100%);
+	padding: 30px;
 }
 
 // table cell in events/eventsearch/index

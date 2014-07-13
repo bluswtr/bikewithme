@@ -67,31 +67,32 @@
 
 	</script>
 	<div class="col-sm-8">
-		<% @event_data.each do |data|%>
-			<div class="cell eventsearch-index-cell" id="cell-<%= data[:event][:_id] %>">
-				<span><h4 class="eventsearch-index-h4"><%= link_to data[:event][:title], event_url(data[:event][:_id]) %>
-				<%= render partial: "eventsearch/buttons_join_watch", locals: { title:data[:event][:title], id:data[:event][:_id], user:data[:event][:user], watched:data[:watched], joined:data[:joined]} %>
-					</h4></span><br><br>
-				<%= render partial: "eventsearch/bicycle_ride_profile", locals: { profile:data[:bicycle_ride], descriptors:@descriptors, id: data[:event][:_id]} %>
-				<script>
-					var content = "<a href='<%= event_path(data[:event][:_id]) %>'><%= data[:event][:title] %></a>";
-					var marker_index = map.append(<%= data[:event][:meeting_point][1] %>,<%= data[:event][:meeting_point][0] %>,content);
-					$('#cell-<%= data[:event][:_id] %>').mouseenter({index:marker_index},function(event){
-						var index = event.data.index;
-						map.markers[index].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-					});
-					$('#cell-<%= data[:event][:_id] %>').mouseleave({index:marker_index},function(event){
-						var index = event.data.index;
-						map.markers[index].setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
-					});
-					$('#cell-<%= data[:event][:_id] %>').click(function(){window.location.href="<%=event_url(data[:event][:_id]) %>";});
-				</script>
-			</div><br>
+		<% if !@event_data.blank? %>
+			<% @event_data.each do |data|%>
+				<div class="cell eventsearch-index-cell" id="cell-<%= data[:event][:_id] %>">
+					<span><h4 class="eventsearch-index-h4"><%= link_to data[:event][:title], event_url(data[:event][:_id]) %>
+					<%= render partial: "eventsearch/buttons_join_watch", locals: { title:data[:event][:title], id:data[:event][:_id], user:data[:event][:user], watched:data[:watched], joined:data[:joined]} %>
+						</h4></span><br><br>
+					<%= render partial: "eventsearch/bicycle_ride_profile", locals: { profile:data[:bicycle_ride], descriptors:@descriptors, id: data[:event][:_id]} %>
+					<script>
+						var content = "<a href='<%= event_path(data[:event][:_id]) %>'><%= data[:event][:title] %></a>";
+						var marker_index = map.append(<%= data[:event][:meeting_point][1] %>,<%= data[:event][:meeting_point][0] %>,content);
+						$('#cell-<%= data[:event][:_id] %>').mouseenter({index:marker_index},function(event){
+							var index = event.data.index;
+							map.markers[index].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+						});
+						$('#cell-<%= data[:event][:_id] %>').mouseleave({index:marker_index},function(event){
+							var index = event.data.index;
+							map.markers[index].setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+						});
+						$('#cell-<%= data[:event][:_id] %>').click(function(){window.location.href="<%=event_url(data[:event][:_id]) %>";});
+					</script>
+				</div><br>
+			<% end %>
 		<% end %>
-
-			<% if @count > 0 %>
-				<script> map.fitBounds(); </script>
-			<% end %> 
+		<% if @count > 0 %>
+			<script> map.fitBounds(); </script>
+		<% end %> 
 
 	</div><!-- end of cells -->
 </div>

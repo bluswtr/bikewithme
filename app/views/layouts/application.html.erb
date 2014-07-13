@@ -2,23 +2,32 @@
 <html>
   <head>
     <!-- Meta, Title, CSS -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= content_for?(:title) ? yield(:title) : "Bike With Me" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Bike With Me" %>">
+    <!-- iOS Web App Concerns -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Bike With Me">
+    <link rel="apple-touch-icon" sizes="120x120" href="icon-iphone-retina.png">
+    <!-- end iOS Web App Concerns -->
     <%= stylesheet_link_tag "application", :media => "all" %>
-    <%#= javascript_include_tag "application" %>
     <%= render 'layouts/javascripts' %>
     <%= csrf_meta_tags %>
     <%= yield(:head) %>
   </head>
   <body>
+    <%= render 'layouts/navigation' %>
+    <%= render 'layouts/messages' %>
+
     <div class="content">
-      <%= render 'layouts/navigation' %>
-      <%= render 'layouts/messages' %>
-      <div id='main' class="<%= controller_name %>-<%= action_name %>-container container-fluid" style="padding:15px;" role="main">
-        <%= yield %>
-      </div>
+      <% if action_name != "home" %>
+        <div id='main' class="<%= controller_name %>-<%= action_name %>-container pad-top" role="main"><%= yield %></div><!-- end main -->
+      <% else %>
+        <div id='main' class="<%= controller_name %>-<%= action_name %>-container" role="main">
+        <%= yield %></div><!-- end main -->
+      <% end %>
       <%= render 'layouts/footer' %>
-    </div>
+    </div><!-- end content-->
   </body>
 </html>
