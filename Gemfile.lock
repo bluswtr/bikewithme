@@ -222,7 +222,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   devise (~> 2.2.3)
   fb-channel-file
-  figaro (~> 0.6.3)
+  figaro
   geocoder
   httparty
   jquery-rails

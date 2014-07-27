@@ -1,5 +1,3 @@
-
-
 class WatchController < ApplicationController
 	before_filter :authenticate_user!
 

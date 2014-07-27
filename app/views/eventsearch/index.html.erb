@@ -11,6 +11,7 @@
 		<div id="map" class="map_full"></div><br><br>
 	</div>
 	<div class="col-sm-4 hide-me" id="hidden-container"></div>
+	<!-- Search bar  & stick map script-->
 	<script>
 		var lat = <%= @session_lng_lat[1] %>;
 		var lng = <%= @session_lng_lat[0] %>;
@@ -46,7 +47,6 @@
 				document.location.reload();
 			});
 		});
-
 		// make map sticky
 		// scrollheight = height of scrollable page
 		// height of window (smaller than page)
@@ -70,10 +70,9 @@
 		<% if !@event_data.blank? %>
 			<% @event_data.each do |data|%>
 				<div class="cell eventsearch-index-cell" id="cell-<%= data[:event][:_id] %>">
-					<span><h4 class="eventsearch-index-h4"><%= link_to data[:event][:title], event_url(data[:event][:_id]) %>
-					<%= render partial: "eventsearch/buttons_join_watch", locals: { title:data[:event][:title], id:data[:event][:_id], user:data[:event][:user], watched:data[:watched], joined:data[:joined]} %>
+					<span><h4 class="eventsearch-index-h4"><%= link_to data[:event][:title], event_path(data[:event][:_id]) %>
 						</h4></span><br><br>
-					<%= render partial: "eventsearch/bicycle_ride_profile", locals: { profile:data[:bicycle_ride], descriptors:@descriptors, id: data[:event][:_id]} %>
+					<%= render partial: "eventsearch/bicycle_ride_profile", locals: { profile:data[:bicycle_ride], descriptors:@descriptors, id:data[:event][:_id], event:data[:event]} %>
 					<script>
 						var content = "<a href='<%= event_path(data[:event][:_id]) %>'><%= data[:event][:title] %></a>";
 						var marker_index = map.append(<%= data[:event][:meeting_point][1] %>,<%= data[:event][:meeting_point][0] %>,content);
@@ -89,10 +88,9 @@
 					</script>
 				</div><br>
 			<% end %>
-		<% end %>
-		<% if @count > 0 %>
+			<% if @count > 0 %>
 			<script> map.fitBounds(); </script>
-		<% end %> 
-
+			<% end %> 
+		<% end %>
 	</div><!-- end of cells -->
 </div>

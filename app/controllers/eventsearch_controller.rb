@@ -4,13 +4,14 @@
 class EventsearchController < ApplicationController
 	def index
 		@session_lng_lat = lnglat
+		i = 0
+		@count = 0
+		
 		if @session_lng_lat[0] && @session_lng_lat[1]
 			nearest_events = Array.new
 		    options = Array.new
 		    rows_to_display = Event.count
 			nearest_event_data = Event.published.nearest("public",lnglat,nil)
-			i = 0
-			@count = 0
 
 			unless no_results.call(nearest_event_data)
 				nearest_event_data.each do |event|

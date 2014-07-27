@@ -19,4 +19,5 @@
 //= require angular-animate
 //= require angular-resource
 //= require alertify
+//= require jquery.stayInWebApp
 //= require_tree .

@@ -35,7 +35,7 @@ gem "better_errors", "~> 0.7.2", :group => :development
 
 # omniauth, facebook, httparty and mongo follow model
 gem "devise", "~> 2.2.3"	# user signup and authentication mechanics
-gem "figaro", "~> 0.6.3"	# ENV 
+gem "figaro"	# ENV http://railsapps.github.io/rails-environment-variables.html
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'httparty'

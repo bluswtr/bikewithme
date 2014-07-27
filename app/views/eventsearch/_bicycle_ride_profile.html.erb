@@ -11,7 +11,10 @@
 	<div style='display:inline'><b>Pace:</b> <%= @descriptors["pace"][profile[:pace]] %> | </div>
 <% end %>
 <% if profile[:terrain] %>
-	<div style='display:inline'><b>Terrain:</b> <%= @descriptors["terrain"][profile[:terrain]] %></div>
+	<div style='display:inline'><b>Terrain:</b> <%= @descriptors["terrain"][profile[:terrain]] %> | </div>
+<% end %>
+<% if event[:event_date] %>
+	<div style='display:inline'><b>When:</b> <%= event[:event_date].strftime("%a %-m/%d/%y, %l:%M%p") %></div>
 <% end %>
 
 <script>

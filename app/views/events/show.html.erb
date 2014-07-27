@@ -12,6 +12,7 @@
 			<%= link_to raw('<span class="glyphicon glyphicon-edit"></span>'),edit_event_path(@event.id) %>
 		<% end %>
 	</h4>
+	<%= render partial: "eventsearch/buttons_join_watch", locals: {id:@event.id, watched:@watched, joined:@joined} %>
 </span><br><br>
 
 <div id="map" class="map_half"></div><br>
@@ -63,7 +64,6 @@
 			<% end %></p>
 		</li>
 	</ul>
-	<%= render partial: "eventsearch/buttons_join_watch", locals: {id:@event.id, watched:@watched, joined:@joined} %>
 	<% if @event.user == current_user %>
 		<%= link_to raw('Edit <span class="glyphicon glyphicon-edit"></span>'),edit_event_path(@event.id), :class => "btn btn-primary btn-lg" %>
 	<% end %>

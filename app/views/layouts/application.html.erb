@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="user-scalable=no, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="apple-mobile-web-app-title" content="Bike With Me">
     <link rel="apple-touch-icon" sizes="120x120" href="icon-iphone-retina.png">
     <!-- end iOS Web App Concerns -->
@@ -17,12 +18,17 @@
     <%= yield(:head) %>
   </head>
   <body>
+    <!-- iOS Web App Concerns -->
+    <script>$(function() {
+      $.stayInWebApp(); });
+    </script>
+    <!-- end iOS Web App Concerns -->
     <%= render 'layouts/navigation' %>
     <%= render 'layouts/messages' %>
 
     <div class="content">
       <% if action_name != "home" %>
-        <div id='main' class="<%= controller_name %>-<%= action_name %>-container pad-top" role="main"><%= yield %></div><!-- end main -->
+        <div id='main' class="<%= controller_name %>-<%= action_name %>-container pad" role="main"><%= yield %></div><!-- end main -->
       <% else %>
         <div id='main' class="<%= controller_name %>-<%= action_name %>-container" role="main">
         <%= yield %></div><!-- end main -->

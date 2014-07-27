@@ -1,4 +1,4 @@
-<%= render partial: "invite/index_invite_tabs", locals: {header:"Friends",title:"Follow Other Cyclists on Bike With Me",find_friends:"",friends:"class=active",find_friends_url:to_app_invite_index_url(:event_id => 0),friends_url:users_url} %>
+<%= render partial: "invite/index_invite_tabs", locals: {header:"Friends",title:"Follow Other Cyclists on Bike With Me",find_friends:"",friends:"class=active",find_friends_url:to_app_invite_index_path(:event_id => 0),friends_url:users_path} %>
 	
 <ul class="users">
 	<% unless @users.blank? %>

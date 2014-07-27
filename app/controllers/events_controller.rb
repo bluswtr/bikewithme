@@ -1,6 +1,6 @@
 
 class EventsController < ApplicationController
-	before_filter :authenticate_user!,:only => [:new,:create,:watch,:join,:more_info,:index,:delete,:edit,:update]
+	before_filter :authenticate_user!,:only => [:new,:create,:more_info,:index,:delete,:edit,:update]
 	def new
 		event = Event.new(title:"Untitled #{local_time.strftime("%Y-%m-%d %l:%M %p")}",publishing_status:"draft")
 		bikewithme_log("EventsController#new #{event.errors.messages}")
@@ -106,13 +106,13 @@ class EventsController < ApplicationController
 		end
 	end
 
-	def join
-		@event_joined = Event.find(params[:event_id])
-		current_user.join(@event_joined)
-		respond_to do |format|
-			format.js { render :partial => "event_joined" }
-		end
-	end
+	# def join
+	# 	@event_joined = Event.find(params[:event_id])
+	# 	current_user.join(@event_joined)
+	# 	respond_to do |format|
+	# 		format.js { render :partial => "event_joined" }
+	# 	end
+	# end
 
 	def next_seven_days
 		time = Date.today

@@ -14,15 +14,14 @@ body {
 	height:100%;
 }
 
-.pad-top {
-	padding-top:15px;
-	padding-left:15px;
+.pad {
+	padding:15px;
 }
 
 .glyphicon-bicycle {
 	background-image:url("/images/glyphicons_306_bicycle.png");
 	width: 24px;
-	height: 15px;
+	height: 14px;
 }
 
 #main:not(.events-home-container)  {

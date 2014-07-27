@@ -35,11 +35,11 @@
 	<!-- end javascript modified from Facebook API -->
 
 	<% if @session == "invite_to_event" %>
-		<%= render partial: "invite/index_invite_tabs", locals: {header:"Invite",title:"Invite Friends to Your Ride", find_friends:"",friends:"class=active",find_friends_url:outsider_to_event_invite_index_url(:event_id =>  params[:event_id]),friends_url:to_event_invite_index_url(:event_id =>  params[:event_id])} %>
+		<%= render partial: "invite/index_invite_tabs", locals: {header:"Invite",title:"Invite Friends to Your Ride", find_friends:"",friends:"class=active",find_friends_url:outsider_to_event_invite_index_path(:event_id => params[:event_id]),friends_url:to_event_invite_index_path(:event_id => params[:event_id])} %>
 	<% elsif @session == "invite_to_app" %>
-		<%= render partial: "invite/index_invite_tabs", locals: {header:"Friends",title:"Invite Friends to Bike With Me", find_friends:"class=active",friends:"",find_friends_url:to_app_invite_index_url(:event_id => 0),friends_url:users_url} %>
+		<%= render partial: "invite/index_invite_tabs", locals: {header:"Friends",title:"Invite Friends to Bike With Me", find_friends:"class=active",friends:"",find_friends_url:to_app_invite_index_path(:event_id => 0),friends_url:users_path} %>
 	<% elsif @session == "invite_outsider_to_event" %>
-		<%= render partial: "invite/index_invite_tabs", locals: {header:"Invite",title:"Invite Friends to Your Ride", find_friends:"class=active",friends:"",find_friends_url:outsider_to_event_invite_index_url(:event_id => params[:event_id]),friends_url:to_event_invite_index_url(:event_id => params[:event_id])} %>
+		<%= render partial: "invite/index_invite_tabs", locals: {header:"Invite",title:"Invite Friends to Your Ride", find_friends:"class=active",friends:"",find_friends_url:outsider_to_event_invite_index_path(:event_id => params[:event_id]),friends_url:to_event_invite_index_path(:event_id => params[:event_id])} %>
 	<% end %>
 	<div class="container">
 		<div class="row">

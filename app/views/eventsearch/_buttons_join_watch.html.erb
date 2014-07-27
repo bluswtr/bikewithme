@@ -1,9 +1,16 @@
+<% if user_signed_in? %>
+	<%= link_to raw('Watch <span class="glyphicon glyphicon-eye-open"></span>'),event_watch_index_path(id), rel:'nofollow', class:'btn btn-primary btn-sm',method:'post',remote:'true' %>
+	<%= link_to raw('Watching <span class="glyphicon glyphicon-eye-open"></span>'),event_unwatch_index_path(id), rel:'nofollow', class:"btn btn-success btn-sm", style: 'display:none',method:'post',remote:'true'%>
 
-<%= link_to raw('Watch <span class="glyphicon glyphicon-eye-open"></span>'),event_watch_index_path(id), rel: 'nofollow', class: "btn btn-primary btn-sm", method: 'post', remote: 'true'  %>
-<%= link_to raw('Watching <span class="glyphicon glyphicon-eye-open"></span>'),event_unwatch_index_path(id), rel: 'nofollow', class: "btn btn-success btn-sm", style: 'display:none', method: 'post', remote: 'true'  %>
+	<%= link_to raw('Join <span class="glyphicon glyphicon-bicycle"></span>'),event_join_index_path(id), rel: 'nofollow', class:'btn btn-primary btn-sm',method:'post',remote:'true'%>
+	<%= link_to raw('Joined <span class="glyphicon glyphicon-bicycle"></span>'),event_unjoin_index_path(id), rel: 'nofollow', class:'btn btn-success btn-sm', style:'display:none', method: 'post', remote:'true'%>
+<% else %>
+	<%= link_to raw('Watch <span class="glyphicon glyphicon-eye-open"></span>'),event_watch_index_path(id), rel:'nofollow', class:'btn btn-primary btn-sm',method:'post' %>
+	<%= link_to raw('Watching <span class="glyphicon glyphicon-eye-open"></span>'),event_unwatch_index_path(id), rel:'nofollow', class:"btn btn-success btn-sm", style: 'display:none',method:'post'%>
 
-<%= link_to raw('Join <span class="glyphicon glyphicon-bicycle"></span>'),event_join_index_path(id), rel: 'nofollow', class: "btn btn-primary btn-sm", method: 'post', remote: 'true'  %>
-<%= link_to raw('Joined <span class="glyphicon glyphicon-bicycle"></span>'),event_unjoin_index_path(id), rel: 'nofollow', class: "btn btn-success btn-sm", style: 'display:none', method: 'post', remote: 'true'  %>
+	<%= link_to raw('Join <span class="glyphicon glyphicon-bicycle"></span>'),event_join_index_path(id), rel: 'nofollow', class:'btn btn-primary btn-sm',method:'post'%>
+	<%= link_to raw('Joined <span class="glyphicon glyphicon-bicycle"></span>'),event_unjoin_index_path(id), rel: 'nofollow', class:'btn btn-success btn-sm', style:'display:none', method: 'post'%>
+<% end %>
 
 <script>
 		<!-- if watching, hide watch button and vice versa -->
