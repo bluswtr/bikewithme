@@ -46,7 +46,7 @@
 			Search Friends <span class="glyphicon glyphicon-search"></span>
 			<input type="textfield" class="form-control" ng-model="query">
 		</div><br \>
-		<div class="row">
+		<div class="row"><span>
 			<% if @session == "invite_to_event" %>
 				<h3>Invite Friends to Your Ride</h3>
 			<% elsif @session == "invite_to_app" %>
@@ -54,6 +54,9 @@
 			<% elsif @session == "invite_outsider_to_event" %>
 				<h3>Invite Facebook Friends to Your Ride</h3>
 			<% end %>
+			<% if !@has_friends %>
+				<%= link_to image_tag('/images/auth/facebook/pressed_404.png'), omniauth_authorize_path(:user,'facebook')%>
+			<% end %></span>
 			<div ng-repeat="friend in guestlist | filter:query | orderBy:orderProp">
 				<a href="#"class="compose_invite btn btn-md btn-default col-xs-12 col-sm-6 col-md-4" data-toggle="button" rel="nofollow" ng-click="addFriend(friend,'<%= ENV["BWM_INVITE_LINK"] %>');" id='href-{{friend.fb_uid}}'>
 				<img class="pull-left img-circle" ng-src = "{{friend.image}}"> 
