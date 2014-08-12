@@ -19,29 +19,34 @@ class Contact
 
   def self.create_fb_contact(params,user)
     # is friend a bwm user?
-    bwm_user = Contact.is_already_a_user('fb',params[:id])
+    bwm_user = Contact.is_already_a_user('fb',params["id"])
     # is friend in current user's contact list?
-    contact = Contact.find_by(user_id:user.id).where(fb_uid:params[:id])
+    # contact = Contact.find_by(user_id:user.id).where(fb_uid:params[:id])
+    contact = Contact.where(fb_uid:params["id"]).find(user_id:user.id)
 
     if bwm_user && contact
+      puts "@@@@@@@@@@@@@@@@ bwm_user && contact"
       contact.is_user = true
       contact.save
     elsif bwm_user && !contact
+      puts "@@@@@@@@@@@@@@@@ bwm_user && !contact"
       user.contacts.create(
-        fb_uid: params[:id],
-        name:   params[:name], 
-        email:  params[:name] + "@facebook.com",
-        image:  params[:picture][:data][:url],
+        fb_uid: params["id"],
+        name:   params["name"], 
+        email:  params["username"] + '@facebook.com',
+        image:  params["picture"]["data"]["url"],
         is_user: true
         )
     elsif !bwm_user && contact
       # do nothing
+      puts "@@@@@@@@@@@@@@@@ !bwm_user && contact"
     elsif !bwm_user && !contact
+      puts "@@@@@@@@@@@@@@@@ !bwm_user && !contact"
       user.contacts.create(
-          fb_uid: params[:id],
-          name:   params[:name], 
-          email:  params[:name] + "@facebook.com",
-          image:  params[:picture][:data][:url],
+          fb_uid: params["id"],
+          name:   params["name"], 
+          email:  params["username"] + '@facebook.com',
+          image:  params["picture"]["data"]["url"].to_s,
           is_user: false
           )
     end
@@ -63,7 +68,7 @@ class Contact
     if bwm_user && !fb_uid.blank? # loop thru all contacts and update is_user = true
       @contacts = Contact.where(fb_uid:fb_uid)
     elsif bwm_user && !strava_uid.blank?
-      @contacts = Contact.where(strava_uid:fb_uid)
+      @contacts = Contact.where(strava_uid:strava_uid)
     end
 
     # update each friend's contact document and status feed w/ new user's status
@@ -76,19 +81,19 @@ class Contact
   end
 
   def self.create_strava_contact(params,user)
-    name = params[:firstname] + " " + params[:lastname]
-    bwm_user = Contact.is_already_a_user(strava_uid:params[:id])
+    name = params["firstname"] + " " + params["lastname"]
+    bwm_user = Contact.is_already_a_user("strava",strava_uid:params["id"])
 
     if bwm_user
-      contact = Contact.find_by(strava_uid,params[:id])
+      contact = Contact.find_by(strava_uid,params["id"])
       contact.is_user = true
       contact.save
     else
       user.contacts.create(
-          strava_uid: params[:id],
+          strava_uid: params["id"],
           name: name, 
-          email: params[:email],
-          image: params[:profile_medium],
+          email: params["email"],
+          image: params["profile_medium"],
           is_user: false
           )
     end
@@ -96,13 +101,14 @@ class Contact
 
   ## 
   # Is the user on this app yet?
-  def self.is_already_a_user(strava_or_fb,uid)
+  def self.is_already_a_user(service,uid)
     @user = nil
-    if strava_or_fb == 'strava'
+    if service == 'strava'
       @user = User.find_by(strava_uid:uid)
-    else
+    elsif service == 'fb'
       @user = User.find_by(uid:uid)
     end
+
     if @user.blank?
       false
     else

@@ -31,6 +31,10 @@ class InviteController < ApplicationController
 	end
 
 	def to_app
+		@has_friends = false
+		if current_user.contacts.count > 0 
+			@has_friends = true
+		end
 		@session = "invite_to_app"
 		render "invite/compose_invite"
 	end

@@ -92,17 +92,21 @@ class User
   # check with our db and see if this user exists
   # create a new user in our db if this user does not exist
   def self.find_for_facebook_oauth(auth, signed_in_resource=nil)
-    user = User.where(:provider => auth.provider, :uid => auth.uid).first
-    unless user 
-      user = User.create(name:auth.extra.raw_info.name,
+    user_exists = User.where(:provider => auth.provider, :uid => auth.uid).first
+      unless user_exists
+        user_exists = User.create(name:auth.extra.raw_info.name,
                          provider:auth.provider,
                          uid:auth.uid,
                          email:auth.info.email,
                          password:Devise.friendly_token[0,20],
                          image:auth.info.image
                          )
-    end
-    user
+      end
+      user_exists
+  end
+
+  def self.is_fb_user(uid)
+    user = User.where(:provider => "facebook", :uid => uid).first
   end
 
   ## Populate our user object with data from Facebook?
@@ -116,11 +120,11 @@ class User
 
   ## Strava Helpers
   # check with our db and see if this user exists
-  # create a new user in our db if this user does not exist
+  # create a new user in our db unless the user exists
   def self.find_for_strava_oauth(auth, signed_in_resource=nil)
-    user = User.where(:provider => auth.provider, :uid => auth.strava_uid).first
-    unless user 
-      user = User.create(name:auth.info.name,
+    user_exists = User.where(:provider => auth.provider, :uid => auth.uid).first
+    unless user_exists 
+      user_exists = User.create(name:auth.info.name,
                          provider:auth.provider,
                          strava_uid:auth.uid,
                          email:auth.info.email,
@@ -128,6 +132,6 @@ class User
                          image:auth.info.profile_medium
                          )
     end
-    user
+    user_exists
   end
 end
