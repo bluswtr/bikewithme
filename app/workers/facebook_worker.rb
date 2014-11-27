@@ -12,14 +12,13 @@ class FacebookWorker
 		user = User.find(db_uid)
 
 		friendlist_hash["friends"]["data"].each do |contact|
-			puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@ facebook worker: contact"
-			p contact
+			puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@ worker pulling: #{contact}"
 			Contact.create_fb_contact(contact,user)
 		end
 
-		puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@ facebook worker"
-		p user
-		user.update_attribute(:update_fb_friends, false)
-		user.save
+		# puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@ facebook worker"
+		# p user
+		# user.update_attribute(:update_fb_friends, false)
+		# user.save
 	end
 end

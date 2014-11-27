@@ -18,17 +18,6 @@
 <div id="map" class="map_half"></div><br>
 <div>
 	<ul class="list-group">
-		<li class="list-group-item">
-		<p><b>Joined:</b>
-		<% if @event.user == current_user && @event.joiners_count_by_type("user") != 0 %>
-			 <% @event.all_joiners.each do |joiner| %>
-					<%= joiner.name %> 
-			<% end %> 
-		<% else %>
-			No riders yet </p>
-			</li>
-		<% end %>
-
 		<% if @event.bicycle_ride.pace == nil %>
 			<% pace_val = "" %>
 		<% else %>
@@ -62,6 +51,18 @@
 			<% else %>
 				Public
 			<% end %></p>
+		</li>
+
+		<li class="list-group-item">
+		<% if @event.joiners_count_by_type("user") > 0 %>
+			<p><b>Joined:</b><br>
+				 <% @event.all_joiners.each do |joiner| %>
+						<%= joiner.name %><br>
+				<% end %> 
+		<li>
+		<% else %>
+			<p><b>Joined:</b> No riders yet </p>
+		<% end %>
 		</li>
 	</ul>
 	<% if @event.user == current_user %>

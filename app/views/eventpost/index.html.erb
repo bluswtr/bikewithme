@@ -20,8 +20,8 @@
 		<script>
 			$('#edit-bar-<%= event.id %>').click(function(){
 			window.location = '<%= edit_event_path(event.id) %>';});
-			<% if event.bicycle_ride.altitude %>
-				$('#sparkline-<%= event.id %>').sparkline(<%= event.bicycle_ride.altitude %>, {height: '20',width:'100'});
+			<% if event.bicycle_ride.altitude != [0,0] %>
+				$('#sparkline-<%= event.id %>').sparkline(<%= event.bicycle_ride.altitude %>, {height: '20',width:'100',disableInteraction:'false'});
 				$('#sparkline-<%= event.id %>').before(' | ');
 			<% end %>
 

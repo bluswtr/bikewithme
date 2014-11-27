@@ -1,4 +1,4 @@
-<% if profile[:altitude] %>
+<% if profile[:altitude] != [0,0] %>
 	<div><span class="<%= id %>">Loading...</span></div><br>
 <% end %>
 <% if profile[:distance] %>
@@ -18,9 +18,10 @@
 <% end %>
 
 <script>
-	<% if profile[:altitude] %>
+
+	<% if profile[:altitude] != [0,0] %>
         var width =$('#map').width() - 30;
 		var height = 50;
-		$('.<%= id %>').sparkline(<%= profile[:altitude] %>, {height:height,width:width});
+		$('.<%= id %>').sparkline(<%= profile[:altitude] %>, {disableInteraction:true,height:height,width:width});
 	<% end %>
 </script>

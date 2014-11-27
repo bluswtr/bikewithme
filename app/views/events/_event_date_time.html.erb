@@ -17,7 +17,7 @@
 		<% meridian = "PM"%>
 		<% string_hour -= 12 %>
 	<% end %>
-	<% if hour == 0 %>
+	<% if string_hour == 0 %>
 		<% string_hour = 12 %>
 	<% end %>
 	<% time_string_hour = "#{string_hour}:00 #{meridian}" %>

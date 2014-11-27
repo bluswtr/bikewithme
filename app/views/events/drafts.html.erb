@@ -14,6 +14,7 @@
 			<% time = event.updated_at %>
 			<i><b><%= event.publishing_status %></b></i> Last Modified: <i><%= readable_time(time) %></i>
 		</td>
+		<%= render partial: "event_edit_td", locals: { event_id:event.id } %>
 		<td class='td_bar danger'>
 			<a href='#!' class='icon-lg' id = 'delete-<%= event.id %>'><span class="glyphicon glyphicon-remove"></span></a>
 			<%= render partial: "event_delete_fade", locals: { event:event } %>

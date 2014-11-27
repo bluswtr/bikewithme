@@ -56,9 +56,11 @@ class EventsController < ApplicationController
 			bikewithme_log("EventsController#update #{event.errors.messages}")
 			if !event.valid?
 				render "public/404", :formats => [:html], status: :not_found
-	    	else
+	    	elsif params[:publish]
 				# redirect_to event_url(event.id), notice: "Event Updated"
 				redirect_to to_event_invite_index_url(:event_id => event.id), notice: "Event Saved"
+			else
+				redirect_to drafts_events_url, notice: "Event Saved"
 			end
 		end
 	end
@@ -105,14 +107,6 @@ class EventsController < ApplicationController
 			render nothing: true
 		end
 	end
-
-	# def join
-	# 	@event_joined = Event.find(params[:event_id])
-	# 	current_user.join(@event_joined)
-	# 	respond_to do |format|
-	# 		format.js { render :partial => "event_joined" }
-	# 	end
-	# end
 
 	def next_seven_days
 		time = Date.today

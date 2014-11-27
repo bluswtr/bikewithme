@@ -18,42 +18,42 @@ class Contact
   index({ _id: 1 }, { unique: true, background: true })
 
   def self.create_fb_contact(params,user)
-    # is friend a bwm user?
-    bwm_user = Contact.is_already_a_user('fb',params["id"])
-    # is friend in current user's contact list?
-    # contact = Contact.find_by(user_id:user.id).where(fb_uid:params[:id])
-    contact = Contact.where(fb_uid:params["id"]).find(user_id:user.id)
 
-    if bwm_user && contact
-      puts "@@@@@@@@@@@@@@@@ bwm_user && contact"
-      contact.is_user = true
-      contact.save
-    elsif bwm_user && !contact
-      puts "@@@@@@@@@@@@@@@@ bwm_user && !contact"
-      user.contacts.create(
-        fb_uid: params["id"],
-        name:   params["name"], 
-        email:  params["username"] + '@facebook.com',
-        image:  params["picture"]["data"]["url"],
-        is_user: true
-        )
-    elsif !bwm_user && contact
-      # do nothing
-      puts "@@@@@@@@@@@@@@@@ !bwm_user && contact"
-    elsif !bwm_user && !contact
-      puts "@@@@@@@@@@@@@@@@ !bwm_user && !contact"
-      user.contacts.create(
+    unless params["id"].nil?
+        # is friend a bwm user?
+        bwm_user = Contact.is_already_a_user('fb',params["id"])
+        # is friend in current user's contact list?
+        contact = Contact.where(fb_uid:params["id"]).in(user_id:user.id)
+
+      if bwm_user && contact
+        puts "@@@@@@@@@@@@@@@@ bwm_user && contact"
+        contact.is_user = true
+        contact.save
+      elsif bwm_user && !contact
+        puts "@@@@@@@@@@@@@@@@ bwm_user && !contact"
+        user.contacts.create(
           fb_uid: params["id"],
           name:   params["name"], 
-          email:  params["username"] + '@facebook.com',
           image:  params["picture"]["data"]["url"].to_s,
-          is_user: false
+          is_user: true
           )
+      elsif !bwm_user && contact
+        # do nothing
+        puts "@@@@@@@@@@@@@@@@ !bwm_user && contact"
+      elsif !bwm_user && !contact
+        puts "@@@@@@@@@@@@@@@@ !bwm_user && !contact"
+        user.contacts.create(
+            fb_uid: params["id"],
+            name:   params["name"], 
+            image:  params["picture"]["data"]["url"].to_s,
+            is_user: false
+            )
+      end
     end
   end
 
   ##
-  # New user's may have been invited by a friend
+  # New users may have been invited by a friend
   # So their contact record may be somewhere in the database
   # and we want their friends to know when they've signed up
   # Thus we need to flag

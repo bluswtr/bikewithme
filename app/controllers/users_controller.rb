@@ -87,6 +87,8 @@ class UsersController < ApplicationController
 		end
 		render 'users/feed'
 	end
+
+	def invitation
+		render 'users/invitation'
+	end
 end
-
-

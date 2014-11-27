@@ -31,16 +31,24 @@
 
 	<p><%= event.check_box :is_private, {checked: @event.is_private} %> <b>This event is private.</b></p><br>
 
-	<div class="form-group">
+	<!--div class="form-group">
 		<%= event.label :publishing_status %>
 		<%= event.select :publishing_status, [['Publish',"published"],['Draft',"draft"]], {}, :class => 'form-control', :selected => @event.publishing_status, :id => 'publishing_status', :name => 'publishing_status' %>
-	</div>
+	</div-->
 
-	<div>
+	<!--div>
 		<%= event.submit "Update Event", :class => "btn btn-warning btn-lg" %>
+		<%= event.submit 'Cancel', :class => 'btn btn-default btn-lg', :name => 'cancel'%>
+	</div-->
+
+		<div>
+		<%= event.submit "Publish Now", :class => "btn btn-primary btn-lg",:name => 'publish' %>
+		<%= event.submit "Save For Later", :class => "btn btn-default btn-lg",:name => 'draft' %>
 		<a href='#!' class='btn btn-danger btn-lg' id = '<%= 'delete-' + 
 		@event.id %>'>Delete <span class="glyphicon glyphicon-remove"></span></a>
-		<%= event.submit 'Cancel', :class => 'btn btn-default btn-lg', :name => 'cancel'%>
+		<%=form_for @event do |cancel| %>
+			<%= cancel.submit 'Cancel', :class => 'btn btn-default btn-lg', :name => 'destroy'%>
+		<% end %>
 	</div>
 <% end %>
 <%= render partial: "event_delete", locals: { event:@event, redirect:drafts_events_url() } %>

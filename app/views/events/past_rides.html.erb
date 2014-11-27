@@ -12,6 +12,7 @@
 				<% else %></h4><% end %>
 				<b>Event Occurred:</b> <i><%= readable_time(event.event_date) %></i>
 			</td>
+			<%= render partial: "event_edit_td", locals: { event_id:event.id } %>
 			<td class='td_bar danger'>
 				<a href='#!' class='icon-lg' id = '<%= 'delete-' + event.id %>'><span class="glyphicon glyphicon-remove"></span></a>
 				<%= render partial: "event_delete_fade", locals: { event:event } %>

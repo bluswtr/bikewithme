@@ -20,6 +20,7 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'find_friends'
       get 'status_feed'
       get 'my_activity'
+      get 'invitation'
       resources :follow, only: [:destroy, :create]
       resources :microposts, only: [:create, :destroy, :show]
       collection do
@@ -43,6 +44,7 @@ Rails3MongoidDevise::Application.routes.draw do
       get 'active_rides'
       get 'drafts'
       get 'watchlist'
+      get 'invitation'
       resources :eventpost do
         get 'details'
         put 'update_details'

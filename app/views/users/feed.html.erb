@@ -1,8 +1,8 @@
 <%#= render partial: "users/feed_header", locals: { my_activity:"",friend_feed:"class=active" } %>
 <h3 style="display:inline">Feed</h3><br><br>
-<% if @count > -1 %>
+<% if @count > 0 %>
 	<% @microposts.each do |post|%>
-	<p><%= post.content.html_safe %></p>
+		<p><%= post.content.html_safe %></p>
 	<% end %>
 <% else %>
 	No updates from friends yet. <%= link_to "Find friends to follow.", users_url %>
