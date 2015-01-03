@@ -222,12 +222,15 @@ class Event
 
   def update_time(date,time)
     year,month,day = date.chomp.split('-')
+    timezone_offset = (Time.now.strftime("%z").to_i/-100).to_i        
     if time == 0
       hour = 0
+      minute = 0
     else
       hour = (time.to_i/100).floor.to_i
+      minute = time.to_i - hour * 100;
     end
-    self.event_date = DateTime.new(year.to_i,month.to_i,day.to_i,hour.to_i,0,0)
+    self.event_date = DateTime.new(year.to_i,month.to_i,day.to_i,hour.to_i,minute.to_i,0) + (timezone_offset/24.0)
     self.save
     self
   end

@@ -10,7 +10,7 @@
 				<% if !event.is_private %>
 					<span class="glyphicon glyphicon-globe"></span></h4>
 				<% else %></h4><% end %>
-				<b>Event Occurred:</b> <i><%= readable_time(event.event_date) %></i>
+				<b>Event Occurred:</b> <i><%= event.event_date %></i>
 			</td>
 			<%= render partial: "event_edit_td", locals: { event_id:event.id } %>
 			<td class='td_bar danger'>

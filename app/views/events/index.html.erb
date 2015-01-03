@@ -12,7 +12,39 @@
 			<% else %>
 				</h4>
 			<% end %>
-			<b>Event Starts On:</b> <i><%= readable_time(event.event_date) %></i>
+   <b>Event Starts In:</b> <i><%= 
+   total_seconds = (event.event_date - Time.now.utc).floor.to_i
+   total_days = (total_seconds/86400).floor.to_i
+   total_seconds = total_seconds - total_days * 86400
+   total_hours = (total_seconds/3600).floor.to_i
+   total_seconds = total_seconds - total_hours * 3600
+   total_minutes = (total_seconds/60).floor.to_i
+   if total_days == 0
+     days_text = ""
+   elsif total_days == 1
+     days_text = "1 Day "
+   else
+     days_text = "#{total_days} Days "
+   end
+ 
+    if total_hours == 0 || total_days > 1
+      hours_text = ""
+    elsif total_hours == 1
+      hours_text = "1 Hour "
+    else
+      hours_text = "#{total_hours} Hours "
+    end
+   
+    if total_minutes == 0 || total_days > 0
+      minutes_text = ""
+    elsif total_minutes == 1
+      minutes_text = "1 Minute "
+    else
+      minutes_text = "#{total_minutes} Minutes "
+    end
+   
+    " #{days_text}#{hours_text}#{minutes_text}" 
+    %></i>
 		</td>
 		<%= render partial: "event_edit_td", locals: { event_id:event.id } %>
 		<td class='td_bar danger'>
