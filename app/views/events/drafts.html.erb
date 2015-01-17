@@ -12,7 +12,7 @@
 				</h4>
 			<% end %>
 			<% time = event.updated_at %>
-			<i><b><%= event.publishing_status %></b></i> Last Modified: <i><%= readable_time(time) %></i>
+			<i><b><%= event.publishing_status %></b></i> Last Modified: <i><%= readable_time(time, 1) %></i>
 		</td>
 		<%= render partial: "event_edit_td", locals: { event_id:event.id } %>
 		<td class='td_bar danger'>

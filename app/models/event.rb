@@ -97,8 +97,8 @@ class Event
   scope :published, -> { where(:publishing_status => 'published') }
   scope :drafts, -> { where(:publishing_status => 'draft').order_by(:updated_at.desc) }
   # scope :published_and_drafts, -> { where(:publishing_status => 'published').union.in(:publishing_status => 'draft')}
-  scope :future_events, -> { where(:event_date.gte => Time.now) }
-  scope :past_events, -> { where(:event_date.lt => Time.now) }
+  scope :future_events, -> { where(:event_date.gte => (Time.now - 7200)) }
+  scope :past_events, -> { where(:event_date.lt => (Time.now - 7200)) }
   scope :from_strava, -> { where(:strava_activity_id.gt => 0)}
 
 
