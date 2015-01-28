@@ -11,7 +11,7 @@
 				        	type: 'DELETE'
 				        }).done(function(){
 				        		$('#tr-<%= event.id %>').fadeOut("slow",
-				        			function(){bikewithme_log("animation done");}
+				        			function(){bikewithme_log("animation done");location.reload();}
 				        		);
 				        	}
 				        );

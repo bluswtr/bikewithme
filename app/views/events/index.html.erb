@@ -1,6 +1,6 @@
 <%= render partial: "events/index_my_rides_tabs", locals: { active:"class=active",past_rides:"",drafts:"" } %>
 <table class='table table-hover'>
-<tr><td style='border-top: 0px;'>	
+<tr><td style='border-top: 0px;visibility: hidden;'>	
 <%= render partial: "events/paginate_events", locals: { event_data:@events } %>
 </td></tr>
 <% @events.each do |event| %>
@@ -16,12 +16,12 @@
 		</td>
 		<%= render partial: "event_edit_td", locals: { event_id:event.id } %>
 		<td class='td_bar danger'>
-			<a href='#!' class='icon-lg' id = '<%= 'delete-' + event.id %>'><span class="glyphicon glyphicon-remove"></span></a>
+  <a href='#!' title="Delete Event" class='icon-lg' id = '<%= 'delete-' + event.id %>'><span class="glyphicon glyphicon-remove"></span></a>
 			<%= render partial: "event_delete_fade", locals: { event:event } %>
 		</td>
 	</tr>
 <% end %>
-<tr><td style='border-top: 0px;'>	
+<tr><td style='border-top: 0px;visibility: hidden;'>	
 <%= render partial: "events/paginate_events", locals: { event_data:@events } %>
 </td></tr>
 </table>
